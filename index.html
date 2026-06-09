@@ -12,6 +12,7 @@
             --text: #f5f5f5;
             --green: #25d366;
             --red: #ff3333;
+            --blue: #0084ff;
         }
         * {
             box-sizing: border-box;
@@ -256,12 +257,11 @@
             cursor: pointer;
             margin-top: 10px;
         }
-        /* ESTILO NOVO: Area de exibição do Mapa de Cobertura */
         .map-container {
             width: 100%;
             height: 180px;
             border-radius: 8px;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             border: 1px solid var(--gold);
             overflow: hidden;
             background: #000;
@@ -270,6 +270,23 @@
             width: 100%;
             height: 100%;
             border: 0;
+        }
+        /* ESTILO NOVO: Botão de ativação do GPS do celular */
+        .btn-gps-route {
+            width: 100%;
+            background: var(--blue);
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            cursor: pointer;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
         }
     </style>
 </head>
@@ -299,7 +316,7 @@
     <div class="modal-content">
         <div class="modal-header">
             <h2>Dados da Entrega</h2>
-            <button class="close-modal" onclick="fecharModal()">&times;</button>
+            <button class="close-modal" onclick="fecharModal()">×</button>
         </div>
         
         <div class="resumo-itens" id="resumo-itens-checkout"></div>
@@ -307,6 +324,10 @@
         <div class="map-container">
             <iframe src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d14622.383173770428!2d-46.794689035252834!3d-23.61882046808796!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1sTaboao%20da%20Serra%20Vila%20Iasi%20Jardim%20Record!5e0!3m2!1spt-BR!2sbr!4v1717960000000!5m2!1spt-BR!2sbr" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
+
+        <button class="btn-gps-route" onclick="calcularRotaTempoReal()">
+            📍 CALCULAR TEMPO DE ROTA (GPS)
+        </button>
 
         <div class="form-group">
             <label for="nome-cliente">Seu Nome *</label>
@@ -488,6 +509,37 @@
         }
     }
 
+    // LÓGICA NOVA: Captura a localização do celular e joga direto para o aplicativo de mapas calculando o trânsito e tempo exato de chegada
+    function calcularRotaTempoReal() {
+        const rua = document.getElementById('rua-cliente').value;
+        const numero = document.getElementById('num-cliente').value;
+        const bairro = document.getElementById('bairro-cliente').value;
+
+        if (!rua || !numero) {
+            alert("Por favor, preencha primeiro o CEP e o Número da entrega para gerar a rota!");
+            return;
+        }
+
+        const destinoFormatado = encodeURIComponent(`${rua}, ${numero} - ${bairro}, Taboão da Serra - SP`);
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                const latOrigem = position.coords.latitude;
+                const lonOrigem = position.coords.longitude;
+                // Abre o mapa com tráfego em tempo real calculando minutos com base no ponto atual do aparelho celular
+                const urlRotaGps = `https://www.google.com/maps/dir/?api=1&origin=${latOrigem},${lonOrigem}&destination=${destinoFormatado}&travelmode=driving`;
+                window.open(urlRotaGps, '_blank');
+            }, function(error) {
+                // Fallback caso o usuário negue a permissão de GPS na tela
+                const urlRotaSemGps = `https://www.google.com/maps/dir/?api=1&destination=${destinoFormatado}&travelmode=driving`;
+                window.open(urlRotaSemGps, '_blank');
+            });
+        } else {
+            const urlRotaSimples = `https://www.google.com/maps/dir/?api=1&destination=${destinoFormatado}&travelmode=driving`;
+            window.open(urlRotaSimples, '_blank');
+        }
+    }
+
     function renderizarResumoModal() {
         const painelResumo = document.getElementById('resumo-itens-checkout');
         let resumoHtml = '';
@@ -505,56 +557,4 @@
         });
         
         const somaProdutos = carrinho.reduce((acc, objeto) => acc + objeto.preco, 0);
-        const totalGeralComTaxa = somaProdutos + taxaEntrega;
-        
-        resumoHtml += `
-            <div class="resumo-linha" style="margin-top: 10px; font-size: 0.85rem;">
-                <span>Subtotal Itens:</span>
-                <span>R$ ${somaProdutos.toFixed(2).replace('.', ',')}</span>
-            </div>
-            <div class="resumo-linha" style="color: #ccc; font-size: 0.85rem; border-bottom: 1px dashed #333; padding-bottom: 8px;">
-                <span>Taxa de Entrega (1L Combustível):</span>
-                <span>R$ ${taxaEntrega.toFixed(2).replace('.', ',')}</span>
-            </div>
-            <div class="resumo-linha" style="padding-top: 8px; font-weight: bold; color: var(--gold); font-size: 1.1rem;">
-                <span>Total Geral:</span>
-                <span>R$ ${totalGeralComTaxa.toFixed(2).replace('.', ',')}</span>
-            </div>
-        `;
-        
-        painelResumo.innerHTML = resumoHtml;
-    }
-
-    function abrirModal() {
-        if (carrinho.length === 0) return;
-        renderizarResumoModal();
-        document.getElementById('modal-checkout').style.display = 'flex';
-    }
-
-    function fecharModal() {
-        document.getElementById('modal-checkout').style.display = 'none';
-    }
-
-    function finalizarPedido() {
-        const nome = document.getElementById('nome-cliente').value.trim();
-        const cep = document.getElementById('cep-cliente').value.trim();
-        const rua = document.getElementById('rua-cliente').value.trim();
-        const bairro = document.getElementById('bairro-cliente').value.trim();
-        const numero = document.getElementById('num-cliente').value.trim();
-        const complemento = document.getElementById('comp-cliente').value.trim();
-        const pagamento = document.getElementById('pagamento-cliente').value;
-        const obs = document.getElementById('obs-cliente').value.trim();
-
-        if (!nome || !cep || !rua || !numero) {
-            alert("Por favor, preencha todos os campos obrigatórios (*)");
-            return;
-        }
-
-        let payloadTexto = "*NOVO PEDIDO - ADEGA O FLUXO*\n";
-        payloadTexto += "===============================\n\n";
-        
-        carrinho.forEach(produto => {
-            payloadTexto += `• 1x ${produto.nome} - R$ ${produto.preco.toFixed(2).replace('.', ',')}\n`;
-        });
-        
-        cons
+    
