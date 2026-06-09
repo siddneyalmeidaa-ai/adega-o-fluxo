@@ -297,7 +297,7 @@
         <div class="form-row">
             <div class="form-group">
                 <label for="cep-cliente">CEP *</label>
-                <input type="text" id="cep-cliente" maxlength="8" placeholder="Ex: 06775001" oninput="buscarCepDoCliente(this.value)">
+                <input type="text" id="cep-cliente" maxlength="9" placeholder="Ex: 06783-100" oninput="buscarCepDoCliente(this.value)">
             </div>
             <div class="form-group">
                 <label for="bairro-cliente">Bairro *</label>
@@ -440,7 +440,7 @@
         }
     }
 
-    // NOVA FUNÇÃO: Busca automática de endereço por CEP via API
+    // AJUSTE DE LIMPEZA: Lê o CEP limpando o traço e valida se tem 8 dígitos numéricos puros
     function buscarCepDoCliente(valorCep) {
         const cepLimpo = valorCep.replace(/\D/g, "");
         if (cepLimpo.length === 8) {
@@ -560,5 +560,4 @@
     function initializeVitrine() { inicializarVitrine(); }
 </script>
 </body>
-            </html>
-    
+</html>
