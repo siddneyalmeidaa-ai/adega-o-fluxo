@@ -182,13 +182,22 @@
         .form-group {
             margin-bottom: 15px;
         }
+        .form-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .form-row .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
         .form-group label {
             display: block;
             margin-bottom: 5px;
             color: #ccc;
             font-size: 0.9rem;
         }
-        .form-group input, .form-group select, .form-group textarea {
+        .form-group input, .form-group select {
             width: 100%;
             padding: 10px;
             background: #0d0d0d;
@@ -197,9 +206,14 @@
             color: #fff;
             font-size: 1rem;
         }
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+        .form-group input:focus, .form-group select:focus {
             border-color: var(--gold);
             outline: none;
+        }
+        .form-group input:disabled {
+            background: #1f1f1f;
+            color: #888;
+            border-color: #333;
         }
         .resumo-itens {
             background: #0d0d0d;
@@ -280,9 +294,31 @@
             <input type="text" id="nome-cliente" placeholder="Digite seu nome">
         </div>
 
+        <div class="form-row">
+            <div class="form-group">
+                <label for="cep-cliente">CEP *</label>
+                <input type="text" id="cep-cliente" maxlength="8" placeholder="Ex: 06775001" oninput="buscarCepDoCliente(this.value)">
+            </div>
+            <div class="form-group">
+                <label for="bairro-cliente">Bairro *</label>
+                <input type="text" id="bairro-cliente" placeholder="Preenchido via CEP" disabled>
+            </div>
+        </div>
+
         <div class="form-group">
-            <label for="endereco-cliente">Endereço Completo (Rua, Número, Bairro) *</label>
-            <textarea id="endereco-cliente" rows="3" placeholder="Ex: Rua das Flores, 123 - Parque Pinheiros"></textarea>
+            <label for="rua-cliente">Rua / Logradouro *</label>
+            <input type="text" id="rua-cliente" placeholder="Preenchido via CEP" disabled>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="num-cliente">Número *</label>
+                <input type="text" id="num-cliente" placeholder="Nº">
+            </div>
+            <div class="form-group">
+                <label for="comp-cliente">Complemento</label>
+                <input type="text" id="comp-cliente" placeholder="Ex: Casa 2, Bloco B">
+            </div>
         </div>
 
         <div class="form-group">
@@ -404,6 +440,34 @@
         }
     }
 
+    // NOVA FUNÇÃO: Busca automática de endereço por CEP via API
+    function buscarCepDoCliente(valorCep) {
+        const cepLimpo = valorCep.replace(/\D/g, "");
+        if (cepLimpo.length === 8) {
+            document.getElementById('rua-cliente').value = "Buscando endereço...";
+            document.getElementById('bairro-cliente').value = "Buscando...";
+
+            fetch(`https://viacep.com.br/ws/${cepLimpo}/json/`)
+                .then(resposta => resposta.json())
+                .then(dados => {
+                    if (!dados.erro) {
+                        document.getElementById('rua-cliente').value = dados.logradouro;
+                        document.getElementById('bairro-cliente').value = dados.bairro;
+                        document.getElementById('num-cliente').focus();
+                    } else {
+                        alert("CEP não encontrado! Digite um CEP válido.");
+                        document.getElementById('rua-cliente').value = "";
+                        document.getElementById('bairro-cliente').value = "";
+                    }
+                })
+                .catch(() => {
+                    alert("Erro ao buscar CEP. Digite os dados manualmente.");
+                    document.getElementById('rua-cliente').value = "";
+                    document.getElementById('bairro-cliente').value = "";
+                });
+        }
+    }
+
     function renderizarResumoModal() {
         const painelResumo = document.getElementById('resumo-itens-checkout');
         let resumoHtml = '';
@@ -443,12 +507,16 @@
 
     function finalizarPedido() {
         const nome = document.getElementById('nome-cliente').value.trim();
-        const endereco = document.getElementById('endereco-cliente').value.trim();
+        const cep = document.getElementById('cep-cliente').value.trim();
+        const rua = document.getElementById('rua-cliente').value.trim();
+        const bairro = document.getElementById('bairro-cliente').value.trim();
+        const numero = document.getElementById('num-cliente').value.trim();
+        const complemento = document.getElementById('comp-cliente').value.trim();
         const pagamento = document.getElementById('pagamento-cliente').value;
         const obs = document.getElementById('obs-cliente').value.trim();
 
-        if (!nome || !endereco) {
-            alert("Por favor, preencha o seu nome e endereço para a entrega!");
+        if (!nome || !cep || !rua || !numero) {
+            alert("Por favor, preencha todos os campos obrigatórios (*)");
             return;
         }
 
@@ -463,8 +531,15 @@
         payloadTexto += `\n===============================\n`;
         payloadTexto += `*TOTAL: R$ ${valorFinal.toFixed(2).replace('.', ',')}*\n\n`;
         payloadTexto += `*CLIENTE:* ${nome}\n`;
-        payloadTexto += `*ENDEREÇO:* ${endereco}\n`;
-        payloadTexto += `*FORMA DE PAGAMENTO:* ${pagamento}\n`;
+        payloadTexto += `*ENDEREÇO DE ENTREGA:*\n`;
+        payloadTexto += `Rua: ${rua}, Nº ${numero}\n`;
+        payloadTexto += `Bairro: ${bairro} | CEP: ${cep}\n`;
+        
+        if (complemento) {
+            payloadTexto += `Complemento: ${complemento}\n`;
+        }
+        
+        payloadTexto += `\n*FORMA DE PAGAMENTO:* ${pagamento}\n`;
         
         if (obs) {
             payloadTexto += `*OBSERVAÇÃO:* ${obs}\n`;
@@ -481,8 +556,9 @@
         window.open(linkWhatsApp, '_blank');
     }
 
-    window.onload = inicializarVitrine;
+    window.onload = initializeVitrine;
+    function initializeVitrine() { inicializarVitrine(); }
 </script>
 </body>
-    </html>
+            </html>
     
