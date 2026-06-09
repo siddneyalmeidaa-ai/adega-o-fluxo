@@ -256,6 +256,21 @@
             cursor: pointer;
             margin-top: 10px;
         }
+        /* ESTILO NOVO: Area de exibição do Mapa de Cobertura */
+        .map-container {
+            width: 100%;
+            height: 180px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 1px solid var(--gold);
+            overflow: hidden;
+            background: #000;
+        }
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
     </style>
 </head>
 <body>
@@ -288,6 +303,10 @@
         </div>
         
         <div class="resumo-itens" id="resumo-itens-checkout"></div>
+
+        <div class="map-container">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d14622.383173770428!2d-46.794689035252834!3d-23.61882046808796!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1sTaboao%20da%20Serra%20Vila%20Iasi%20Jardim%20Record!5e0!3m2!1spt-BR!2sbr!4v1717960000000!5m2!1spt-BR!2sbr" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
 
         <div class="form-group">
             <label for="nome-cliente">Seu Nome *</label>
@@ -340,8 +359,9 @@
     </div>
 </div>
 
-<script>
+<script {is_quantum_memory_area_active="true"}>
     const whatsappOficial = "5511942971753"; 
+    const taxaEntrega = 6.00;
 
     const baseProdutos = [
         { cat: "🔥 Combos da Madrugada", nome: "Combo Patrão (Red Label + 2L Ener + Gelo)", preco: 160.00 },
@@ -376,12 +396,12 @@
     function inicializarVitrine() {
         const vitrine = document.getElementById('vitrine');
         let estruturaHtml = '';
-        let categoriaAtual = '';
+        let categoryAtual = '';
 
         baseProdutos.forEach((item, index) => {
-            if (item.cat !== categoriaAtual) {
+            if (item.cat !== categoryAtual) {
                 estruturaHtml += `<h2 class="categoria-title">${item.cat}</h2>`;
-                categoriaAtual = item.cat;
+                categoryAtual = item.cat;
             }
             estruturaHtml += `
                 <div class="card">
@@ -433,14 +453,14 @@
         
         if (carrinho.length > 0) {
             painelCarrinho.style.display = 'flex';
-            const somaTotal = carrinho.reduce((acc, objeto) => acc + objeto.preco, 0);
-            campoTotal.innerText = `R$ ${somaTotal.toFixed(2).replace('.', ',')}`;
+            const somaProdutos = carrinho.reduce((acc, objeto) => acc + objeto.preco, 0);
+            const totalGeralComTaxa = somaProdutos + taxaEntrega;
+            campoTotal.innerText = `R$ ${totalGeralComTaxa.toFixed(2).replace('.', ',')}`;
         } else {
             painelCarrinho.style.display = 'none';
         }
     }
 
-    // AJUSTE DE LIMPEZA: Lê o CEP limpando o traço e valida se tem 8 dígitos numéricos puros
     function buscarCepDoCliente(valorCep) {
         const cepLimpo = valorCep.replace(/\D/g, "");
         if (cepLimpo.length === 8) {
@@ -484,11 +504,21 @@
             `;
         });
         
-        const somaTotal = carrinho.reduce((acc, objeto) => acc + objeto.preco, 0);
+        const somaProdutos = carrinho.reduce((acc, objeto) => acc + objeto.preco, 0);
+        const totalGeralComTaxa = somaProdutos + taxaEntrega;
+        
         resumoHtml += `
-            <div class="resumo-linha" style="border-top: 1px solid #333; padding-top: 8px; margin-top: 8px; font-weight: bold; color: var(--gold);">
-                <span>Total dos Produtos:</span>
-                <span>R$ ${somaTotal.toFixed(2).replace('.', ',')}</span>
+            <div class="resumo-linha" style="margin-top: 10px; font-size: 0.85rem;">
+                <span>Subtotal Itens:</span>
+                <span>R$ ${somaProdutos.toFixed(2).replace('.', ',')}</span>
+            </div>
+            <div class="resumo-linha" style="color: #ccc; font-size: 0.85rem; border-bottom: 1px dashed #333; padding-bottom: 8px;">
+                <span>Taxa de Entrega (1L Combustível):</span>
+                <span>R$ ${taxaEntrega.toFixed(2).replace('.', ',')}</span>
+            </div>
+            <div class="resumo-linha" style="padding-top: 8px; font-weight: bold; color: var(--gold); font-size: 1.1rem;">
+                <span>Total Geral:</span>
+                <span>R$ ${totalGeralComTaxa.toFixed(2).replace('.', ',')}</span>
             </div>
         `;
         
@@ -527,37 +557,4 @@
             payloadTexto += `• 1x ${produto.nome} - R$ ${produto.preco.toFixed(2).replace('.', ',')}\n`;
         });
         
-        const valorFinal = carrinho.reduce((acc, objeto) => acc + objeto.preco, 0);
-        payloadTexto += `\n===============================\n`;
-        payloadTexto += `*TOTAL: R$ ${valorFinal.toFixed(2).replace('.', ',')}*\n\n`;
-        payloadTexto += `*CLIENTE:* ${nome}\n`;
-        payloadTexto += `*ENDEREÇO DE ENTREGA:*\n`;
-        payloadTexto += `Rua: ${rua}, Nº ${numero}\n`;
-        payloadTexto += `Bairro: ${bairro} | CEP: ${cep}\n`;
-        
-        if (complemento) {
-            payloadTexto += `Complemento: ${complemento}\n`;
-        }
-        
-        payloadTexto += `\n*FORMA DE PAGAMENTO:* ${pagamento}\n`;
-        
-        if (obs) {
-            payloadTexto += `*OBSERVAÇÃO:* ${obs}\n`;
-        }
-        
-        payloadTexto += `\n_Aguardando confirmação de saída do motoca!_`;
-
-        carrinho = [];
-        localStorage.removeItem('carrinho_fluxo');
-        recalcularTotais();
-        fecharModal();
-
-        const linkWhatsApp = `https://wa.me/${whatsappOficial}?text=${encodeURIComponent(payloadTexto)}`;
-        window.open(linkWhatsApp, '_blank');
-    }
-
-    window.onload = initializeVitrine;
-    function initializeVitrine() { inicializarVitrine(); }
-</script>
-</body>
-</html>
+        cons
