@@ -99,9 +99,11 @@
             justify-content: space-between;
             align-items: center;
             z-index: 100;
+            gap: 10px;
         }
         .cart-info-total {
             color: #fff;
+            flex-grow: 1;
         }
         .cart-info-total span {
             color: var(--gold);
@@ -109,11 +111,25 @@
             font-weight: bold;
             display: block;
         }
+        .cart-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        .btn-clear {
+            background: var(--red);
+            color: #fff;
+            border: none;
+            padding: 12px 14px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
         .btn-checkout {
             background: var(--green);
             color: #fff;
             border: none;
-            padding: 12px 24px;
+            padding: 12px 20px;
             border-radius: 6px;
             font-weight: bold;
             font-size: 1rem;
@@ -195,9 +211,24 @@
         .resumo-linha {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             font-size: 0.9rem;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             color: #aaa;
+            padding-bottom: 4px;
+            border-bottom: 1px dashed #222;
+        }
+        .resumo-linha:last-child {
+            border-bottom: none;
+        }
+        .btn-remove-item {
+            background: none;
+            border: none;
+            color: var(--red);
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1rem;
+            padding: 0 5px;
         }
         .btn-enviar-wa {
             width: 100%;
@@ -229,7 +260,10 @@
         Total do Pedido:
         <span id="cart-total">R$ 0,00</span>
     </div>
-    <button class="btn-checkout" onclick="abrirModal()">Fechar Pedido</button>
+    <div class="cart-buttons">
+        <button class="btn-clear" onclick="limparCarrinhoCompleto()">Limpar</button>
+        <button class="btn-checkout" onclick="abrirModal()">Fechar Pedido</button>
+    </div>
 </div>
 
 <div class="modal" id="modal-checkout">
@@ -271,7 +305,6 @@
 </div>
 
 <script>
-    // CORREÇÃO: Injeção do número oficial da adega do Bigode
     const whatsappOficial = "5511942971753"; 
 
     const baseProdutos = [
@@ -330,8 +363,32 @@
 
     function adicionarAoCarrinho(id) {
         carrinho.push(baseProdutos[id]);
-        localStorage.setItem('carrinho_fluxo', JSON.stringify(carrinho));
+        salvarCarrinho();
         recalcularTotais();
+    }
+
+    function removerDoCarrinho(indexInterno) {
+        carrinho.splice(indexInterno, 1);
+        salvarCarrinho();
+        recalcularTotais();
+        if (carrinho.length > 0) {
+            renderizarResumoModal();
+        } else {
+            fecharModal();
+        }
+    }
+
+    function limparCarrinhoCompleto() {
+        if(confirm("Deseja realmente limpar todo o carrinho?")) {
+            carrinho = [];
+            salvarCarrinho();
+            recalcularTotais();
+            fecharModal();
+        }
+    }
+
+    function salvarCarrinho() {
+        localStorage.setItem('carrinho_fluxo', JSON.stringify(carrinho));
     }
 
     function recalcularTotais() {
@@ -347,16 +404,17 @@
         }
     }
 
-    function abrirModal() {
-        if (carrinho.length === 0) return;
-        
+    function renderizarResumoModal() {
         const painelResumo = document.getElementById('resumo-itens-checkout');
         let resumoHtml = '';
         
-        carrinho.forEach(item => {
+        carrinho.forEach((item, index) => {
             resumoHtml += `
                 <div class="resumo-linha">
-                    <span>${item.nome}</span>
+                    <div>
+                        <button class="btn-remove-item" onclick="removerDoCarrinho(${index})">🗑️</button>
+                        <span>${item.nome}</span>
+                    </div>
                     <span>R$ ${item.preco.toFixed(2).replace('.', ',')}</span>
                 </div>
             `;
@@ -364,13 +422,18 @@
         
         const somaTotal = carrinho.reduce((acc, objeto) => acc + objeto.preco, 0);
         resumoHtml += `
-            <div class="resumo-linha" style="border-top: 1px solid #333; padding-top: 5px; margin-top: 5px; font-weight: bold; color: var(--gold);">
+            <div class="resumo-linha" style="border-top: 1px solid #333; padding-top: 8px; margin-top: 8px; font-weight: bold; color: var(--gold);">
                 <span>Total dos Produtos:</span>
                 <span>R$ ${somaTotal.toFixed(2).replace('.', ',')}</span>
             </div>
         `;
         
         painelResumo.innerHTML = resumoHtml;
+    }
+
+    function abrirModal() {
+        if (carrinho.length === 0) return;
+        renderizarResumoModal();
         document.getElementById('modal-checkout').style.display = 'flex';
     }
 
@@ -409,7 +472,6 @@
         
         payloadTexto += `\n_Aguardando confirmação de saída do motoca!_`;
 
-        // Limpa o carrinho local pós-pedido
         carrinho = [];
         localStorage.removeItem('carrinho_fluxo');
         recalcularTotais();
@@ -422,4 +484,5 @@
     window.onload = inicializarVitrine;
 </script>
 </body>
-</html>
+    </html>
+    
