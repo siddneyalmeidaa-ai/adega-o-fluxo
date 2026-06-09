@@ -519,20 +519,20 @@
             return;
         }
 
-        const destinoFormatado = encodeURIComponent(`${rua}, ${numero} - ${bairro}, Taboão da Serra - SP`);
+        const destinoFormatado = encodeURIComponent(rua + ", " + numero + " - " + bairro + ", Taboão da Serra - SP");
 
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function(position) {
                 const latOrigem = position.coords.latitude;
                 const lonOrigem = position.coords.longitude;
-                const urlRotaGps = `https://www.google.com/maps/dir/?api=1&origin=${latOrigem},${lonOrigem}&destination=${destinoFormatado}&travelmode=driving`;
+                const urlRotaGps = "https://www.google.com/maps/dir/?api=1&origin=$" + latOrigem + "," + lonOrigem + "&destination=" + destinoFormatado + "&travelmode=driving";
                 window.open(urlRotaGps, '_blank');
-            }, function(error) {
-                const urlRotaSemGps = `https://www.google.com/maps/dir/?api=1&destination=${destinoFormatado}&travelmode=driving`;
+            }, function() {
+                const urlRotaSemGps = "https://www.google.com/maps/dir/?api=1&destination=$" + destinoFormatado + "&travelmode=driving";
                 window.open(urlRotaSemGps, '_blank');
             });
         } else {
-            const urlRotaSimples = `https://www.google.com/maps/dir/?api=1&destination=${destinoFormatado}&travelmode=driving`;
+            const urlRotaSimples = "https://www.google.com/maps/dir/?api=1&destination=$" + destinoFormatado + "&travelmode=driving";
             window.open(urlRotaSimples, '_blank');
         }
     }
@@ -561,4 +561,4 @@
                 <span>Subtotal Itens:</span>
                 <span>R$ ${somaProdutos.toFixed(2).replace('.', ',')}</span>
             </div>
-            <div class="resumo-linha" style="color: #ccc; font-size: 0.85rem; border-bottom: 1px dashed #333; padd    
+            <div class="resumo-linha" style="color: #ccc; font-size: 0.85rem; bor    
