@@ -137,7 +137,6 @@
             cursor: pointer;
             box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
         }
-        /* Modal de Finalização */
         .modal {
             display: none;
             position: fixed;
@@ -271,7 +270,6 @@
             height: 100%;
             border: 0;
         }
-        /* ESTILO NOVO: Botão de ativação do GPS do celular */
         .btn-gps-route {
             width: 100%;
             background: var(--blue);
@@ -380,7 +378,7 @@
     </div>
 </div>
 
-<script {is_quantum_memory_area_active="true"}>
+<script>
     const whatsappOficial = "5511942971753"; 
     const taxaEntrega = 6.00;
 
@@ -416,6 +414,8 @@
 
     function inicializarVitrine() {
         const vitrine = document.getElementById('vitrine');
+        if (!vitrine) return;
+        
         let estruturaHtml = '';
         let categoryAtual = '';
 
@@ -509,7 +509,6 @@
         }
     }
 
-    // LÓGICA NOVA: Captura a localização do celular e joga direto para o aplicativo de mapas calculando o trânsito e tempo exato de chegada
     function calcularRotaTempoReal() {
         const rua = document.getElementById('rua-cliente').value;
         const numero = document.getElementById('num-cliente').value;
@@ -526,11 +525,9 @@
             navigator.geolocation.getCurrentPosition(function(position) {
                 const latOrigem = position.coords.latitude;
                 const lonOrigem = position.coords.longitude;
-                // Abre o mapa com tráfego em tempo real calculando minutos com base no ponto atual do aparelho celular
                 const urlRotaGps = `https://www.google.com/maps/dir/?api=1&origin=${latOrigem},${lonOrigem}&destination=${destinoFormatado}&travelmode=driving`;
                 window.open(urlRotaGps, '_blank');
             }, function(error) {
-                // Fallback caso o usuário negue a permissão de GPS na tela
                 const urlRotaSemGps = `https://www.google.com/maps/dir/?api=1&destination=${destinoFormatado}&travelmode=driving`;
                 window.open(urlRotaSemGps, '_blank');
             });
@@ -557,4 +554,11 @@
         });
         
         const somaProdutos = carrinho.reduce((acc, objeto) => acc + objeto.preco, 0);
-    
+        const totalGeralComTaxa = somaProdutos + taxaEntrega;
+        
+        resumoHtml += `
+            <div class="resumo-linha" style="margin-top: 10px; font-size: 0.85rem;">
+                <span>Subtotal Itens:</span>
+                <span>R$ ${somaProdutos.toFixed(2).replace('.', ',')}</span>
+            </div>
+            <div class="resumo-linha" style="color: #ccc; font-size: 0.85rem; border-bottom: 1px dashed #333; padd    
