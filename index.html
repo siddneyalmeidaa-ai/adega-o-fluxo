@@ -458,8 +458,7 @@
         const n = document.getElementById('num-cliente').value;
         const b = document.getElementById('bairro-cliente').value;
         const d = encodeURIComponent(`${r}, ${n} - ${b}, Taboão da Serra - SP`);
-        // CORREÇÃO: Uso correto do cifrão para interpolação da variável
-        window.open(`https://maps.google.com/?cid=7113163145758936956&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQ${d}`, '_blank');
+        window.open(`https://www.google.com/maps/dir/?api=1&destination=${d}&travelmode=driving`, '_blank');
     }
 
     function renderizarResumoModal() {
@@ -476,12 +475,27 @@
 
     function finalizarPedido() {
         const nome = document.getElementById('nome-cliente').value;
+        const rua = document.getElementById('rua-cliente').value;
+        const num = document.getElementById('num-cliente').value;
+        const bairro = document.getElementById('bairro-cliente').value;
+        const cep = document.getElementById('cep-cliente').value;
+        const pgto = document.getElementById('pagamento-cliente').value;
+        const obs = document.getElementById('obs-cliente').value;
         const total = document.getElementById('cart-total').innerText;
-        const text = `Pedido de ${nome}. Total: ${total}`;
-        window.open(`https://api.whatsapp.com/send?phone=${whatsappOficial}&text=${encodeURIComponent(text)}`, '_blank');
+
+        let msg = `*NOVO PEDIDO - ADEGA O FLUXO*\n===============================\n\n`;
+        carrinho.forEach(item => { msg += `• 1x ${item.nome} - R$ ${item.preco.toFixed(2).replace('.', ',')}\n`; });
+        msg += `\n===============================\n*TOTAL: ${total}*\n\n`;
+        msg += `*CLIENTE:* ${nome}\n*ENDEREÇO DE ENTREGA:*\nRua: ${rua}, Nº ${num}\nBairro: ${bairro} | CEP: ${cep}\n\n`;
+        msg += `*FORMA DE PAGAMENTO:* ${pgto}\n`;
+        if(obs) msg += `*OBSERVAÇÃO:* ${obs}\n\n`;
+        msg += `_Aguardando confirmação de saída do motoca!_`;
+        
+        window.open(`https://api.whatsapp.com/send?phone=${whatsappOficial}&text=${encodeURIComponent(msg)}`, '_blank');
     }
 
     window.onload = () => { inicializarVitrine(); recalcularTotais(); };
 </script>
 </body>
-</html>
+                                                                 </html>
+                
