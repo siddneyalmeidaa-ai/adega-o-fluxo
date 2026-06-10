@@ -65,6 +65,8 @@
             align-items: center;
             border: 1px solid #2d2d2d;
         }
+        .card-img { width: 50px; height: 50px; border-radius: 8px; margin-right: 15px; object-fit: cover; }
+        .card-info { flex-grow: 1; }
         .card-info h3 {
             font-size: 1.05rem;
             margin-bottom: 5px;
@@ -365,31 +367,24 @@
     const taxaEntrega = 6.00;
 
     const baseProdutos = [
-        { cat: "🔥 Combos da Madrugada", nome: "Combo Patrão (Red Label + 2L Ener + Gelo)", preco: 160.00 },
-        { cat: "🔥 Combos da Madrugada", nome: "Combo Cria (White Horse/Ballantines + 2L Ener + Gelo)", preco: 130.00 },
-        { cat: "🔥 Combos da Madrugada", nome: "Combo Monstro (Vodka Smirnoff + Ener 2L)", preco: 85.00 },
-        { cat: "🔥 Combos da Madrugada", nome: "Combo Gin Premium (Tanqueray + 4 Tônicas)", preco: 190.00 },
+        { cat: "🔥 Combos da Madrugada", nome: "Combo Patrão", preco: 160.00, img: "https://cdn-icons-png.flaticon.com/128/3081/3081559.png" },
+        { cat: "🔥 Combos da Madrugada", nome: "Combo Cria", preco: 130.00, img: "https://cdn-icons-png.flaticon.com/128/3081/3081559.png" },
+        { cat: "🔥 Combos da Madrugada", nome: "Combo Monstro", preco: 85.00, img: "https://cdn-icons-png.flaticon.com/128/3081/3081559.png" },
+        { cat: "🔥 Combos da Madrugada", nome: "Combo Gin Premium", preco: 190.00, img: "https://cdn-icons-png.flaticon.com/128/3081/3081559.png" },
         
-        { cat: "🍺 Cervejas Trincando", nome: "Heineken Lata 350ml", preco: 8.50 },
-        { cat: "🍺 Cervejas Trincando", nome: "Brahma Latão 473ml", preco: 6.00 },
-        { cat: "🍺 Cervejas Trincando", nome: "Amstel Latão 473ml", preco: 6.00 },
-        { cat: "🍺 Cervejas Trincando", nome: "Skol Lata 350ml", preco: 5.00 },
-        { cat: "🍺 Cervejas Trincando", nome: "Itaipava Lata 350ml", preco: 5.00 },
+        { cat: "🍺 Cervejas Trincando", nome: "Heineken Lata 350ml", preco: 8.50, img: "https://cdn-icons-png.flaticon.com/128/3014/3014387.png" },
+        { cat: "🍺 Cervejas Trincando", nome: "Brahma Latão 473ml", preco: 6.00, img: "https://cdn-icons-png.flaticon.com/128/3014/3014387.png" },
+        { cat: "🍺 Cervejas Trincando", nome: "Amstel Latão 473ml", preco: 6.00, img: "https://cdn-icons-png.flaticon.com/128/3014/3014387.png" },
+        { cat: "🍺 Cervejas Trincando", nome: "Skol Lata 350ml", preco: 5.00, img: "https://cdn-icons-png.flaticon.com/128/3014/3014387.png" },
         
-        { cat: "🍾 Destilados (Garrafas)", nome: "Whisky Johnnie Walker Red Label 1L", preco: 120.00 },
-        { cat: "🍾 Destilados (Garrafas)", nome: "Whisky White Horse 1L", preco: 95.00 },
-        { cat: "🍾 Destilados (Garrafas)", nome: "Whisky Ballantine's 1L", preco: 95.00 },
-        { cat: "🍾 Destilados (Garrafas)", nome: "Vodka Smirnoff 998ml", preco: 65.00 },
-        { cat: "🍾 Destilados (Garrafas)", nome: "Gin Tanqueray 750ml", preco: 150.00 },
-        { cat: "🍾 Destilados (Garrafas)", nome: "Gin Rocks 1L", preco: 45.00 },
+        { cat: "🍾 Destilados (Garrafas)", nome: "Whisky Red Label 1L", preco: 120.00, img: "https://cdn-icons-png.flaticon.com/128/2917/2917637.png" },
+        { cat: "🍾 Destilados (Garrafas)", nome: "Whisky White Horse 1L", preco: 95.00, img: "https://cdn-icons-png.flaticon.com/128/2917/2917637.png" },
+        { cat: "🍾 Destilados (Garrafas)", nome: "Vodka Smirnoff 998ml", preco: 65.00, img: "https://cdn-icons-png.flaticon.com/128/2917/2917637.png" },
+        { cat: "🍾 Destilados (Garrafas)", nome: "Gin Tanqueray 750ml", preco: 150.00, img: "https://cdn-icons-png.flaticon.com/128/2917/2917637.png" },
         
-        { cat: "🥤 Refrigerantes & Mixers", nome: "Coca-Cola Original Lata 350ml", preco: 6.50 },
-        { cat: "🥤 Refrigerantes & Mixers", nome: "Coca-Cola Zero Lata 350ml", preco: 6.50 },
-        { cat: "🥤 Refrigerantes & Mixers", nome: "Guaraná Antarctica Lata 350ml", preco: 5.50 },
-        { cat: "🥤 Refrigerantes & Mixers", nome: "Água Tônica Antarctica Lata 350ml", preco: 7.00 },
-        { cat: "🥤 Refrigerantes & Mixers", nome: "Energético Monster / Red Bull", preco: 12.00 },
-        { cat: "🥤 Refrigerantes & Mixers", nome: "Energético Baly 2L", preco: 18.00 },
-        { cat: "🥤 Refrigerantes & Mixers", nome: "Gelo de Coco (Pacote c/ 4)", preco: 8.00 }
+        { cat: "🥤 Refrigerantes & Mixers", nome: "Coca-Cola Original 350ml", preco: 6.50, img: "https://cdn-icons-png.flaticon.com/128/2917/2917637.png" },
+        { cat: "🥤 Refrigerantes & Mixers", nome: "Energético Baly 2L", preco: 18.00, img: "https://cdn-icons-png.flaticon.com/128/3082/3082046.png" },
+        { cat: "🥤 Refrigerantes & Mixers", nome: "Gelo de Coco (Pacote)", preco: 8.00, img: "https://cdn-icons-png.flaticon.com/128/2553/2553642.png" }
     ];
 
     let carrinho = JSON.parse(localStorage.getItem('carrinho_fluxo')) || [];
@@ -403,7 +398,14 @@
                 html += `<h2 class="categoria-title">${item.cat}</h2>`;
                 catAtual = item.cat;
             }
-            html += `<div class="card"><div class="card-info"><h3>${item.nome}</h3><p>R$ ${item.preco.toFixed(2).replace('.', ',')}</p></div><button class="btn-add" onclick="adicionarAoCarrinho(${index})">ADICIONAR</button></div>`;
+            html += `<div class="card">
+                        <img src="${item.img}" class="card-img" alt="${item.nome}">
+                        <div class="card-info">
+                            <h3>${item.nome}</h3>
+                            <p>R$ ${item.preco.toFixed(2).replace('.', ',')}</p>
+                        </div>
+                        <button class="btn-add" onclick="adicionarAoCarrinho(${index})">ADICIONAR</button>
+                     </div>`;
         });
         vitrine.innerHTML = html;
     }
@@ -458,7 +460,7 @@
         const n = document.getElementById('num-cliente').value;
         const b = document.getElementById('bairro-cliente').value;
         const d = encodeURIComponent(`${r}, ${n} - ${b}, Taboão da Serra - SP`);
-        window.open(`https://www.google.com/maps/dir/?api=1&destination=${d}&travelmode=driving`, '_blank');
+        window.open(`https://www.google.com/maps/search/?api=1&query=${d}`, '_blank');
     }
 
     function renderizarResumoModal() {
@@ -497,5 +499,5 @@
     window.onload = () => { inicializarVitrine(); recalcularTotais(); };
 </script>
 </body>
-                                                                 </html>
-                
+    </html>
+    
