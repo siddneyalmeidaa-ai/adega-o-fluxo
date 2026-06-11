@@ -3,48 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adega O Fluxo</title>
+    <title>Adega O Fluxo | O Fluxo Não Para</title>
     <style>
-        :root { --gold: #D4AF37; --dark: #0a0a0a; --gray: #1a1a1a; --text: #f5f5f5; --green: #25d366; }
+        :root { --gold: #D4AF37; --dark: #0a0a0a; --gray: #1a1a1a; --text: #f5f5f5; --green: #25d366; --red: #ff3333; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
-        body { background-color: var(--dark); color: var(--text); padding-bottom: 150px; }
+        body { background-color: var(--dark); color: var(--text); padding-bottom: 160px; }
         header { padding: 30px 20px; text-align: center; border-bottom: 2px solid var(--gold); }
         .container { max-width: 600px; margin: 0 auto; padding: 15px; }
         .card { background: var(--gray); border-radius: 10px; padding: 15px; margin-bottom: 12px; display: flex; align-items: center; }
-        .btn-add { background: var(--gold); border: none; padding: 10px 15px; border-radius: 5px; margin-left: auto; }
+        .btn-add { background: var(--gold); border: none; padding: 10px 15px; border-radius: 5px; margin-left: auto; cursor: pointer; }
         .cart-bar { position: fixed; bottom: 0; width: 100%; background: #151515; padding: 20px; display: flex; justify-content: space-between; align-items: center; border-top: 2px solid var(--gold); }
         
-        #modalPedido { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); padding: 20px; z-index: 200; overflow-y: auto; }
-        .modal-content { max-width: 500px; margin: 50px auto; background: var(--gray); padding: 20px; border-radius: 10px; }
+        /* Modal */
+        #modalPedido { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); padding: 20px; z-index: 200; overflow-y: auto; }
+        .modal-content { max-width: 500px; margin: 20px auto; background: var(--gray); padding: 20px; border-radius: 10px; }
+        .item-lista { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #333; }
         input, select, textarea { width: 100%; padding: 10px; margin: 8px 0; border-radius: 5px; border: 1px solid #333; background: #000; color: #fff; }
     </style>
 </head>
 <body>
 
 <header><h1>Adega O Fluxo</h1></header>
-<div class="container"><div id="vitrine">Carregando...</div></div>
+<div class="container"><div id="vitrine">Carregando estoque...</div></div>
 
 <div class="cart-bar" id="cart-bar" style="display: none;">
-    <div>Total: <span id="cart-total" style="color:var(--gold);">R$ 0,00</span></div>
-    <button onclick="abrirModal()" style="background:var(--green); border:none; padding:10px; color:white; border-radius:5px;">Fechar Pedido</button>
+    <div>Total: <span id="cart-total" style="color:var(--gold); font-size:1.2rem;">R$ 0,00</span></div>
+    <button onclick="abrirModal()" style="background:var(--green); border:none; padding:12px 20px; color:white; border-radius:5px; font-weight:bold;">FECHAR PEDIDO</button>
 </div>
 
 <div id="modalPedido">
     <div class="modal-content">
-        <h2 style="color:var(--gold);">Finalizar Pedido</h2>
+        <h2 style="color:var(--gold); margin-bottom:15px;">Resumo do Pedido</h2>
+        <div id="lista-resumo"></div>
+        <p style="text-align:right; font-size:1.3rem; margin:15px 0;">Total: <span id="modal-total" style="color:var(--gold);">R$ 0,00</span></p>
+        
         <input type="text" id="nomeCliente" placeholder="Nome Completo">
-        <input type="text" id="cep" placeholder="CEP (digite para buscar)" onblur="buscarCEP(this.value)">
+        <input type="text" id="cep" placeholder="CEP" onblur="buscarCEP(this.value)">
         <input type="text" id="rua" placeholder="Rua">
         <input type="text" id="num" placeholder="Número">
         <input type="text" id="bairro" placeholder="Bairro">
-        <select id="pagamento">
-            <option value="Pix">Pix</option>
-            <option value="Cartão">Cartão</option>
-            <option value="Dinheiro">Dinheiro</option>
-        </select>
+        <input type="text" id="troco" placeholder="Troco para quanto? (opcional)">
+        
+        <select id="pagamento"><option value="Pix">Pix</option><option value="Cartão">Cartão</option><option value="Dinheiro">Dinheiro</option></select>
         <textarea id="obs" placeholder="Observações"></textarea>
-        <button onclick="finalizarPedido()" style="width:100%; padding:15px; background:var(--green); border:none; color:white;">Enviar Pedido via WhatsApp</button>
-        <button onclick="fecharModal()" style="width:100%; padding:10px; margin-top:10px; background:transparent; color:white;">Cancelar</button>
+        
+        <button onclick="finalizarPedido()" style="width:100%; padding:15px; background:var(--green); border:none; color:white; font-weight:bold;">ENVIAR NO WHATSAPP</button>
+        <button onclick="limparTudo()" style="width:100%; padding:10px; margin-top:10px; background:var(--red); border:none; color:white;">LIMPAR CARRINHO</button>
+        <button onclick="fecharModal()" style="width:100%; padding:10px; margin-top:5px; background:transparent; color:white;">VOLTAR</button>
     </div>
 </div>
 
@@ -67,33 +72,39 @@
         if(cep.length === 8) {
             const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
             const data = await res.json();
-            if(!data.erro) {
-                document.getElementById('rua').value = data.logradouro;
-                document.getElementById('bairro').value = data.bairro;
-            }
+            if(!data.erro) { document.getElementById('rua').value = data.logradouro; document.getElementById('bairro').value = data.bairro; }
         }
     }
 
-    function adicionar(i) { carrinho.push(baseProdutos[i]); localStorage.setItem('carrinho_fluxo', JSON.stringify(carrinho)); recalcular(); }
+    function adicionar(i) { carrinho.push(baseProdutos[i]); salvar(); }
+    function remover(i) { carrinho.splice(i, 1); salvar(); abrirModal(); }
+    function salvar() { localStorage.setItem('carrinho_fluxo', JSON.stringify(carrinho)); recalcular(); }
+    function limparTudo() { carrinho = []; salvar(); fecharModal(); }
+
     function recalcular() {
         const total = carrinho.reduce((a, b) => a + b.preco, 0);
         document.getElementById('cart-total').innerText = `R$ ${total.toFixed(2)}`;
+        document.getElementById('modal-total').innerText = `R$ ${total.toFixed(2)}`;
         document.getElementById('cart-bar').style.display = carrinho.length > 0 ? 'flex' : 'none';
     }
 
-    function abrirModal() { document.getElementById('modalPedido').style.display = 'block'; }
+    function abrirModal() {
+        let html = '';
+        carrinho.forEach((p, i) => {
+            html += `<div class="item-lista"><span>${p.nome} (R$ ${p.preco.toFixed(2)})</span><button onclick="remover(${i})" style="background:none; border:none; color:red; cursor:pointer;">🗑️</button></div>`;
+        });
+        document.getElementById('lista-resumo').innerHTML = html;
+        document.getElementById('modalPedido').style.display = 'block';
+    }
+
     function fecharModal() { document.getElementById('modalPedido').style.display = 'none'; }
 
     function finalizarPedido() {
-        const nome = document.getElementById('nomeCliente').value;
-        const rua = document.getElementById('rua').value;
-        const num = document.getElementById('num').value;
-        const bairro = document.getElementById('bairro').value;
-        const pag = document.getElementById('pagamento').value;
-        
-        let msg = `*NOVO PEDIDO*\nNome: ${nome}\nEnd: ${rua}, ${num} - ${bairro}\nPagamento: ${pag}\n\nItens:\n`;
-        carrinho.forEach(item => msg += `• ${item.nome}\n`);
-        
+        const total = carrinho.reduce((a, b) => a + b.preco, 0);
+        let msg = `*NOVO PEDIDO*\n\n`;
+        carrinho.forEach(item => msg += `• ${item.nome} - R$ ${item.preco.toFixed(2)}\n`);
+        msg += `\n*TOTAL: R$ ${total.toFixed(2)}*\n\n`;
+        msg += `Nome: ${document.getElementById('nomeCliente').value}\nEnd: ${document.getElementById('rua').value}, ${document.getElementById('num').value} - ${document.getElementById('bairro').value}\nPagamento: ${document.getElementById('pagamento').value}\nTroco: ${document.getElementById('troco').value || "Não precisa"}\nObs: ${document.getElementById('obs').value}`;
         window.open(`https://api.whatsapp.com/send?phone=5511942971753&text=${encodeURIComponent(msg)}`, '_blank');
     }
 
