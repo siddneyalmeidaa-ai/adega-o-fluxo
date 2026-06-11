@@ -42,12 +42,14 @@
 
     async function carregarProdutosDoGitHub() {
         try {
-            const url = 'https://raw.githubusercontent.com/siddneyalmeidaa-ai/adega-o-fluxo/main/json/produtos.json';
+            // Este link acessa o seu arquivo JSON como uma página do seu site
+            const url = 'https://siddneyalmeidaa-ai.github.io/adega-o-fluxo/json/produtos.json';
             const response = await fetch(url);
+            if (!response.ok) throw new Error("Erro de conexão");
             baseProdutos = await response.json();
             inicializarVitrine();
         } catch (error) {
-            document.getElementById('vitrine').innerText = "Erro ao conectar com o servidor.";
+            document.getElementById('vitrine').innerText = "Erro ao carregar cardápio. Verifique se o arquivo está na pasta 'json'.";
         }
     }
 
