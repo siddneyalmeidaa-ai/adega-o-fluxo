@@ -11,5 +11,6 @@
   { "cat": "🍾 Destilados (Garrafas)", "nome": "Gin Tanqueray 750ml", "preco": 150.00, "desc": "London Dry Gin", "img": "https://images.unsplash.com/photo-1628557348799-598d5789f13e?q=80&w=150" },
   { "cat": "🥤 Refrigerantes & Mixers", "nome": "Coca-Cola Original 350ml", "preco": 6.50, "desc": "Lata gelada", "img": "https://images.unsplash.com/photo-1629203851944-a131f77d33d4?q=80&w=150" },
   { "cat": "🥤 Refrigerantes & Mixers", "nome": "Red Bull Tropical 250ml", "preco": 14.00, "desc": "Energético", "img": "https://images.unsplash.com/photo-1626226176527-024508933b47?q=80&w=150" },
-  { "cat": "🥤 Refrigerantes & Mixers", "nome": "Água Mineral Sem Gás 500ml", "preco": 4.00, "desc": "Garrafa 500ml", "img": "https://images.unsplash.com/photo-1548848283-75878d91c107?q=80&w=150" }
+  { "cat": "🥤 Refrigerantes & Mixers", "nome": "Água Mineral Sem Gás 500ml", "preco": 4.00, "desc": "Garrafa 500ml", "img": "https://images.unsplash.com/photo-1548848283-75878d91c107?q=80&w=150" },
+  { "cat": "🥤 Refrigerantes & Mixers", "nome": "Água Mineral Com Gás 500ml", "preco": 4.50, "desc": "Garrafa 500ml", "img": "https://images.unsplash.com/photo-1548848283-75878d91c107?q=80&w=150" }
 ]
