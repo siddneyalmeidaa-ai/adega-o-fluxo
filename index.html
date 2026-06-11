@@ -10,21 +10,26 @@
         body { background-color: var(--dark); color: var(--text); padding-bottom: 160px; }
         header { padding: 30px 20px; text-align: center; border-bottom: 2px solid var(--gold); }
         .container { max-width: 600px; margin: 0 auto; padding: 15px; }
+        .categoria { color: var(--gold); margin: 25px 10px 10px; border-bottom: 1px solid #333; padding-bottom: 5px; text-transform: uppercase; }
         .card { background: var(--gray); border-radius: 10px; padding: 15px; margin-bottom: 12px; display: flex; align-items: center; }
-        .btn-add { background: var(--gold); border: none; padding: 10px 15px; border-radius: 5px; margin-left: auto; cursor: pointer; }
+        .card img { width: 60px; height: 60px; border-radius: 8px; margin-right: 15px; object-fit: cover; background: #fff; }
+        .info { flex-grow: 1; }
+        .info h3 { margin: 0; font-size: 1.1rem; }
+        .info p { font-size: 0.75rem; color: #aaa; margin: 2px 0; }
+        .preco { color: var(--gold); font-weight: bold; }
+        .btn-add { background: var(--gold); border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; }
         .cart-bar { position: fixed; bottom: 0; width: 100%; background: #151515; padding: 20px; display: flex; justify-content: space-between; align-items: center; border-top: 2px solid var(--gold); }
         
-        /* Modal */
         #modalPedido { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); padding: 20px; z-index: 200; overflow-y: auto; }
         .modal-content { max-width: 500px; margin: 20px auto; background: var(--gray); padding: 20px; border-radius: 10px; }
         .item-lista { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #333; }
-        input, select, textarea { width: 100%; padding: 10px; margin: 8px 0; border-radius: 5px; border: 1px solid #333; background: #000; color: #fff; }
+        input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 5px; border: 1px solid #333; background: #000; color: #fff; }
     </style>
 </head>
 <body>
 
 <header><h1>Adega O Fluxo</h1></header>
-<div class="container"><div id="vitrine">Carregando estoque...</div></div>
+<div class="container"><div id="vitrine">Carregando cardápio...</div></div>
 
 <div class="cart-bar" id="cart-bar" style="display: none;">
     <div>Total: <span id="cart-total" style="color:var(--gold); font-size:1.2rem;">R$ 0,00</span></div>
@@ -42,9 +47,13 @@
         <input type="text" id="rua" placeholder="Rua">
         <input type="text" id="num" placeholder="Número">
         <input type="text" id="bairro" placeholder="Bairro">
-        <input type="text" id="troco" placeholder="Troco para quanto? (opcional)">
+        <input type="text" id="troco" placeholder="Troco para quanto?">
         
-        <select id="pagamento"><option value="Pix">Pix</option><option value="Cartão">Cartão</option><option value="Dinheiro">Dinheiro</option></select>
+        <select id="pagamento">
+            <option value="Pix">Pix</option>
+            <option value="Cartão">Cartão</option>
+            <option value="Dinheiro">Dinheiro</option>
+        </select>
         <textarea id="obs" placeholder="Observações"></textarea>
         
         <button onclick="finalizarPedido()" style="width:100%; padding:15px; background:var(--green); border:none; color:white; font-weight:bold;">ENVIAR NO WHATSAPP</button>
@@ -58,13 +67,25 @@
     let carrinho = JSON.parse(localStorage.getItem('carrinho_fluxo')) || [];
 
     async function carregar() {
-        const res = await fetch('https://siddneyalmeidaa-ai.github.io/adega-o-fluxo/produtos.json');
-        baseProdutos = await res.json();
-        let html = '';
-        baseProdutos.forEach((p, i) => {
-            html += `<div class="card"><div><h3>${p.nome}</h3><p>R$ ${p.preco.toFixed(2)}</p></div><button class="btn-add" onclick="adicionar(${i})">ADD</button></div>`;
-        });
-        document.getElementById('vitrine').innerHTML = html;
+        try {
+            const res = await fetch('https://siddneyalmeidaa-ai.github.io/adega-o-fluxo/produtos.json');
+            baseProdutos = await res.json();
+            let html = '', catAtual = '';
+            baseProdutos.forEach((p, i) => {
+                if (p.cat !== catAtual) { html += `<h2 class="categoria">${p.cat}</h2>`; catAtual = p.cat; }
+                html += `
+                    <div class="card">
+                        <img src="${p.img}">
+                        <div class="info">
+                            <h3>${p.nome}</h3>
+                            <p>${p.desc || ''}</p>
+                            <span class="preco">R$ ${p.preco.toFixed(2)}</span>
+                        </div>
+                        <button class="btn-add" onclick="adicionar(${i})">ADD</button>
+                    </div>`;
+            });
+            document.getElementById('vitrine').innerHTML = html;
+        } catch (e) { document.getElementById('vitrine').innerText = "Erro ao carregar cardápio."; }
     }
 
     async function buscarCEP(cep) {
@@ -101,14 +122,19 @@
 
     function finalizarPedido() {
         const total = carrinho.reduce((a, b) => a + b.preco, 0);
-        let msg = `*NOVO PEDIDO*\n\n`;
+        let msg = `*NOVO PEDIDO - ADEGA O FLUXO*\n\n`;
         carrinho.forEach(item => msg += `• ${item.nome} - R$ ${item.preco.toFixed(2)}\n`);
         msg += `\n*TOTAL: R$ ${total.toFixed(2)}*\n\n`;
-        msg += `Nome: ${document.getElementById('nomeCliente').value}\nEnd: ${document.getElementById('rua').value}, ${document.getElementById('num').value} - ${document.getElementById('bairro').value}\nPagamento: ${document.getElementById('pagamento').value}\nTroco: ${document.getElementById('troco').value || "Não precisa"}\nObs: ${document.getElementById('obs').value}`;
+        msg += `Nome: ${document.getElementById('nomeCliente').value}\n`;
+        msg += `End: ${document.getElementById('rua').value}, ${document.getElementById('num').value} - ${document.getElementById('bairro').value}\n`;
+        msg += `Pagamento: ${document.getElementById('pagamento').value}\n`;
+        msg += `Troco: ${document.getElementById('troco').value || "Não precisa"}\n`;
+        msg += `Obs: ${document.getElementById('obs').value}`;
         window.open(`https://api.whatsapp.com/send?phone=5511942971753&text=${encodeURIComponent(msg)}`, '_blank');
     }
 
     window.onload = () => { carregar(); recalcular(); };
 </script>
 </body>
-</html>
+    </html>
+    
