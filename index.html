@@ -14,10 +14,9 @@
         .btn-add { background: var(--gold); border: none; padding: 10px 15px; border-radius: 5px; margin-left: auto; }
         .cart-bar { position: fixed; bottom: 0; width: 100%; background: #151515; padding: 20px; display: flex; justify-content: space-between; align-items: center; border-top: 2px solid var(--gold); }
         
-        /* Modal de Pedido */
         #modalPedido { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); padding: 20px; z-index: 200; overflow-y: auto; }
         .modal-content { max-width: 500px; margin: 50px auto; background: var(--gray); padding: 20px; border-radius: 10px; }
-        input, select, textarea { width: 100%; padding: 10px; margin: 10px 0; border-radius: 5px; border: none; }
+        input, select, textarea { width: 100%; padding: 10px; margin: 8px 0; border-radius: 5px; border: 1px solid #333; background: #000; color: #fff; }
     </style>
 </head>
 <body>
@@ -30,18 +29,20 @@
     <button onclick="abrirModal()" style="background:var(--green); border:none; padding:10px; color:white; border-radius:5px;">Fechar Pedido</button>
 </div>
 
-<!-- Modal de Dados -->
 <div id="modalPedido">
     <div class="modal-content">
         <h2 style="color:var(--gold);">Finalizar Pedido</h2>
         <input type="text" id="nomeCliente" placeholder="Nome Completo">
-        <input type="text" id="endCliente" placeholder="Endereço e CEP">
+        <input type="text" id="cep" placeholder="CEP (digite para buscar)" onblur="buscarCEP(this.value)">
+        <input type="text" id="rua" placeholder="Rua">
+        <input type="text" id="num" placeholder="Número">
+        <input type="text" id="bairro" placeholder="Bairro">
         <select id="pagamento">
             <option value="Pix">Pix</option>
             <option value="Cartão">Cartão</option>
             <option value="Dinheiro">Dinheiro</option>
         </select>
-        <textarea id="obs" placeholder="Alguma observação?"></textarea>
+        <textarea id="obs" placeholder="Observações"></textarea>
         <button onclick="finalizarPedido()" style="width:100%; padding:15px; background:var(--green); border:none; color:white;">Enviar Pedido via WhatsApp</button>
         <button onclick="fecharModal()" style="width:100%; padding:10px; margin-top:10px; background:transparent; color:white;">Cancelar</button>
     </div>
@@ -61,6 +62,18 @@
         document.getElementById('vitrine').innerHTML = html;
     }
 
+    async function buscarCEP(cep) {
+        cep = cep.replace(/\D/g, '');
+        if(cep.length === 8) {
+            const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+            const data = await res.json();
+            if(!data.erro) {
+                document.getElementById('rua').value = data.logradouro;
+                document.getElementById('bairro').value = data.bairro;
+            }
+        }
+    }
+
     function adicionar(i) { carrinho.push(baseProdutos[i]); localStorage.setItem('carrinho_fluxo', JSON.stringify(carrinho)); recalcular(); }
     function recalcular() {
         const total = carrinho.reduce((a, b) => a + b.preco, 0);
@@ -73,11 +86,12 @@
 
     function finalizarPedido() {
         const nome = document.getElementById('nomeCliente').value;
-        const end = document.getElementById('endCliente').value;
+        const rua = document.getElementById('rua').value;
+        const num = document.getElementById('num').value;
+        const bairro = document.getElementById('bairro').value;
         const pag = document.getElementById('pagamento').value;
-        const obs = document.getElementById('obs').value;
         
-        let msg = `*NOVO PEDIDO*\nNome: ${nome}\nEnd: ${end}\nPagamento: ${pag}\nObs: ${obs}\n\nItens:\n`;
+        let msg = `*NOVO PEDIDO*\nNome: ${nome}\nEnd: ${rua}, ${num} - ${bairro}\nPagamento: ${pag}\n\nItens:\n`;
         carrinho.forEach(item => msg += `• ${item.nome}\n`);
         
         window.open(`https://api.whatsapp.com/send?phone=5511942971753&text=${encodeURIComponent(msg)}`, '_blank');
