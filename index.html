@@ -14,284 +14,54 @@
             --red: #ff3333;
             --blue: #0084ff;
         }
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Arial, sans-serif;
-        }
-        body {
-            background-color: var(--dark);
-            color: var(--text);
-            padding-bottom: 140px;
-        }
-        header {
-            background: linear-gradient(to bottom, #000, var(--gray));
-            padding: 30px 20px;
-            text-align: center;
-            border-bottom: 2px solid var(--gold);
-        }
-        header h1 {
-            color: var(--gold);
-            font-size: 2.2rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 5px;
-        }
-        header p {
-            color: #888;
-            font-size: 1rem;
-        }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 15px;
-        }
-        .categoria-title {
-            margin: 25px 0 15px;
-            color: var(--gold);
-            border-left: 4px solid var(--gold);
-            padding-left: 10px;
-            font-size: 1.3rem;
-            text-transform: uppercase;
-        }
-        .card {
-            background: var(--gray);
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid #2d2d2d;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
+        body { background-color: var(--dark); color: var(--text); padding-bottom: 140px; }
+        header { background: linear-gradient(to bottom, #000, var(--gray)); padding: 30px 20px; text-align: center; border-bottom: 2px solid var(--gold); }
+        header h1 { color: var(--gold); font-size: 2.2rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 5px; }
+        header p { color: #888; font-size: 1rem; }
+        .container { max-width: 600px; margin: 0 auto; padding: 15px; }
+        .categoria-title { margin: 25px 0 15px; color: var(--gold); border-left: 4px solid var(--gold); padding-left: 10px; font-size: 1.3rem; text-transform: uppercase; }
+        .card { background: var(--gray); border-radius: 10px; padding: 15px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #2d2d2d; }
         .card-img { width: 60px; height: 60px; border-radius: 8px; margin-right: 15px; object-fit: contain; background: #fff; padding: 4px; }
         .card-info { flex-grow: 1; }
-        .card-info h3 {
-            font-size: 1.05rem;
-            margin-bottom: 5px;
-            color: #fff;
-        }
-        .card-info p {
-            color: var(--gold);
-            font-weight: bold;
-            font-size: 1.15rem;
-        }
-        .btn-add {
-            background: var(--gold);
-            color: #000;
-            border: none;
-            padding: 10px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.2s;
-        }
-        .btn-add:active {
-            transform: scale(0.95);
-        }
-        .cart-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: #151515;
-            border-top: 2px solid var(--gold);
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 100;
-            gap: 10px;
-        }
-        .cart-info-total {
-            color: #fff;
-            flex-grow: 1;
-        }
-        .cart-info-total span {
-            color: var(--gold);
-            font-size: 1.3rem;
-            font-weight: bold;
-            display: block;
-        }
-        .cart-buttons {
-            display: flex;
-            gap: 8px;
-        }
-        .btn-clear {
-            background: var(--red);
-            color: #fff;
-            border: none;
-            padding: 12px 14px;
-            border-radius: 6px;
-            font-weight: bold;
-            font-size: 0.9rem;
-            cursor: pointer;
-        }
-        .btn-checkout {
-            background: var(--green);
-            color: #fff;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 6px;
-            font-weight: bold;
-            font-size: 1rem;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.85);
-            z-index: 200;
-            justify-content: center;
-            align-items: center;
-            padding: 15px;
-        }
-        .modal-content {
-            background: var(--gray);
-            border: 2px solid var(--gold);
-            border-radius: 12px;
-            width: 100%;
-            max-width: 500px;
-            padding: 20px;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #333;
-            padding-bottom: 10px;
-            margin-bottom: 15px;
-        }
-        .modal-header h2 {
-            color: var(--gold);
-            font-size: 1.4rem;
-        }
-        .close-modal {
-            color: var(--red);
-            font-size: 1.8rem;
-            cursor: pointer;
-            background: none;
-            border: none;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        .form-row {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-        .form-row .form-group {
-            flex: 1;
-            margin-bottom: 0;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            color: #ccc;
-            font-size: 0.9rem;
-        }
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 10px;
-            background: #0d0d0d;
-            border: 1px solid #444;
-            border-radius: 6px;
-            color: #fff;
-            font-size: 1rem;
-        }
-        .form-group input:focus, .form-group select:focus {
-            border-color: var(--gold);
-            outline: none;
-        }
-        .form-group input:disabled {
-            background: #1f1f1f;
-            color: #888;
-            border-color: #333;
-        }
-        .resumo-itens {
-            background: #0d0d0d;
-            padding: 10px;
-            border-radius: 6px;
-            margin-bottom: 15px;
-            border: 1px solid #222;
-        }
-        .resumo-linha {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.9rem;
-            margin-bottom: 8px;
-            color: #aaa;
-            padding-bottom: 4px;
-            border-bottom: 1px dashed #222;
-        }
-        .resumo-linha:last-child {
-            border-bottom: none;
-        }
-        .btn-remove-item {
-            background: none;
-            border: none;
-            color: var(--red);
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 1.1rem;
-            padding: 0 5px;
-        }
-        .btn-enviar-wa {
-            width: 100%;
-            background: var(--green);
-            color: #fff;
-            border: none;
-            padding: 14px;
-            border-radius: 6px;
-            font-weight: bold;
-            font-size: 1.1rem;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-        .btn-gps-route {
-            width: 100%;
-            background: var(--blue);
-            color: #fff;
-            border: none;
-            padding: 10px;
-            border-radius: 6px;
-            font-weight: bold;
-            font-size: 0.95rem;
-            cursor: pointer;
-            margin-bottom: 15px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-        }
+        .card-info h3 { font-size: 1.05rem; margin-bottom: 5px; color: #fff; }
+        .card-info p { color: var(--gold); font-weight: bold; font-size: 1.15rem; }
+        .btn-add { background: var(--gold); color: #000; border: none; padding: 10px 16px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+        .btn-add:active { transform: scale(0.95); }
+        .cart-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #151515; border-top: 2px solid var(--gold); padding: 20px; display: flex; justify-content: space-between; align-items: center; z-index: 100; gap: 10px; }
+        .cart-info-total { color: #fff; flex-grow: 1; }
+        .cart-info-total span { color: var(--gold); font-size: 1.3rem; font-weight: bold; display: block; }
+        .cart-buttons { display: flex; gap: 8px; }
+        .btn-clear { background: var(--red); color: #fff; border: none; padding: 12px 14px; border-radius: 6px; font-weight: bold; font-size: 0.9rem; cursor: pointer; }
+        .btn-checkout { background: var(--green); color: #fff; border: none; padding: 12px 20px; border-radius: 6px; font-weight: bold; font-size: 1rem; cursor: pointer; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3); }
+        .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); z-index: 200; justify-content: center; align-items: center; padding: 15px; }
+        .modal-content { background: var(--gray); border: 2px solid var(--gold); border-radius: 12px; width: 100%; max-width: 500px; padding: 20px; max-height: 90vh; overflow-y: auto; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 15px; }
+        .modal-header h2 { color: var(--gold); font-size: 1.4rem; }
+        .close-modal { color: var(--red); font-size: 1.8rem; cursor: pointer; background: none; border: none; }
+        .form-group { margin-bottom: 15px; }
+        .form-row { display: flex; gap: 10px; margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; color: #ccc; font-size: 0.9rem; }
+        .form-group input, .form-group select { width: 100%; padding: 10px; background: #0d0d0d; border: 1px solid #444; border-radius: 6px; color: #fff; font-size: 1rem; }
+        .resumo-itens { background: #0d0d0d; padding: 10px; border-radius: 6px; margin-bottom: 15px; border: 1px solid #222; }
+        .resumo-linha { display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; margin-bottom: 8px; color: #aaa; padding-bottom: 4px; border-bottom: 1px dashed #222; }
+        .btn-remove-item { background: none; border: none; color: var(--red); cursor: pointer; font-weight: bold; padding: 0 5px; }
+        .btn-enviar-wa { width: 100%; background: var(--green); color: #fff; border: none; padding: 14px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 10px; }
     </style>
 </head>
 <body>
 
 <header>
     <h1>Adega O Fluxo</h1>
-    <p>O FLUXO NÃO PARA • DELIVERY EM TABOÃO DA SERRA</p>
+    <p>O FLUXO NÃO PARA • Rua André da Silva Pina, 309 - Jd Record</p>
 </header>
 
 <div class="container">
-    <div id="vitrine"></div>
+    <div id="vitrine">Carregando estoque...</div>
 </div>
 
 <div class="cart-bar" id="cart-bar" style="display: none;">
-    <div class="cart-info-total">
-        Total do Pedido:
-        <span id="cart-total">R$ 0,00</span>
-    </div>
+    <div class="cart-info-total">Total do Pedido: <span id="cart-total">R$ 0,00</span></div>
     <div class="cart-buttons">
         <button class="btn-clear" onclick="limparCarrinhoCompleto()">Limpar</button>
         <button class="btn-checkout" onclick="abrirModal()">Fechar Pedido</button>
@@ -304,90 +74,32 @@
             <h2>Dados da Entrega</h2>
             <button class="close-modal" onclick="fecharModal()">×</button>
         </div>
-        
         <div class="resumo-itens" id="resumo-itens-checkout"></div>
-
-        <button class="btn-gps-route" onclick="calcularRotaTempoReal()">
-            📍 TRACEJAR ROTA NO MAPA (GPS)
-        </button>
-
-        <div class="form-group">
-            <label for="nome-cliente">Seu Nome *</label>
-            <input type="text" id="nome-cliente" placeholder="Digite seu nome">
-        </div>
-
-        <div class="form-row">
-            <div class="form-group">
-                <label for="cep-cliente">CEP *</label>
-                <input type="text" id="cep-cliente" maxlength="9" placeholder="Ex: 06783-100" oninput="buscarCepDoCliente(this.value)">
-            </div>
-            <div class="form-group">
-                <label for="bairro-cliente">Bairro *</label>
-                <input type="text" id="bairro-cliente" placeholder="Preenchido via CEP" disabled>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="rua-cliente">Rua / Logradouro *</label>
-            <input type="text" id="rua-cliente" placeholder="Preenchido via CEP" disabled>
-        </div>
-
-        <div class="form-row">
-            <div class="form-group">
-                <label for="num-cliente">Número *</label>
-                <input type="text" id="num-cliente" placeholder="Nº">
-            </div>
-            <div class="form-group">
-                <label for="comp-cliente">Complemento</label>
-                <input type="text" id="comp-cliente" placeholder="Ex: Casa 2, Bloco B">
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="pagamento-cliente">Forma de Pagamento *</label>
-            <select id="pagamento-cliente">
-                <option value="PIX">PIX (Mais Rápido)</option>
-                <option value="Cartão de Débito">Cartão de Débito (Maquininha)</option>
-                <option value="Cartão de Crédito">Cartão de Crédito (Maquininha)</option>
-                <option value="Dinheiro">Dinheiro</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="obs-cliente">Observação (Opcional)</label>
-            <input type="text" id="obs-cliente" placeholder="Ex: Levar troco para R$ 100 ou gelo extra">
-        </div>
-
-        <button class="btn-enviar-wa" onclick="finalizarPedido()">Confirmar e Enviar no WhatsApp</button>
+        <div class="form-group"><label>Seu Nome *</label><input type="text" id="nome-cliente"></div>
+        <div class="form-row"><div class="form-group"><label>CEP *</label><input type="text" id="cep-cliente" oninput="buscarCepDoCliente(this.value)"></div></div>
+        <div class="form-group"><label>Rua *</label><input type="text" id="rua-cliente" disabled></div>
+        <div class="form-group"><label>Número *</label><input type="text" id="num-cliente"></div>
+        <button class="btn-enviar-wa" onclick="finalizarPedido()">Confirmar no WhatsApp</button>
     </div>
 </div>
 
 <script>
     const whatsappOficial = "5511942971753"; 
     const taxaEntrega = 6.00;
-
-    const baseProdutos = [
-        { cat: "🔥 Combos da Madrugada", nome: "Combo Patrão", preco: 160.00, img: "https://ze.delivery/assets/products/red_label_1l_p.png" },
-        { cat: "🔥 Combos da Madrugada", nome: "Combo Cria", preco: 130.00, img: "https://ze.delivery/assets/products/white_horse_1l_p.png" },
-        { cat: "🔥 Combos da Madrugada", nome: "Combo Monstro", preco: 85.00, img: "https://ze.delivery/assets/products/smirnoff_998ml_p.png" },
-        { cat: "🔥 Combos da Madrugada", nome: "Combo Gin Premium", preco: 190.00, img: "https://ze.delivery/assets/products/gin_tanqueray_750ml_p.png" },
-        
-        { cat: "🍺 Cervejas Trincando", nome: "Heineken Lata 350ml", preco: 8.50, img: "https://ze.delivery/assets/products/heineken_350ml_p.png" },
-        { cat: "🍺 Cervejas Trincando", nome: "Brahma Latão 473ml", preco: 6.00, img: "https://ze.delivery/assets/products/brahma_latao_473ml_p.png" },
-        { cat: "🍺 Cervejas Trincando", nome: "Amstel Latão 473ml", preco: 6.00, img: "https://ze.delivery/assets/products/amstel_latao_473ml_p.png" },
-        { cat: "🍺 Cervejas Trincando", nome: "Skol Lata 350ml", preco: 5.00, img: "https://ze.delivery/assets/products/skol_lata_350ml_p.png" },
-        
-        { cat: "🍾 Destilados (Garrafas)", nome: "Whisky Red Label 1L", preco: 120.00, img: "https://ze.delivery/assets/products/red_label_1l_p.png" },
-        { cat: "🍾 Destilados (Garrafas)", nome: "Whisky White Horse 1L", preco: 95.00, img: "https://ze.delivery/assets/products/white_horse_1l_p.png" },
-        { cat: "🍾 Destilados (Garrafas)", nome: "Vodka Smirnoff 998ml", preco: 65.00, img: "https://ze.delivery/assets/products/smirnoff_998ml_p.png" },
-        { cat: "🍾 Destilados (Garrafas)", nome: "Gin Tanqueray 750ml", preco: 150.00, img: "https://ze.delivery/assets/products/gin_tanqueray_750ml_p.png" },
-        
-        { cat: "🥤 Refrigerantes & Mixers", nome: "Coca-Cola Original 350ml", preco: 6.50, img: "https://ze.delivery/assets/products/coca_cola_lata_350ml_p.png" },
-        { cat: "🥤 Refrigerantes & Mixers", nome: "Energético Baly 2L", preco: 18.00, img: "https://ze.delivery/assets/products/energetico_baly_tropical_2l_p.png" },
-        { cat: "🥤 Refrigerantes & Mixers", nome: "Gelo de Coco (Pacote)", preco: 8.00, img: "https://ze.delivery/assets/products/gelo_cubo_p.png" }
-    ];
-
+    let baseProdutos = [];
     let carrinho = JSON.parse(localStorage.getItem('carrinho_fluxo')) || [];
+
+    async function carregarProdutosDoGitHub() {
+        try {
+            // SUBSTITUA O LINK ABAIXO PELO LINK RAW DO SEU produtos.json
+            const url = 'COLE_AQUI_O_LINK_RAW_DO_SEU_GITHUB';
+            const response = await fetch(url);
+            baseProdutos = await response.json();
+            inicializarVitrine();
+        } catch (error) {
+            document.getElementById('vitrine').innerText = "Erro ao carregar cardápio.";
+        }
+    }
 
     function inicializarVitrine() {
         const vitrine = document.getElementById('vitrine');
@@ -399,104 +111,38 @@
                 catAtual = item.cat;
             }
             html += `<div class="card">
-                        <img src="${item.img}" class="card-img" alt="${item.nome}">
-                        <div class="card-info">
-                            <h3>${item.nome}</h3>
-                            <p>R$ ${item.preco.toFixed(2).replace('.', ',')}</p>
-                        </div>
-                        <button class="btn-add" onclick="adicionarAoCarrinho(${index})">ADICIONAR</button>
+                        <img src="${item.img}" class="card-img">
+                        <div class="card-info"><h3>${item.nome}</h3><p>R$ ${item.preco.toFixed(2).replace('.', ',')}</p></div>
+                        <button class="btn-add" onclick="adicionarAoCarrinho(${index})">ADD</button>
                      </div>`;
         });
         vitrine.innerHTML = html;
     }
 
-    function adicionarAoCarrinho(id) {
-        carrinho.push(baseProdutos[id]);
-        salvarCarrinho();
-        recalcularTotais();
-    }
-
-    function removerDoCarrinho(index) {
-        carrinho.splice(index, 1);
-        salvarCarrinho();
-        recalcularTotais();
-        renderizarResumoModal();
-    }
-
-    function limparCarrinhoCompleto() {
-        if(confirm("Deseja limpar tudo?")) {
-            carrinho = [];
-            salvarCarrinho();
-            recalcularTotais();
-            fecharModal();
-        }
-    }
-
-    function salvarCarrinho() {
-        localStorage.setItem('carrinho_fluxo', JSON.stringify(carrinho));
-    }
-
+    function adicionarAoCarrinho(id) { carrinho.push(baseProdutos[id]); salvarCarrinho(); recalcularTotais(); }
+    function salvarCarrinho() { localStorage.setItem('carrinho_fluxo', JSON.stringify(carrinho)); }
     function recalcularTotais() {
-        const bar = document.getElementById('cart-bar');
         const total = carrinho.reduce((acc, p) => acc + p.preco, 0) + taxaEntrega;
         document.getElementById('cart-total').innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
-        bar.style.display = carrinho.length > 0 ? 'flex' : 'none';
+        document.getElementById('cart-bar').style.display = carrinho.length > 0 ? 'flex' : 'none';
     }
 
-    function buscarCepDoCliente(cep) {
-        let c = cep.replace(/\D/g, "");
-        if(c.length === 8) {
-            fetch(`https://viacep.com.br/ws/${c}/json/`).then(r => r.json()).then(d => {
-                if(!d.erro) {
-                    document.getElementById('rua-cliente').value = d.logradouro;
-                    document.getElementById('bairro-cliente').value = d.bairro;
-                }
-            });
-        }
-    }
-
-    function calcularRotaTempoReal() {
-        const r = document.getElementById('rua-cliente').value;
-        const n = document.getElementById('num-cliente').value;
-        const b = document.getElementById('bairro-cliente').value;
-        const d = encodeURIComponent(`${r}, ${n} - ${b}, Taboão da Serra - SP`);
-        window.open(`https://www.google.com/maps/search/?api=1&query=${d}`, '_blank');
-    }
-
-    function renderizarResumoModal() {
+    function abrirModal() { 
         const res = document.getElementById('resumo-itens-checkout');
-        let html = '';
-        carrinho.forEach((item, i) => {
-            html += `<div class="resumo-linha"><button class="btn-remove-item" onclick="removerDoCarrinho(${i})">🗑️</button><span>${item.nome}</span><span>R$ ${item.preco.toFixed(2).replace('.', ',')}</span></div>`;
-        });
-        res.innerHTML = html;
+        res.innerHTML = carrinho.map((i, idx) => `<div class="resumo-linha"><span>${i.nome}</span><span>R$ ${i.preco.toFixed(2)}</span></div>`).join('');
+        document.getElementById('modal-checkout').style.display = 'flex'; 
     }
-
-    function abrirModal() { renderizarResumoModal(); document.getElementById('modal-checkout').style.display = 'flex'; }
+    
     function fecharModal() { document.getElementById('modal-checkout').style.display = 'none'; }
-
+    
     function finalizarPedido() {
         const nome = document.getElementById('nome-cliente').value;
-        const rua = document.getElementById('rua-cliente').value;
-        const num = document.getElementById('num-cliente').value;
-        const bairro = document.getElementById('bairro-cliente').value;
-        const cep = document.getElementById('cep-cliente').value;
-        const pgto = document.getElementById('pagamento-cliente').value;
-        const obs = document.getElementById('obs-cliente').value;
-        const total = document.getElementById('cart-total').innerText;
-
-        let msg = `*NOVO PEDIDO - ADEGA O FLUXO*\n===============================\n\n`;
-        carrinho.forEach(item => { msg += `• 1x ${item.nome} - R$ ${item.preco.toFixed(2).replace('.', ',')}\n`; });
-        msg += `\n===============================\n*TOTAL: ${total}*\n\n`;
-        msg += `*CLIENTE:* ${nome}\n*ENDEREÇO DE ENTREGA:*\nRua: ${rua}, Nº ${num}\nBairro: ${bairro} | CEP: ${cep}\n\n`;
-        msg += `*FORMA DE PAGAMENTO:* ${pgto}\n`;
-        if(obs) msg += `*OBSERVAÇÃO:* ${obs}\n\n`;
-        msg += `_Aguardando confirmação de saída do motoca!_`;
-        
+        let msg = `*NOVO PEDIDO - ADEGA O FLUXO*\n\n`;
+        carrinho.forEach(item => { msg += `• ${item.nome}\n`; });
         window.open(`https://api.whatsapp.com/send?phone=${whatsappOficial}&text=${encodeURIComponent(msg)}`, '_blank');
     }
 
-    window.onload = () => { inicializarVitrine(); recalcularTotais(); };
+    window.onload = () => { carregarProdutosDoGitHub(); recalcularTotais(); };
 </script>
 </body>
 </html>
