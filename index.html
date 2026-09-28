@@ -14,11 +14,11 @@
         .info p { font-size: 0.75rem; color: #aaa; margin: 2px 0; }
         .preco { color: #D4AF37; font-weight: bold; }
         .btn-add { background: #D4AF37; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; }
-        .cart-bar { position: fixed; bottom: 0; width: 100%; background: #151515; padding: 20px; display: flex; justify-content: space-between; align-items: center; border-top: 2px solid #D4AF37; }
-        #modalPedido { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); padding: 20px; z-index: 200; overflow-y: auto; }
+        .cart-bar { position: fixed; bottom: 0; width: 100%; background: #151515; padding: 20px; display: flex; justify-content: space-between; align-items: center; border-top: 2px solid #D4AF37; box-sizing: border-box; }
+        #modalPedido { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); padding: 20px; z-index: 200; overflow-y: auto; box-sizing: border-box; }
         .modal-content { max-width: 500px; margin: 20px auto; background: #1a1a1a; padding: 20px; border-radius: 10px; }
         .item-lista { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #333; }
-        input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 5px; border: 1px solid #333; background: #000; color: #fff; }
+        input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 5px; border: 1px solid #333; background: #000; color: #fff; box-sizing: border-box; }
     </style>
 </head>
 <body>
@@ -28,7 +28,7 @@
 
 <div class="cart-bar" id="cart-bar" style="display: none;">
     <div>Total: <span id="cart-total" style="color:#D4AF37; font-size:1.2rem;">R$ 0,00</span></div>
-    <button onclick="abrirModal()" style="background:#25d366; border:none; padding:12px 20px; color:white; border-radius:5px; font-weight:bold;">FECHAR PEDIDO</button>
+    <button onclick="abrirModal()" style="background:#25d366; border:none; padding:12px 20px; color:white; border-radius:5px; font-weight:bold; cursor:pointer;">FECHAR PEDIDO</button>
 </div>
 
 <div id="modalPedido">
@@ -51,20 +51,89 @@
         </select>
         <textarea id="obs" placeholder="Observações"></textarea>
         
-        <button onclick="finalizarPedido()" style="width:100%; padding:15px; background:#25d366; border:none; color:white; font-weight:bold;">ENVIAR NO WHATSAPP</button>
-        <button onclick="limparTudo()" style="width:100%; padding:10px; margin-top:10px; background:#ff3333; border:none; color:white;">LIMPAR CARRINHO</button>
-        <button onclick="fecharModal()" style="width:100%; padding:10px; margin-top:5px; background:transparent; color:white;">VOLTAR</button>
+        <button onclick="finalizarPedido()" style="width:100%; padding:15px; background:#25d366; border:none; color:white; font-weight:bold; border-radius:5px; cursor:pointer; margin-top:5px;">ENVIAR NO WHATSAPP</button>
+        <button onclick="limparTudo()" style="width:100%; padding:10px; margin-top:10px; background:#ff3333; border:none; color:white; border-radius:5px; cursor:pointer;">LIMPAR CARRINHO</button>
+        <button onclick="fecharModal()" style="width:100%; padding:10px; margin-top:5px; background:transparent; border:none; color:white; cursor:pointer;">VOLTAR</button>
     </div>
 </div>
 
 <script>
-    let baseProdutos = [];
+    let baseProdutos = [
+  {
+    "cat": "🍓 Batidas Diferentes & Especiais",
+    "nome": "Batida Negroni Cremoso",
+    "preco": 22.00,
+    "desc": "60ml de Gin, 40ml de Campari, 40ml de Vermute tinto, 50ml de leite condensado, 80ml de creme de leite e gelo",
+    "img": "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=150"
+  },
+  {
+    "cat": "🍓 Batidas Diferentes & Especiais",
+    "nome": "Batida Pearl Split Exótica",
+    "preco": 20.00,
+    "desc": "120ml de vodka, 60ml de suco de limão taiti, 40ml de licor de laranja, 60ml de leite condensado e gelo",
+    "img": "https://images.unsplash.com/photo-1551024601-bec78aea704b?q=80&w=150"
+  },
+  {
+    "cat": "🍓 Batidas Diferentes & Especiais",
+    "nome": "Batida Moscow Mule Cremoso (A Veludo Negro)",
+    "preco": 21.00,
+    "desc": "120ml de vodka, 80ml de xarope de gengibre, 40ml de suco de limão, 60ml de leite condensado e creme de leite",
+    "img": "https://images.unsplash.com/photo-1541658016709-82535e94bc69?q=80&w=150"
+  },
+  {
+    "cat": "🍓 Batidas Diferentes & Especiais",
+    "nome": "Batida Gin Tônica Tropical",
+    "preco": 21.50,
+    "desc": "120ml de Gin, 100ml de água tônica, 80ml de polpa de maracujá, 50ml de leite condensado e gelo",
+    "img": "https://images.unsplash.com/photo-1572490122747-3968b75cc699?q=80&w=150"
+  },
+  {
+    "cat": "🍓 Batidas Diferentes & Especiais",
+    "nome": "Batida Piña Colada O Fluxo",
+    "preco": 20.00,
+    "desc": "120ml de rum branco, 100ml de leite de coco, 120ml de suco de abacaxi natural e leite condensado",
+    "img": "https://images.unsplash.com/photo-1541658016709-82535e94bc69?q=80&w=150"
+  },
+  {
+    "cat": "🍓 Batidas Diferentes & Especiais",
+    "nome": "Batida Espresso Martini Cremoso",
+    "preco": 22.50,
+    "desc": "100ml de vodka, 60ml de licor de café, 80ml de café espresso forte, 40ml de leite condensado e gelo",
+    "img": "https://images.unsplash.com/photo-1572490122747-3968b75cc699?q=80&w=150"
+  },
+  {
+    "cat": "🍓 Batidas Diferentes & Especiais",
+    "nome": "Batida Aperol Spritz Tropical",
+    "preco": 21.00,
+    "desc": "90ml de Aperol, 90ml de espumante brut, 50ml de suco de laranja natural e leite condensado",
+    "img": "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=150"
+  },
+  {
+    "cat": "🍓 Batidas Diferentes & Especiais",
+    "nome": "Batida Frutas Vermelhas com Espuma de Hibisco",
+    "preco": 23.00,
+    "desc": "120ml de vodka, 90g de frutas vermelhas, infusão de hibisco, leite condensado e creme de leite",
+    "img": "https://images.unsplash.com/photo-1551024601-bec78aea704b?q=80&w=150"
+  },
+  {
+    "cat": "🍓 Batidas Diferentes & Especiais",
+    "nome": "Batida de Paçoca com Whisky (O Rústico Refinado)",
+    "preco": 22.00,
+    "desc": "100ml de Whisky Bourbon, 3 unidades de paçoca, 40ml de leite condensado e 100ml de leite",
+    "img": "https://images.unsplash.com/photo-1551024601-bec78aea704b?q=80&w=150"
+  },
+  {
+    "cat": "🍓 Batidas Diferentes & Especiais",
+    "nome": "Batida de Coco Queimado com Rum",
+    "preco": 21.00,
+    "desc": "120ml de rum envelhecido, 80ml de leite de coco, açúcar mascavo, leite condensado e gelo",
+    "img": "https://images.unsplash.com/photo-1541658016709-82535e94bc69?q=80&w=150"
+  }
+];
     let carrinho = JSON.parse(localStorage.getItem('carrinho_fluxo')) || [];
 
-    async function carregar() {
+    function carregar() {
         try {
-            const res = await fetch('https://siddneyalmeidaa-ai.github.io/adega-o-fluxo/produtos.json');
-            baseProdutos = await res.json();
             let html = '', catAtual = '';
             baseProdutos.forEach((p, i) => {
                 if (p.cat !== catAtual) { html += `<h2 class="categoria">${p.cat}</h2>`; catAtual = p.cat; }
@@ -131,5 +200,4 @@
     window.onload = () => { carregar(); recalcular(); };
 </script>
 </body>
-            </html>
-            
+</html>
