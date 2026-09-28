@@ -3,57 +3,309 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adega O Fluxo</title>
+    <title>Adega O Fluxo - Delivery</title>
     <style>
-        body { background: #0a0a0a; color: #fff; font-family: sans-serif; padding-bottom: 160px; margin: 0; }
-        .categoria { color: #D4AF37; margin: 25px 10px 10px; border-bottom: 1px solid #333; padding-bottom: 5px; text-transform: uppercase; }
-        .card { background: #1a1a1a; margin: 10px; padding: 15px; border-radius: 10px; display: flex; align-items: center; }
-        .card img { width: 60px; height: 60px; border-radius: 8px; margin-right: 15px; object-fit: cover; background: #fff; }
-        .info { flex-grow: 1; }
-        .info h3 { margin: 0; font-size: 1.1rem; }
-        .info p { font-size: 0.75rem; color: #aaa; margin: 2px 0; }
-        .preco { color: #D4AF37; font-weight: bold; }
-        .btn-add { background: #D4AF37; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; }
-        .cart-bar { position: fixed; bottom: 0; width: 100%; background: #151515; padding: 20px; display: flex; justify-content: space-between; align-items: center; border-top: 2px solid #D4AF37; box-sizing: border-box; z-index: 100; }
-        #modalPedido { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); padding: 20px; z-index: 200; overflow-y: auto; box-sizing: border-box; }
-        .modal-content { max-width: 500px; margin: 20px auto; background: #1a1a1a; padding: 20px; border-radius: 10px; }
-        .item-lista { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #333; }
-        input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 5px; border: 1px solid #333; background: #000; color: #fff; box-sizing: border-box; }
+        :root {
+            --bg-color: #0b0b0b;
+            --card-bg: #161616;
+            --primary: #f39c12;
+            --primary-light: #f1c40f;
+            --accent: #25d366;
+            --text-main: #ffffff;
+            --text-muted: #b0b0b0;
+            --border: #262626;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            padding-bottom: 140px;
+        }
+
+        header {
+            background: linear-gradient(180deg, #111 0%, #0b0b0b 100%);
+            padding: 25px 20px;
+            text-align: center;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        header h1 {
+            color: var(--primary);
+            margin: 0;
+            font-size: 1.6rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin: 5px 0 0 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 10px;
+        }
+
+        .categoria {
+            color: var(--primary-light);
+            font-size: 1.1rem;
+            margin: 25px 10px 12px 10px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid var(--border);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            margin: 12px 8px;
+            padding: 14px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            border: 1px solid var(--border);
+            transition: transform 0.2s;
+        }
+
+        .card img {
+            width: 75px;
+            height: 75px;
+            border-radius: 10px;
+            margin-right: 15px;
+            object-fit: cover;
+            background: #222;
+            flex-shrink: 0;
+        }
+
+        .info {
+            flex-grow: 1;
+        }
+
+        .info h3 {
+            margin: 0 0 4px 0;
+            font-size: 1rem;
+            color: var(--text-main);
+            line-height: 1.2;
+        }
+
+        .info p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin: 0 0 8px 0;
+            line-height: 1.3;
+        }
+
+        .preco {
+            color: var(--primary-light);
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .btn-add {
+            background: linear-gradient(135deg, var(--primary), #e67e22);
+            color: #000;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.85rem;
+            box-shadow: 0 2px 8px rgba(243, 156, 18, 0.3);
+            transition: opacity 0.2s;
+            flex-shrink: 0;
+            margin-left: 10px;
+        }
+
+        .btn-add:active {
+            opacity: 0.8;
+        }
+
+        .cart-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(18, 18, 18, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 2px solid var(--primary);
+            box-sizing: border-box;
+            z-index: 100;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.8);
+        }
+
+        .cart-total-text {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .cart-total-value {
+            color: var(--primary-light);
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
+        .btn-checkout {
+            background: var(--accent);
+            border: none;
+            padding: 12px 22px;
+            color: #fff;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+        }
+
+        #modalPedido {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(5px);
+            z-index: 200;
+            overflow-y: auto;
+            box-sizing: border-box;
+            padding: 20px 10px;
+        }
+
+        .modal-content {
+            max-width: 480px;
+            margin: 10px auto;
+            background: #141414;
+            padding: 20px;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+
+        .modal-content h2 {
+            color: var(--primary);
+            margin-top: 0;
+            font-size: 1.3rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+        }
+
+        .item-lista {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #222;
+            font-size: 0.9rem;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 8px;
+            border: 1px solid #333;
+            background: #080808;
+            color: #fff;
+            box-sizing: border-box;
+            font-size: 0.95rem;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        .btn-action-green {
+            width: 100%;
+            padding: 14px;
+            background: var(--accent);
+            border: none;
+            color: white;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 10px;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+        }
+
+        .btn-action-red {
+            width: 100%;
+            padding: 10px;
+            margin-top: 8px;
+            background: #e74c3c;
+            border: none;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-action-ghost {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 
-<header style="text-align:center; padding:20px;"><h1 style="color:#D4AF37; margin:0;">Adega O Fluxo</h1></header>
-<div id="vitrine">Carregando cardápio...</div>
+<header>
+    <h1>Adega O Fluxo</h1>
+    <p>As melhores batidas artesanais da região</p>
+</header>
+
+<div class="container" id="vitrine">
+    <div style="text-align:center; padding: 40px; color: #777;">Carregando cardápio...</div>
+</div>
 
 <div class="cart-bar" id="cart-bar" style="display: none;">
-    <div>Total: <span id="cart-total" style="color:#D4AF37; font-size:1.2rem;">R$ 0,00</span></div>
-    <button onclick="abrirModal()" style="background:#25d366; border:none; padding:12px 20px; color:white; border-radius:5px; font-weight:bold; cursor:pointer;">FECHAR PEDIDO</button>
+    <div>
+        <div class="cart-total-text">Total do Pedido</div>
+        <div class="cart-total-value" id="cart-total">R$ 0,00</div>
+    </div>
+    <button class="btn-checkout" onclick="abrirModal()">FECHAR PEDIDO</button>
 </div>
 
 <div id="modalPedido">
     <div class="modal-content">
-        <h2 style="color:#D4AF37; margin-bottom:15px;">Resumo do Pedido</h2>
+        <h2>Finalizar Pedido</h2>
         <div id="lista-resumo"></div>
-        <p style="text-align:right; font-size:1.3rem; margin:15px 0;">Total: <span id="modal-total" style="color:#D4AF37;">R$ 0,00</span></p>
+        <p style="text-align:right; font-size:1.1rem; margin:15px 0 10px 0;">Total: <span id="modal-total" style="color:var(--primary-light); font-weight:bold;">R$ 0,00</span></p>
         
-        <input type="text" id="nomeCliente" placeholder="Nome Completo">
-        <input type="text" id="cep" placeholder="CEP" onblur="buscarCEP(this.value)">
-        <input type="text" id="rua" placeholder="Rua">
-        <input type="text" id="num" placeholder="Número">
+        <input type="text" id="nomeCliente" placeholder="Seu Nome Completo">
+        <input type="text" id="cep" placeholder="CEP (Preenche a rua sozinho)" onblur="buscarCEP(this.value)">
+        <input type="text" id="rua" placeholder="Endereço / Rua">
+        <input type="text" id="num" placeholder="Número e Complemento">
         <input type="text" id="bairro" placeholder="Bairro">
-        <input type="text" id="troco" placeholder="Troco para quanto?">
+        <input type="text" id="troco" placeholder="Troco para quanto? (Opcional)">
         
         <select id="pagamento">
             <option value="Pix">Pix</option>
-            <option value="Cartão">Cartão</option>
+            <option value="Cartão">Cartão na Entrega</option>
             <option value="Dinheiro">Dinheiro</option>
         </select>
-        <textarea id="obs" placeholder="Observações"></textarea>
+        <textarea id="obs" placeholder="Observações (ex: pouco gelo, caprichar no leite condensado...)" rows="2"></textarea>
         
-        <button onclick="finalizarPedido()" style="width:100%; padding:15px; background:#25d366; border:none; color:white; font-weight:bold; border-radius:5px; cursor:pointer; margin-top:5px;">ENVIAR NO WHATSAPP</button>
-        <button onclick="limparTudo()" style="width:100%; padding:10px; margin-top:10px; background:#ff3333; border:none; color:white; border-radius:5px; cursor:pointer;">LIMPAR CARRINHO</button>
-        <button onclick="fecharModal()" style="width:100%; padding:10px; margin-top:5px; background:transparent; border:none; color:white; cursor:pointer;">VOLTAR</button>
+        <button class="btn-action-green" onclick="finalizarPedido()">ENVIAR PEDIDO NO WHATSAPP</button>
+        <button class="btn-action-red" onclick="limparTudo()">LIMPAR CARRINHO</button>
+        <button class="btn-action-ghost" onclick="fecharModal()">Continuar Comprando</button>
     </div>
 </div>
 
@@ -67,7 +319,10 @@
             baseProdutos = await res.json();
             let html = '', catAtual = '';
             baseProdutos.forEach((p, i) => {
-                if (p.cat !== catAtual) { html += `<h2 class="categoria">${p.cat}</h2>`; catAtual = p.cat; }
+                if (p.cat !== catAtual) { 
+                    html += `<h2 class="categoria">${p.cat}</h2>`; 
+                    catAtual = p.cat; 
+                }
                 html += `
                     <div class="card">
                         <img src="${p.img}" alt="${p.nome}">
@@ -76,31 +331,54 @@
                             <p>${p.desc || ''}</p>
                             <span class="preco">R$ ${p.preco.toFixed(2)}</span>
                         </div>
-                        <button class="btn-add" onclick="adicionar(${i})">ADD</button>
+                        <button class="btn-add" onclick="adicionar(${i})">+ ADD</button>
                     </div>`;
             });
             document.getElementById('vitrine').innerHTML = html;
         } catch (e) { 
-            document.getElementById('vitrine').innerText = "Erro ao carregar cardápio."; 
+            document.getElementById('vitrine').innerHTML = '<p style="text-align:center; color:#e74c3c;">Erro ao carregar cardápio. Verifique o arquivo JSON.</p>'; 
         }
     }
 
     async function buscarCEP(cep) {
         cep = cep.replace(/\D/g, '');
         if(cep.length === 8) {
-            const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-            const data = await res.json();
-            if(!data.erro) { 
-                document.getElementById('rua').value = data.logradouro; 
-                document.getElementById('bairro').value = data.bairro; 
+            try {
+                const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+                const data = await res.json();
+                if(!data.erro) { 
+                    document.getElementById('rua').value = data.logradouro; 
+                    document.getElementById('bairro').value = data.bairro; 
+                    document.getElementById('num').focus();
+                }
+            } catch(err) {
+                console.log("Erro ao buscar CEP");
             }
         }
     }
 
-    function adicionar(i) { carrinho.push(baseProdutos[i]); salvar(); }
-    function remover(i) { carrinho.splice(i, 1); salvar(); abrirModal(); }
-    function salvar() { localStorage.setItem('carrinho_fluxo', JSON.stringify(carrinho)); recalcular(); }
-    function limparTudo() { carrinho = []; salvar(); fecharModal(); }
+    function adicionar(i) { 
+        carrinho.push(baseProdutos[i]); 
+        salvar(); 
+        // Pequeno feedback visual no console ou alerta rápido se necessário
+    }
+
+    function remover(i) { 
+        carrinho.splice(i, 1); 
+        salvar(); 
+        abrirModal(); 
+    }
+
+    function salvar() { 
+        localStorage.setItem('carrinho_fluxo', JSON.stringify(carrinho)); 
+        recalcular(); 
+    }
+
+    function limparTudo() { 
+        carrinho = []; 
+        salvar(); 
+        fecharModal(); 
+    }
 
     function recalcular() {
         const total = carrinho.reduce((a, b) => a + b.preco, 0);
@@ -110,26 +388,49 @@
     }
 
     function abrirModal() {
+        if(carrinho.length === 0) return;
         let html = '';
         carrinho.forEach((p, i) => {
-            html += `<div class="item-lista"><span>${p.nome} (R$ ${p.preco.toFixed(2)})</span><button onclick="remover(${i})" style="background:none; border:none; color:red; cursor:pointer; font-size:1.1rem;">🗑️</button></div>`;
+            html += `
+                <div class="item-lista">
+                    <span><b>${p.nome}</b><br><span style="color:var(--primary-light);">R$ ${p.preco.toFixed(2)}</span></span>
+                    <button onclick="remover(${i})" style="background:none; border:none; color:#e74c3c; cursor:pointer; font-size:1.2rem; padding:5px;">🗑️</button>
+                </div>`;
         });
         document.getElementById('lista-resumo').innerHTML = html;
         document.getElementById('modalPedido').style.display = 'block';
     }
 
-    function fecharModal() { document.getElementById('modalPedido').style.display = 'none'; }
+    function fecharModal() { 
+        document.getElementById('modalPedido').style.display = 'none'; 
+    }
 
     function finalizarPedido() {
+        const nome = document.getElementById('nomeCliente').value.trim();
+        const rua = document.getElementById('rua').value.trim();
+        
+        if(!nome) {
+            alert('Por favor, preencha o seu nome!');
+            document.getElementById('nomeCliente').focus();
+            return;
+        }
+        if(!rua) {
+            alert('Por favor, preencha o endereço de entrega!');
+            document.getElementById('rua').focus();
+            return;
+        }
+
         const total = carrinho.reduce((a, b) => a + b.preco, 0);
         let msg = `*NOVO PEDIDO - ADEGA O FLUXO*\n\n`;
         carrinho.forEach(item => msg += `• ${item.nome} - R$ ${item.preco.toFixed(2)}\n`);
-        msg += `\n*TOTAL: R$ ${total.toFixed(2)}*\n\n`;
-        msg += `Nome: ${document.getElementById('nomeCliente').value}\n`;
-        msg += `End: ${document.getElementById('rua').value}, ${document.getElementById('num').value} - ${document.getElementById('bairro').value}\n`;
+        msg += `\n*TOTAL DOS ITENS: R$ ${total.toFixed(2)}*\n\n`;
+        msg += `*DADOS DE ENTREGA:*\n`;
+        msg += `Nome: ${nome}\n`;
+        msg += `Endereço: ${rua}, ${document.getElementById('num').value} - ${document.getElementById('bairro').value}\n`;
         msg += `Pagamento: ${document.getElementById('pagamento').value}\n`;
         msg += `Troco: ${document.getElementById('troco').value || "Não precisa"}\n`;
-        msg += `Obs: ${document.getElementById('obs').value}`;
+        msg += `Obs: ${document.getElementById('obs').value || "Nenhuma"}`;
+        
         window.open(`https://api.whatsapp.com/send?phone=5511942971753&text=${encodeURIComponent(msg)}`, '_blank');
     }
 
