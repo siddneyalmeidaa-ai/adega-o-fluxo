@@ -1,72 +1,58 @@
 [
   {
-    "cat": "🍓 Batidas Diferentes & Especiais",
+    "cat": "🍓 Batidas Especiais da Casa",
     "nome": "Batida Negroni Cremoso",
     "preco": 22.00,
     "desc": "60ml de Gin, 40ml de Campari, 40ml de Vermute tinto, 50ml de leite condensado, 80ml de creme de leite e gelo",
-    "img": "negroni"
+    "badge": "Mais Vendido"
   },
   {
-    "cat": "🍓 Batidas Diferentes & Especiais",
+    "cat": "🍓 Batidas Especiais da Casa",
     "nome": "Batida Pearl Split Exótica",
     "preco": 20.00,
     "desc": "120ml de vodka, 60ml de suco de limão taiti, 40ml de licor de laranja, 60ml de leite condensado e gelo",
-    "img": "tropical"
+    "badge": "Exclusivo"
   },
   {
-    "cat": "🍓 Batidas Diferentes & Especiais",
-    "nome": "Batida Moscow Mule Cremoso (A Veludo Negro)",
+    "cat": "🍓 Batidas Especiais da Casa",
+    "nome": "Batida Moscow Mule Cremoso (Veludo Negro)",
     "preco": 21.00,
     "desc": "120ml de vodka, 80ml de xarope de gengibre, 40ml de suco de limão, 60ml de leite condensado e creme de leite",
-    "img": "mule"
+    "badge": "Cremoso"
   },
   {
-    "cat": "🍓 Batidas Diferentes & Especiais",
+    "cat": "🍓 Batidas Especiais da Casa",
     "nome": "Batida Gin Tônica Tropical",
     "preco": 21.50,
     "desc": "120ml de Gin, 100ml de água tônica, 80ml de polpa de maracujá, 50ml de leite condensado e gelo",
-    "img": "tropical"
+    "badge": "Refrescante"
   },
   {
-    "cat": "🍓 Batidas Diferentes & Especiais",
-    "nome": "Batida Piña Colada O Fluxo",
+    "cat": "🍓 Batidas Especiais da Casa",
+    "nome": "Batida Piña Colada QG",
     "preco": 20.00,
     "desc": "120ml de rum branco, 100ml de leite de coco, 120ml de suco de abacaxi natural e leite condensado",
-    "img": "colada"
+    "badge": "Tropical"
   },
   {
-    "cat": "🍓 Batidas Diferentes & Especiais",
+    "cat": "🍓 Batidas Especiais da Casa",
     "nome": "Batida Espresso Martini Cremoso",
     "preco": 22.50,
     "desc": "100ml de vodka, 60ml de licor de café, 80ml de café espresso forte, 40ml de leite condensado e gelo",
-    "img": "martini"
+    "badge": "Energético"
   },
   {
-    "cat": "🍓 Batidas Diferentes & Especiais",
+    "cat": "🍓 Batidas Especiais da Casa",
     "nome": "Batida Aperol Spritz Tropical",
     "preco": 21.00,
     "desc": "90ml de Aperol, 90ml de espumante brut, 50ml de suco de laranja natural e leite condensado",
-    "img": "spritz"
+    "badge": "Leve"
   },
   {
-    "cat": "🍓 Batidas Diferentes & Especiais",
+    "cat": "🍓 Batidas Especiais da Casa",
     "nome": "Batida Frutas Vermelhas com Espuma de Hibisco",
     "preco": 23.00,
     "desc": "120ml de vodka, 90g de frutas vermelhas, infusão de hibisco, leite condensado e creme de leite",
-    "img": "berry"
-  },
-  {
-    "cat": "🍓 Batidas Diferentes & Especiais",
-    "nome": "Batida de Paçoca com Whisky (O Rústico Refinado)",
-    "preco": 22.00,
-    "desc": "100ml de Whisky Bourbon, 3 unidades de paçoca, 40ml de leite condensado e 100ml de leite",
-    "img": "whisky"
-  },
-  {
-    "cat": "🍓 Batidas Diferentes & Especiais",
-    "nome": "Batida de Coco Queimado com Rum",
-    "preco": 21.00,
-    "desc": "120ml de rum envelhecido, 80ml de leite de coco, açúcar mascavo, leite condensado e gelo",
-    "img": "colada"
+    "badge": "Especial"
   }
 ]
