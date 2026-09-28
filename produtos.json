@@ -1,16 +1,72 @@
 [
-  { "cat": "🔥 Combos da Madrugada", "nome": "Combo Patrão", "preco": 160.00, "desc": "1 Whisky 8 Anos + 4 Red Bull + Gelo", "img": "https://images.unsplash.com/photo-1527661591475-525002d6a59f?q=80&w=150" },
-  { "cat": "🔥 Combos da Madrugada", "nome": "Combo Cria", "preco": 130.00, "desc": "1 Gin + 4 Tônicas + Frutas", "img": "https://images.unsplash.com/photo-1544145945-f99996d99692?q=80&w=150" },
-  { "cat": "🔥 Combos da Madrugada", "nome": "Combo Monstro", "preco": 85.00, "desc": "Whisky + Refrigerante + Gelo", "img": "https://images.unsplash.com/photo-1582234372157-eabf9b0783f6?q=80&w=150" },
-  { "cat": "🔥 Combos da Madrugada", "nome": "Combo Gin Premium", "preco": 190.00, "desc": "Gin Premium + 4 Tônicas", "img": "https://images.unsplash.com/photo-1563255140-5e36502213b3?q=80&w=150" },
-  { "cat": "🍺 Cervejas Trincando", "nome": "Heineken Long Neck 330ml", "preco": 10.50, "desc": "Puro Malte", "img": "https://images.unsplash.com/photo-1614313511887-24aa1d98438d?q=80&w=150" },
-  { "cat": "🍺 Cervejas Trincando", "nome": "Budweiser Long Neck 330ml", "preco": 8.50, "desc": "Leve e saborosa", "img": "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=150" },
-  { "cat": "🍺 Cervejas Trincando", "nome": "Brahma Duplo Malte 355ml", "preco": 7.50, "desc": "Refrescante", "img": "https://images.unsplash.com/photo-1608270586620-248524c67de9?q=80&w=150" },
-  { "cat": "🍾 Destilados (Garrafas)", "nome": "Whisky Red Label 1L", "preco": 120.00, "desc": "Original 1 Litro", "img": "https://images.unsplash.com/photo-1569529469599-5221081546b5?q=80&w=150" },
-  { "cat": "🍾 Destilados (Garrafas)", "nome": "Vodka Smirnoff 998ml", "preco": 65.00, "desc": "Tradicional", "img": "https://images.unsplash.com/photo-1551024601-bec78aea704b?q=80&w=150" },
-  { "cat": "🍾 Destilados (Garrafas)", "nome": "Gin Tanqueray 750ml", "preco": 150.00, "desc": "London Dry Gin", "img": "https://images.unsplash.com/photo-1628557348799-598d5789f13e?q=80&w=150" },
-  { "cat": "🥤 Refrigerantes & Mixers", "nome": "Coca-Cola Original 350ml", "preco": 6.50, "desc": "Lata gelada", "img": "https://images.unsplash.com/photo-1629203851944-a131f77d33d4?q=80&w=150" },
-  { "cat": "🥤 Refrigerantes & Mixers", "nome": "Red Bull Tropical 250ml", "preco": 14.00, "desc": "Energético", "img": "https://images.unsplash.com/photo-1626226176527-024508933b47?q=80&w=150" },
-  { "cat": "🥤 Refrigerantes & Mixers", "nome": "Água Mineral Sem Gás 500ml", "preco": 4.00, "desc": "Garrafa 500ml", "img": "https://images.unsplash.com/photo-1548848283-75878d91c107?q=80&w=150" },
-  { "cat": "🥤 Refrigerantes & Mixers", "nome": "Água Mineral Com Gás 500ml", "preco": 4.50, "desc": "Garrafa 500ml", "img": "https://images.unsplash.com/photo-1548848283-75878d91c107?q=80&w=150" }
+  {
+    "cat": "🍓 Batidas Diferentes & Especiais",
+    "nome": "Batida Negroni Cremoso",
+    "preco": 22.00,
+    "desc": "60ml de Gin, 40ml de Campari, 40ml de Vermute tinto, 50ml de leite condensado, 80ml de creme de leite e gelo",
+    "img": "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=150"
+  },
+  {
+    "cat": "🍓 Batidas Diferentes & Especiais",
+    "nome": "Batida Pearl Split Exótica",
+    "preco": 20.00,
+    "desc": "120ml de vodka, 60ml de suco de limão taiti, 40ml de licor de laranja, 60ml de leite condensado e gelo",
+    "img": "https://images.unsplash.com/photo-1551024601-bec78aea704b?q=80&w=150"
+  },
+  {
+    "cat": "🍓 Batidas Diferentes & Especiais",
+    "nome": "Batida Moscow Mule Cremoso (A Veludo Negro)",
+    "preco": 21.00,
+    "desc": "120ml de vodka, 80ml de xarope de gengibre, 40ml de suco de limão, 60ml de leite condensado e creme de leite",
+    "img": "https://images.unsplash.com/photo-1541658016709-82535e94bc69?q=80&w=150"
+  },
+  {
+    "cat": "🍓 Batidas Diferentes & Especiais",
+    "nome": "Batida Gin Tônica Tropical",
+    "preco": 21.50,
+    "desc": "120ml de Gin, 100ml de água tônica, 80ml de polpa de maracujá, 50ml de leite condensado e gelo",
+    "img": "https://images.unsplash.com/photo-1572490122747-3968b75cc699?q=80&w=150"
+  },
+  {
+    "cat": "🍓 Batidas Diferentes & Especiais",
+    "nome": "Batida Piña Colada O Fluxo",
+    "preco": 20.00,
+    "desc": "120ml de rum branco, 100ml de leite de coco, 120ml de suco de abacaxi natural e leite condensado",
+    "img": "https://images.unsplash.com/photo-1541658016709-82535e94bc69?q=80&w=150"
+  },
+  {
+    "cat": "🍓 Batidas Diferentes & Especiais",
+    "nome": "Batida Espresso Martini Cremoso",
+    "preco": 22.50,
+    "desc": "100ml de vodka, 60ml de licor de café, 80ml de café espresso forte, 40ml de leite condensado e gelo",
+    "img": "https://images.unsplash.com/photo-1572490122747-3968b75cc699?q=80&w=150"
+  },
+  {
+    "cat": "🍓 Batidas Diferentes & Especiais",
+    "nome": "Batida Aperol Spritz Tropical",
+    "preco": 21.00,
+    "desc": "90ml de Aperol, 90ml de espumante brut, 50ml de suco de laranja natural e leite condensado",
+    "img": "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=150"
+  },
+  {
+    "cat": "🍓 Batidas Diferentes & Especiais",
+    "nome": "Batida Frutas Vermelhas com Espuma de Hibisco",
+    "preco": 23.00,
+    "desc": "120ml de vodka, 90g de frutas vermelhas, infusão de hibisco, leite condensado e creme de leite",
+    "img": "https://images.unsplash.com/photo-1551024601-bec78aea704b?q=80&w=150"
+  },
+  {
+    "cat": "🍓 Batidas Diferentes & Especiais",
+    "nome": "Batida de Paçoca com Whisky (O Rústico Refinado)",
+    "preco": 22.00,
+    "desc": "100ml de Whisky Bourbon, 3 unidades de paçoca, 40ml de leite condensado e 100ml de leite",
+    "img": "https://images.unsplash.com/photo-1551024601-bec78aea704b?q=80&w=150"
+  },
+  {
+    "cat": "🍓 Batidas Diferentes & Especiais",
+    "nome": "Batida de Coco Queimado com Rum",
+    "preco": 21.00,
+    "desc": "120ml de rum envelhecido, 80ml de leite de coco, açúcar mascavo, leite condensado e gelo",
+    "img": "https://images.unsplash.com/photo-1541658016709-82535e94bc69?q=80&w=150"
+  }
 ]
