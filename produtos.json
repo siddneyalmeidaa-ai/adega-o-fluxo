@@ -4,69 +4,69 @@
     "nome": "Batida Negroni Cremoso",
     "preco": 22.00,
     "desc": "60ml de Gin, 40ml de Campari, 40ml de Vermute tinto, 50ml de leite condensado, 80ml de creme de leite e gelo",
-    "img": "https://images.unsplash.com/photo-1551024601-bec78aea704b?q=80&w=300"
+    "img": "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=300&q=80"
   },
   {
     "cat": "🍓 Batidas Diferentes & Especiais",
     "nome": "Batida Pearl Split Exótica",
     "preco": 20.00,
     "desc": "120ml de vodka, 60ml de suco de limão taiti, 40ml de licor de laranja, 60ml de leite condensado e gelo",
-    "img": "https://images.unsplash.com/photo-1536935338788-846bb9981813?q=80&w=300"
+    "img": "https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&w=300&q=80"
   },
   {
     "cat": "🍓 Batidas Diferentes & Especiais",
     "nome": "Batida Moscow Mule Cremoso (A Veludo Negro)",
     "preco": 21.00,
     "desc": "120ml de vodka, 80ml de xarope de gengibre, 40ml de suco de limão, 60ml de leite condensado e creme de leite",
-    "img": "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=300"
+    "img": "https://images.unsplash.com/photo-1536935338788-846bb9981813?auto=format&fit=crop&w=300&q=80"
   },
   {
     "cat": "🍓 Batidas Diferentes & Especiais",
     "nome": "Batida Gin Tônica Tropical",
     "preco": 21.50,
     "desc": "120ml de Gin, 100ml de água tônica, 80ml de polpa de maracujá, 50ml de leite condensado e gelo",
-    "img": "https://images.unsplash.com/photo-1541658016709-82535e94bc69?q=80&w=300"
+    "img": "https://images.unsplash.com/photo-1541658016709-82535e94bc69?auto=format&fit=crop&w=300&q=80"
   },
   {
     "cat": "🍓 Batidas Diferentes & Especiais",
     "nome": "Batida Piña Colada O Fluxo",
     "preco": 20.00,
     "desc": "120ml de rum branco, 100ml de leite de coco, 120ml de suco de abacaxi natural e leite condensado",
-    "img": "https://images.unsplash.com/photo-1571104508997-01594f7b5a39?q=80&w=300"
+    "img": "https://images.unsplash.com/photo-1571104508997-01594f7b5a39?auto=format&fit=crop&w=300&q=80"
   },
   {
     "cat": "🍓 Batidas Diferentes & Especiais",
     "nome": "Batida Espresso Martini Cremoso",
     "preco": 22.50,
     "desc": "100ml de vodka, 60ml de licor de café, 80ml de café espresso forte, 40ml de leite condensado e gelo",
-    "img": "https://images.unsplash.com/photo-1572490122747-3968b75cc699?q=80&w=300"
+    "img": "https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=300&q=80"
   },
   {
     "cat": "🍓 Batidas Diferentes & Especiais",
     "nome": "Batida Aperol Spritz Tropical",
     "preco": 21.00,
     "desc": "90ml de Aperol, 90ml de espumante brut, 50ml de suco de laranja natural e leite condensado",
-    "img": "https://images.unsplash.com/photo-1563255140-5e36502213b3?q=80&w=300"
+    "img": "https://images.unsplash.com/photo-1563255140-5e36502213b3?auto=format&fit=crop&w=300&q=80"
   },
   {
     "cat": "🍓 Batidas Diferentes & Especiais",
     "nome": "Batida Frutas Vermelhas com Espuma de Hibisco",
     "preco": 23.00,
     "desc": "120ml de vodka, 90g de frutas vermelhas, infusão de hibisco, leite condensado e creme de leite",
-    "img": "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=300"
+    "img": "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=300&q=80"
   },
   {
     "cat": "🍓 Batidas Diferentes & Especiais",
     "nome": "Batida de Paçoca com Whisky (O Rústico Refinado)",
     "preco": 22.00,
     "desc": "100ml de Whisky Bourbon, 3 unidades de paçoca, 40ml de leite condensado e 100ml de leite",
-    "img": "https://images.unsplash.com/photo-1582234372157-eabf9b0783f6?q=80&w=300"
+    "img": "https://images.unsplash.com/photo-1582234372157-eabf9b0783f6?auto=format&fit=crop&w=300&q=80"
   },
   {
     "cat": "🍓 Batidas Diferentes & Especiais",
     "nome": "Batida de Coco Queimado com Rum",
     "preco": 21.00,
     "desc": "120ml de rum envelhecido, 80ml de leite de coco, açúcar mascavo, leite condensado e gelo",
-    "img": "https://images.unsplash.com/photo-1527661591475-525002d6a59f?q=80&w=300"
+    "img": "https://images.unsplash.com/photo-1527661591475-525002d6a59f?auto=format&fit=crop&w=300&q=80"
   }
 ]
