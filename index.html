@@ -95,7 +95,7 @@
 
         .card {
             background-color: var(--card-bg);
-            margin: 16px 0;
+            margin: 18px 0;
             border-radius: 16px;
             display: flex;
             flex-direction: column;
@@ -111,16 +111,21 @@
 
         .card-img-container {
             width: 100%;
-            height: 200px;
-            overflow: hidden;
+            height: 260px;
+            background: radial-gradient(circle, #1a1a1a 0%, #0d0d0d 100%);
             position: relative;
-            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-bottom: 1px solid var(--border);
         }
 
         .card-img-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+            max-height: 90%;
+            max-width: 90%;
+            object-fit: contain;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.7));
             transition: transform 0.5s ease;
         }
 
@@ -132,11 +137,11 @@
             position: absolute;
             top: 12px;
             right: 12px;
-            background: rgba(0, 0, 0, 0.75);
+            background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(6px);
             color: var(--primary);
             font-size: 0.7rem;
-            padding: 5px 10px;
+            padding: 6px 12px;
             border-radius: 8px;
             font-weight: 800;
             text-transform: uppercase;
@@ -158,7 +163,7 @@
         }
 
         .card p {
-            font-size: 0.82rem;
+            font-size: 0.85rem;
             color: var(--text-muted);
             margin: 0 0 16px 0;
             line-height: 1.4;
@@ -350,7 +355,7 @@
 </header>
 
 <div class="container" id="vitrine">
-    <div style="text-align:center; padding: 40px; color: var(--text-muted);">A carregar cardápio completo...</div>
+    <div style="text-align:center; padding: 40px; color: var(--text-muted);">A carregar cardápio...</div>
 </div>
 
 <div class="cart-bar" id="cart-bar" style="display: none;">
