@@ -71,7 +71,6 @@
             align-items: center;
             box-shadow: 0 4px 15px rgba(0,0,0,0.4);
             border: 1px solid var(--border);
-            transition: transform 0.2s;
         }
 
         .card img {
@@ -118,13 +117,8 @@
             font-weight: bold;
             font-size: 0.85rem;
             box-shadow: 0 2px 8px rgba(243, 156, 18, 0.3);
-            transition: opacity 0.2s;
             flex-shrink: 0;
             margin-left: 10px;
-        }
-
-        .btn-add:active {
-            opacity: 0.8;
         }
 
         .cart-bar {
@@ -222,11 +216,6 @@
             font-size: 0.95rem;
         }
 
-        input:focus, select:focus, textarea:focus {
-            border-color: var(--primary);
-            outline: none;
-        }
-
         .btn-action-green {
             width: 100%;
             padding: 14px;
@@ -238,7 +227,6 @@
             cursor: pointer;
             font-size: 1rem;
             margin-top: 10px;
-            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
         }
 
         .btn-action-red {
@@ -315,7 +303,7 @@
 
     async function carregar() {
         try {
-            const res = await fetch('produtos.json');
+            const res = await fetch('produtos.json?t=' + new Date().getTime());
             baseProdutos = await res.json();
             let html = '', catAtual = '';
             baseProdutos.forEach((p, i) => {
@@ -325,7 +313,7 @@
                 }
                 html += `
                     <div class="card">
-                        <img src="${p.img}" alt="${p.nome}">
+                        <img src="${p.img}" alt="Drink" onerror="this.src='https://images.unsplash.com/photo-1551024601-bec78aea704b?w=300&q=80'">
                         <div class="info">
                             <h3>${p.nome}</h3>
                             <p>${p.desc || ''}</p>
@@ -336,7 +324,7 @@
             });
             document.getElementById('vitrine').innerHTML = html;
         } catch (e) { 
-            document.getElementById('vitrine').innerHTML = '<p style="text-align:center; color:#e74c3c;">Erro ao carregar cardápio. Verifique o arquivo JSON.</p>'; 
+            document.getElementById('vitrine').innerHTML = '<p style="text-align:center; color:#e74c3c;">Erro ao carregar cardápio.</p>'; 
         }
     }
 
@@ -351,34 +339,14 @@
                     document.getElementById('bairro').value = data.bairro; 
                     document.getElementById('num').focus();
                 }
-            } catch(err) {
-                console.log("Erro ao buscar CEP");
-            }
+            } catch(err) {}
         }
     }
 
-    function adicionar(i) { 
-        carrinho.push(baseProdutos[i]); 
-        salvar(); 
-        // Pequeno feedback visual no console ou alerta rápido se necessário
-    }
-
-    function remover(i) { 
-        carrinho.splice(i, 1); 
-        salvar(); 
-        abrirModal(); 
-    }
-
-    function salvar() { 
-        localStorage.setItem('carrinho_fluxo', JSON.stringify(carrinho)); 
-        recalcular(); 
-    }
-
-    function limparTudo() { 
-        carrinho = []; 
-        salvar(); 
-        fecharModal(); 
-    }
+    function adicionar(i) { carrinho.push(baseProdutos[i]); salvar(); }
+    function remover(i) { carrinho.splice(i, 1); salvar(); abrirModal(); }
+    function salvar() { localStorage.setItem('carrinho_fluxo', JSON.stringify(carrinho)); recalcular(); }
+    function limparTudo() { carrinho = []; salvar(); fecharModal(); }
 
     function recalcular() {
         const total = carrinho.reduce((a, b) => a + b.preco, 0);
@@ -401,35 +369,18 @@
         document.getElementById('modalPedido').style.display = 'block';
     }
 
-    function fecharModal() { 
-        document.getElementById('modalPedido').style.display = 'none'; 
-    }
+    function fecharModal() { document.getElementById('modalPedido').style.display = 'none'; }
 
     function finalizarPedido() {
         const nome = document.getElementById('nomeCliente').value.trim();
         const rua = document.getElementById('rua').value.trim();
-        
-        if(!nome) {
-            alert('Por favor, preencha o seu nome!');
-            document.getElementById('nomeCliente').focus();
-            return;
-        }
-        if(!rua) {
-            alert('Por favor, preencha o endereço de entrega!');
-            document.getElementById('rua').focus();
-            return;
-        }
+        if(!nome) { alert('Preencha seu nome!'); document.getElementById('nomeCliente').focus(); return; }
+        if(!rua) { alert('Preencha o endereço!'); document.getElementById('rua').focus(); return; }
 
         const total = carrinho.reduce((a, b) => a + b.preco, 0);
         let msg = `*NOVO PEDIDO - ADEGA O FLUXO*\n\n`;
         carrinho.forEach(item => msg += `• ${item.nome} - R$ ${item.preco.toFixed(2)}\n`);
-        msg += `\n*TOTAL DOS ITENS: R$ ${total.toFixed(2)}*\n\n`;
-        msg += `*DADOS DE ENTREGA:*\n`;
-        msg += `Nome: ${nome}\n`;
-        msg += `Endereço: ${rua}, ${document.getElementById('num').value} - ${document.getElementById('bairro').value}\n`;
-        msg += `Pagamento: ${document.getElementById('pagamento').value}\n`;
-        msg += `Troco: ${document.getElementById('troco').value || "Não precisa"}\n`;
-        msg += `Obs: ${document.getElementById('obs').value || "Nenhuma"}`;
+        msg += `\n*TOTAL: R$ ${total.toFixed(2)}*\n\n*ENDEREÇO:*\nNome: ${nome}\nEnd: ${rua}, ${document.getElementById('num').value} - ${document.getElementById('bairro').value}\nPagamento: ${document.getElementById('pagamento').value}\nTroco: ${document.getElementById('troco').value || "Não precisa"}\nObs: ${document.getElementById('obs').value || "Nenhuma"}`;
         
         window.open(`https://api.whatsapp.com/send?phone=5511942971753&text=${encodeURIComponent(msg)}`, '_blank');
     }
