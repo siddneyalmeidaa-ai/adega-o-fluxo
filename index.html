@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adega O Fluxo - Delivery</title>
+    <title>KG das Batidas - Delivery</title>
     <style>
         :root {
             --bg-color: #0b0b0b;
@@ -26,17 +26,31 @@
         }
 
         header {
-            background: linear-gradient(180deg, #111 0%, #0b0b0b 100%);
+            background: linear-gradient(180deg, #181818 0%, #0b0b0b 100%);
             padding: 25px 20px;
             text-align: center;
             border-bottom: 2px solid var(--primary);
         }
 
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .logo-svg {
+            width: 55px;
+            height: 55px;
+            fill: var(--primary);
+            filter: drop-shadow(0 2px 8px rgba(243,156,18,0.4));
+        }
+
         header h1 {
             color: var(--primary);
             margin: 0;
-            font-size: 1.6rem;
-            letter-spacing: 1px;
+            font-size: 1.7rem;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
         }
 
@@ -73,14 +87,23 @@
             border: 1px solid var(--border);
         }
 
-        .card img {
+        .drink-icon-box {
             width: 75px;
             height: 75px;
             border-radius: 10px;
             margin-right: 15px;
-            object-fit: cover;
-            background: #222;
+            background: linear-gradient(135deg, #222, #111);
+            display: flex;
+            justify-content: center;
+            align-items: center;
             flex-shrink: 0;
+            border: 1px solid #333;
+        }
+
+        .drink-icon-box svg {
+            width: 42px;
+            height: 42px;
+            fill: var(--primary-light);
         }
 
         .info {
@@ -255,12 +278,18 @@
 <body>
 
 <header>
-    <h1>Adega O Fluxo</h1>
+    <div class="logo-container">
+        <!-- Logótipo em desenho de copo de cocktail estilizado -->
+        <svg class="logo-svg" viewBox="0 0 24 24">
+            <path d="M7 2h10l-1 5h-8l-1-5zm-2 7h14l-4 8H9l-4-8zm3.5 10h5a1 1 0 0 1 0 2h-5a1 1 0 0 1 0-2z"/>
+        </svg>
+    </div>
+    <h1>KG das Batidas</h1>
     <p>As melhores batidas artesanais da região</p>
 </header>
 
 <div class="container" id="vitrine">
-    <div style="text-align:center; padding: 40px; color: #777;">Carregando cardápio...</div>
+    <div style="text-align:center; padding: 40px; color: #777;">A carregar cardápio...</div>
 </div>
 
 <div class="cart-bar" id="cart-bar" style="display: none;">
@@ -301,6 +330,18 @@
     let baseProdutos = [];
     let carrinho = JSON.parse(localStorage.getItem('carrinho_fluxo')) || [];
 
+    // Ícones vetoriais desenhados para cada estilo de drink
+    const iconesDrink = {
+        negroni: '<svg viewBox="0 0 24 24"><path d="M4 3h16a1 1 0 0 1 1 1v2a1 1 0 0 1-.29.71L13 14.41V20h3a1 1 0 0 1 0 2H8a1 1 0 0 1 0-2h3v-5.59L3.29 6.71A1 1 0 0 1 3 6V4a1 1 0 0 1 1-1zm2 3h12V5H6v1z"/></svg>',
+        tropical: '<svg viewBox="0 0 24 24"><path d="M6.5 2h11l-1 6h-9l-1-6zm-1 8h13l-4.5 9h-4l-4.5-9zm3.5 11h4a1 1 0 0 1 0 2h-4a1 1 0 0 1 0-2z"/></svg>',
+        mule: '<svg viewBox="0 0 24 24"><path d="M5 4h12a3 3 0 0 1 3 3v8a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V7a3 3 0 0 1 3-3zm14 3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1v8a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3V7zm3 1h2v6h-2V8z"/></svg>',
+        colada: '<svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V20a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-5.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7zm0 2a5 5 0 0 1 5 5c0 1.94-1.12 3.62-2.75 4.43l-.25.12V19h-4v-5.45l-.25-.12A5.002 5.002 0 0 1 7 9a5 5 0 0 1 5-5z"/></svg>',
+        martini: '<svg viewBox="0 0 24 24"><path d="M3.22 3h17.56l-8.78 11L3.22 3zm2.54 2l6.24 7.8 6.24-7.8H5.76zM11 15h2v6h-2v-6z"/></svg>',
+        spritz: '<svg viewBox="0 0 24 24"><path d="M7 2h10l-1 6h-8l-1-6zm-2 8h14l-3.5 10H8.5L5 10zm4 11h6a1 1 0 0 1 0 2H9a1 1 0 0 1 0-2z"/></svg>',
+        berry: '<svg viewBox="0 0 24 24"><path d="M12 2a6 6 0 0 1 6 6c0 3.31-2.69 8-6 12-3.31-4-6-8.69-6-12a6 6 0 0 1 6-6zm0 2a4 4 0 0 0-4 4c0 2.2 1.63 5.7 4 9.07 2.37-3.37 4-6.87 4-9.07a4 4 0 0 0-4-4z"/></svg>',
+        whisky: '<svg viewBox="0 0 24 24"><path d="M6 2h12v3H6V2zm-2 5h16v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7zm2 2v11h12V9H6zm3 2h6v2H9v-2z"/></svg>'
+    };
+
     async function carregar() {
         try {
             const res = await fetch('produtos.json?t=' + new Date().getTime());
@@ -311,9 +352,12 @@
                     html += `<h2 class="categoria">${p.cat}</h2>`; 
                     catAtual = p.cat; 
                 }
+                let svgIcon = iconesDrink[p.img] || iconesDrink['tropical'];
                 html += `
                     <div class="card">
-                        <img src="${p.img}" alt="Drink" onerror="this.src='https://images.unsplash.com/photo-1551024601-bec78aea704b?w=300&q=80'">
+                        <div class="drink-icon-box">
+                            ${svgIcon}
+                        </div>
                         <div class="info">
                             <h3>${p.nome}</h3>
                             <p>${p.desc || ''}</p>
@@ -378,7 +422,7 @@
         if(!rua) { alert('Preencha o endereço!'); document.getElementById('rua').focus(); return; }
 
         const total = carrinho.reduce((a, b) => a + b.preco, 0);
-        let msg = `*NOVO PEDIDO - ADEGA O FLUXO*\n\n`;
+        let msg = `*NOVO PEDIDO - KG DAS BATIDAS*\n\n`;
         carrinho.forEach(item => msg += `• ${item.nome} - R$ ${item.preco.toFixed(2)}\n`);
         msg += `\n*TOTAL: R$ ${total.toFixed(2)}*\n\n*ENDEREÇO:*\nNome: ${nome}\nEnd: ${rua}, ${document.getElementById('num').value} - ${document.getElementById('bairro').value}\nPagamento: ${document.getElementById('pagamento').value}\nTroco: ${document.getElementById('troco').value || "Não precisa"}\nObs: ${document.getElementById('obs').value || "Nenhuma"}`;
         
@@ -388,4 +432,5 @@
     window.onload = () => { carregar(); recalcular(); };
 </script>
 </body>
-</html>
+            </html>
+            
