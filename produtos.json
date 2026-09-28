@@ -29,7 +29,7 @@
     "preco": 21.50,
     "desc": "120ml de Gin, 100ml de água tônica, 80ml de polpa de maracujá, 50ml de leite condensado e gelo",
     "badge": "Refrescante",
-    "img": "https://images.unsplash.com/photo-1541544741938-0af808871cc0?q=80&w=600&auto=format&fit=crop"
+    "img": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=600&auto=format&fit=crop"
   },
   {
     "cat": "🍓 Batidas Especiais da Casa",
@@ -46,5 +46,37 @@
     "desc": "100ml de vodka, 60ml de licor de café, 80ml de café espresso forte, 40ml de leite condensado e gelo",
     "badge": "Energético",
     "img": "https://images.unsplash.com/photo-1544145945-f90425340c7e?q=80&w=600&auto=format&fit=crop"
+  },
+  {
+    "cat": "🍓 Batidas Especiais da Casa",
+    "nome": "Batida Morango Selvagem",
+    "preco": 19.50,
+    "desc": "120ml de cachaça especial, polpa de morango fresca, leite condensado e gelo batido",
+    "badge": "Especial",
+    "img": "https://images.unsplash.com/photo-1543257960-a29094ed1bac?q=80&w=600&auto=format&fit=crop"
+  },
+  {
+    "cat": "🍓 Batidas Especiais da Casa",
+    "nome": "Batida Maracujá com Cacau",
+    "preco": 20.50,
+    "desc": "120ml de vodka, polpa de maracujá natural, toque de licor de cacau e leite condensado",
+    "badge": "Delícia",
+    "img": "https://images.unsplash.com/photo-1536935338788-846bb9981813?q=80&w=600&auto=format&fit=crop"
+  },
+  {
+    "cat": "🍓 Batidas Especiais da Casa",
+    "nome": "Batida Coco com Doce de Leite",
+    "preco": 21.00,
+    "desc": "120ml de rum, creme de coco cremoso, doce de leite artesanal e leite condensado",
+    "badge": "Doce",
+    "img": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?q=80&w=600&auto=format&fit=crop"
+  },
+  {
+    "cat": "🍓 Batidas Especiais da Casa",
+    "nome": "Batida Frutas Vermelhas Supreme",
+    "preco": 23.00,
+    "desc": "120ml de gin, mix de mirtilo, framboesa, amora, leite condensado e creme de leite",
+    "badge": "Supreme",
+    "img": "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=600&auto=format&fit=crop"
   }
 ]
