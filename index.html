@@ -80,10 +80,111 @@
             margin: 8px 0 0 0;
         }
 
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            max-width: 600px;
+            margin: 20px auto 10px auto;
+            padding: 0 15px;
+            box-sizing: border-box;
+        }
+
+        .tab-btn {
+            flex: 1;
+            background: rgba(18, 18, 18, 0.9);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 0.85rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            backdrop-filter: blur(4px);
+        }
+
+        .tab-btn.ativo {
+            background: rgba(243, 156, 18, 0.12);
+            border-color: var(--primary);
+            color: var(--primary);
+            box-shadow: 0 4px 15px var(--primary-glow);
+        }
+
         .container {
             max-width: 600px;
             margin: 0 auto;
             padding: 10px 15px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.ativo {
+            display: block;
+        }
+
+        .institucional-box {
+            background-color: var(--card-bg);
+            backdrop-filter: blur(6px);
+            margin: 15px 0;
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid var(--border);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+        }
+
+        .institucional-box h2 {
+            color: var(--primary);
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-top: 0;
+            margin-bottom: 15px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+        }
+
+        .institucional-box p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        .institucional-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .institucional-card {
+            background: rgba(9, 9, 9, 0.8);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .institucional-card h4 {
+            color: var(--primary);
+            margin: 0 0 8px 0;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .institucional-card p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin: 0;
+            line-height: 1.5;
+            text-align: left;
         }
 
         .categoria-titulo {
@@ -374,8 +475,39 @@
     <p>As melhores batidas da região na sua casa</p>
 </header>
 
-<div class="container" id="vitrine">
-    <div style="text-align:center; padding: 40px; color: var(--text-muted);">A carregar cardápio...</div>
+<div class="nav-tabs">
+    <button class="tab-btn ativo" onclick="mudarAba('cardapio', this)">Cardápio</button>
+    <button class="tab-btn" onclick="mudarAba('sobre', this)">Quem Somos</button>
+</div>
+
+<div class="container">
+    <div id="aba-cardapio" class="tab-content ativo">
+        <div id="vitrine">
+            <div style="text-align:center; padding: 40px; color: var(--text-muted);">A carregar cardápio...</div>
+        </div>
+    </div>
+
+    <div id="aba-sobre" class="tab-content">
+        <div class="institucional-box">
+            <h2>Nossa História</h2>
+            <p>No coração de Taboão da Serra, nasce uma nova referência em sabor e autenticidade para os seus momentos de lazer. O QG das Batidas foi criado para transformar encontros comuns em experiências inesquecíveis, unindo a tradição das receitas artesanais a um padrão moderno de praticidade e entrega. Nossas batidas são preparadas com ingredientes rigorosamente selecionados e muito cuidado em cada detalhe, garantindo aquela cremosidade e equilíbrio perfeitos que conquistam ao primeiro gole. Seja para curtir o fim de semana em casa, receber os amigos ou celebrar as melhores ocasiões, o nosso compromisso é levar até você o melhor sabor da região, com rapidez, qualidade e aquela energia que só o QG tem.</p>
+            
+            <div class="institucional-grid">
+                <div class="institucional-card">
+                    <h4>🎯 Missão</h4>
+                    <p>Proporcionar experiências marcantes e momentos de descontração através de batidas artesanais de altíssima qualidade, entregando sabor inconfundível, praticidade e excelência diretamente na casa dos nossos clientes.</p>
+                </div>
+                <div class="institucional-card">
+                    <h4>🚀 Visão</h4>
+                    <p>Consolidar-se como a principal referência em delivery de bebidas artesanais na região, destacando-se pela inovação, autenticidade e por um padrão superior que fideliza quem busca o melhor.</p>
+                </div>
+                <div class="institucional-card">
+                    <h4>💡 Objetivo</h4>
+                    <p>Expandir o alcance da marca mantendo o rigoroso padrão artesanal, otimizando a experiência do cliente do pedido à entrega e construindo uma relação de confiança sólida e duradoura com o público.</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <footer>
@@ -384,7 +516,6 @@
     <p>Responsável: Sidney Pereira de Almeida | CNPJ: 60.659.173/0001-48</p>
     <p style="margin-top: 10px; color: #666;">Todos os direitos reservados.</p>
 </footer>
-
 <div class="cart-bar" id="cart-bar" style="display: none;">
     <div>
         <div class="cart-total-text">Total do Pedido</div>
@@ -417,9 +548,9 @@
         <button class="btn-action-red" onclick="limparTudo()">LIMPAR CARRINHO</button>
         <button class="btn-action-ghost" onclick="fecharModal()">Continuar Comprando</button>
     </div>
-        </div>
-        <script>
-    // Configuração do Efeito Matrix
+</div>
+
+<script>
     const canvas = document.getElementById('matrixCanvas');
     const ctx = canvas.getContext('2d');
 
@@ -430,10 +561,8 @@
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // Caracteres estilo Matrix misturados com símbolos para dar um visual tecnológico/moderno
     const letras = '01QGBSQG10$#@!*&%+-<>';
     const matrixArr = letras.split('');
-    
     const fontSize = 14;
     let columns = canvas.width / fontSize;
     const drops = [];
@@ -443,11 +572,9 @@
     }
 
     function desenharMatrix() {
-        // Fundo com leve transparência para criar o rastro da chuva
         ctx.fillStyle = 'rgba(7, 7, 7, 0.08)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // Cor dos códigos (usando o tom dourado/âmbar da identidade visual do QG das Batidas)
         ctx.fillStyle = 'rgba(243, 156, 18, 0.25)';
         ctx.font = fontSize + 'px monospace';
 
@@ -463,7 +590,20 @@
     }
     setInterval(desenharMatrix, 35);
 
-    // Lógica do Sistema e Carrinho
+    function mudarAba(abaId, elementoBtn) {
+        document.querySelectorAll('.tab-content').forEach(aba => aba.classList.remove('ativo'));
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('ativo'));
+
+        if(abaId === 'cardapio') {
+            document.getElementById('aba-cardapio').classList.add('ativo');
+        } else if(abaId === 'sobre') {
+            document.getElementById('aba-sobre').classList.add('ativo');
+        }
+        
+        elementoBtn.classList.add('ativo');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
     let baseProdutos = [];
     let carrinho = JSON.parse(localStorage.getItem('carrinho_qg')) || [];
     if (!Array.isArray(carrinho)) { carrinho = []; }
@@ -533,7 +673,7 @@
             throw new Error('Dados vazios');
         } catch (e) {
             const produtosFallback = [
-                { cat: "🏆 Destaques", nome: "Batida Morango (Erro JSON)", desc: "Carregamento de emergência" }
+                { cat: "🏆 Destaques", nome: "Batida Morango", desc: "Carregamento de emergência simulado", tamanhos: { "500ml": 25.00, "1L": 45.00 } }
             ];
             renderizarVitrine(produtosFallback);
         }
