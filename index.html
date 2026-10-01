@@ -45,20 +45,32 @@
             backdrop-filter: blur(4px);
         }
 
-        .logo-badge-top {
+        .status-loja-badge {
             display: inline-flex;
             align-items: center;
-            justify-content: center;
-            background: rgba(243, 156, 18, 0.1);
-            border: 1px solid var(--primary);
-            color: var(--primary);
+            gap: 6px;
+            background: rgba(37, 211, 102, 0.1);
+            border: 1px solid var(--accent);
+            color: var(--accent);
             padding: 6px 14px;
             border-radius: 20px;
             font-size: 0.75rem;
             font-weight: 800;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
             text-transform: uppercase;
             margin-bottom: 12px;
+        }
+        .status-loja-badge.fechado {
+            background: rgba(231, 76, 60, 0.1);
+            border-color: #e74c3c;
+            color: #e74c3c;
+        }
+        .status-ponto {
+            width: 8px;
+            height: 8px;
+            background-color: currentColor;
+            border-radius: 50%;
+            box-shadow: 0 0 8px currentColor;
         }
 
         header h1 {
@@ -398,6 +410,48 @@
             font-size: 0.85rem;
         }
 
+        .item-controles {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-qtd {
+            background: #222;
+            color: #fff;
+            border: 1px solid var(--border);
+            width: 26px;
+            height: 26px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .resumo-valores {
+            background: rgba(9, 9, 9, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px;
+            margin: 15px 0;
+            font-size: 0.85rem;
+        }
+
+        .resumo-linha {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            color: var(--text-muted);
+        }
+
+        .resumo-linha.total {
+            margin-top: 10px;
+            padding-top: 8px;
+            border-top: 1px solid var(--border);
+            color: var(--text-main);
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
         input, select, textarea {
             width: 100%;
             padding: 13px;
@@ -409,6 +463,67 @@
             box-sizing: border-box;
             font-size: 0.95rem;
             outline: none;
+        }
+
+        .linha-gps {
+            display: flex;
+            gap: 8px;
+            margin: 8px 0;
+        }
+
+        .btn-gps {
+            background: rgba(243, 156, 18, 0.15);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 0 14px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: 0.2s;
+        }
+        .btn-gps:hover {
+            background: rgba(243, 156, 18, 0.3);
+        }
+
+        .mapa-preview {
+            width: 100%;
+            height: 120px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            margin: 8px 0;
+            overflow: hidden;
+            display: none;
+            background: #090909;
+        }
+
+        .mapa-preview iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .adicionais-box {
+            background: rgba(9, 9, 9, 0.5);
+            border: 1px dashed var(--border);
+            border-radius: 10px;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 0.85rem;
+        }
+        .adicionais-box label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+        .adicionais-box input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin: 0;
+            accent-color: var(--primary);
         }
 
         .btn-action-green {
@@ -470,6 +585,9 @@
 <canvas id="matrixCanvas"></canvas>
 
 <header>
+    <div id="statusLojaBadge" class="status-loja-badge">
+        <span class="status-ponto"></span> <span id="statusLojaTexto">Verificando horário...</span>
+    </div>
     <div class="logo-badge-top">Artesanais & Exclusivas</div>
     <h1>QG das <span>Batidas</span></h1>
     <p>As melhores batidas da região na sua casa</p>
@@ -512,37 +630,60 @@
 
 <footer>
     <p><strong>QG das Batidas</strong></p>
-    <p>Endereço: Rua André da Silva Pina, 309</p>
+    <p>Endereço: Rua André da Silva Pina, 309 - Taboão da Serra - SP</p>
     <p>Responsável: Sidney Pereira de Almeida | CNPJ: 60.659.173/0001-48</p>
     <p style="margin-top: 10px; color: #666;">Todos os direitos reservados.</p>
-</footer>
-<div class="cart-bar" id="cart-bar" style="display: none;">
+           </footer>
+    <div class="cart-bar" id="cart-bar" style="display: none;">
     <div>
-        <div class="cart-total-text">Total do Pedido</div>
+        <div class="cart-total-text" id="cart-qtd-text">0 itens no carrinho</div>
         <div class="cart-total-value" id="cart-total">R$ 0,00</div>
     </div>
-    <button class="btn-checkout" onclick="abrirModal()">FECHAR PEDIDO</button>
+    <button class="btn-checkout" id="btnCheckout" onclick="abrirModal()">FECHAR PEDIDO</button>
 </div>
 
 <div id="modalPedido">
     <div class="modal-content">
         <h2>Finalizar Pedido</h2>
         <div id="lista-resumo"></div>
-        <p style="text-align:right; font-size:1rem; margin:15px 0 10px 0;">Total: <span id="modal-total" style="color:var(--primary); font-weight:bold;">R$ 0,00</span></p>
         
-        <input type="text" id="nomeCliente" placeholder="Seu Nome Completo">
-        <input type="text" id="cep" placeholder="CEP (Preenche o endereço sozinho)" onblur="buscarCEP(this.value)">
-        <input type="text" id="rua" placeholder="Endereço / Rua">
-        <input type="text" id="num" placeholder="Número e Complemento">
-        <input type="text" id="bairro" placeholder="Bairro">
+        <div class="adicionais-box">
+            <label>
+                <input type="checkbox" id="adicionalGelo" onchange="recalcular()"> Adicionar porção de Gelo Extra (+ R$ 3,00)
+            </label>
+        </div>
+
+        <div class="resumo-valores">
+            <div class="resumo-linha"><span>Subtotal:</span> <span id="modal-subtotal">R$ 0,00</span></div>
+            <div class="resumo-linha"><span>Taxa de Entrega:</span> <span style="color:var(--primary);">R$ 5,00</span></div>
+            <div class="resumo-linha total"><span>Total Geral:</span> <span id="modal-total" style="color:var(--primary);">R$ 5,00</span></div>
+        </div>
+        
+        <input type="text" id="nomeCliente" placeholder="* Seu Nome Completo" required>
+        <input type="tel" id="telCliente" placeholder="* Telefone / WhatsApp (Ex: 119XXXXXXXX)" required>
+        
+        <div class="linha-gps">
+            <input type="text" id="cep" placeholder="* CEP" onblur="buscarCEP(this.value)" required style="margin:0;">
+            <button type="button" class="btn-gps" onclick="usarGPS()">📍 Usar GPS</button>
+        </div>
+        
+        <input type="text" id="rua" placeholder="* Endereço / Rua" required onblur="atualizarMapa()">
+        <input type="text" id="num" placeholder="* Número e Complemento" required onblur="atualizarMapa()">
+        <input type="text" id="bairro" placeholder="* Bairro" required onblur="atualizarMapa()">
+        
+        <div id="mapaContainer" class="mapa-preview">
+            <iframe id="mapaIframe" src="" allowfullscreen="" loading="lazy"></iframe>
+        </div>
+
         <input type="text" id="troco" placeholder="Troco para quanto? (Opcional)">
         
-        <select id="pagamento">
+        <select id="pagamento" required>
+            <option value="" disabled selected>* Selecione a Forma de Pagamento</option>
             <option value="Pix">Pix</option>
             <option value="Cartão">Cartão na Entrega</option>
             <option value="Dinheiro">Dinheiro</option>
         </select>
-        <textarea id="obs" placeholder="Observações..." rows="2"></textarea>
+        <textarea id="obs" placeholder="Observações (Ex: Campainha não toca...)" rows="2"></textarea>
         
         <button class="btn-action-green" onclick="finalizarPedido()">ENVIAR PEDIDO NO WHATSAPP</button>
         <button class="btn-action-red" onclick="limparTudo()">LIMPAR CARRINHO</button>
@@ -590,6 +731,33 @@
     }
     setInterval(desenharMatrix, 35);
 
+    // Verificação de Horário Automática (Exemplo: Aberto das 14h às 23h59)
+    function verificarHorarioLoja() {
+        const agora = new Date();
+        const hora = agora.getHours();
+        const badge = document.getElementById('statusLojaBadge');
+        const texto = document.getElementById('statusLojaTexto');
+        const btnCheckout = document.getElementById('btnCheckout');
+
+        // Modifique aqui os horários se precisar (ex: aberto das 14 às 02)
+        const aberto = hora >= 14 || hora < 3; 
+
+        if (aberto) {
+            badge.className = 'status-loja-badge';
+            texto.innerText = 'Loja Aberta - Aceitando Pedidos';
+            if(btnCheckout) btnCheckout.disabled = false;
+        } else {
+            badge.className = 'status-loja-badge fechado';
+            texto.innerText = 'Loja Fechada (Abrimos às 14h)';
+            if(btnCheckout) {
+                btnCheckout.disabled = true;
+                btnCheckout.style.opacity = '0.5';
+                btnCheckout.innerText = 'LOJA FECHADA';
+            }
+        }
+    }
+    verificarHorarioLoja();
+
     function mudarAba(abaId, elementoBtn) {
         document.querySelectorAll('.tab-content').forEach(aba => aba.classList.remove('ativo'));
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('ativo'));
@@ -607,6 +775,8 @@
     let baseProdutos = [];
     let carrinho = JSON.parse(localStorage.getItem('carrinho_qg')) || [];
     if (!Array.isArray(carrinho)) { carrinho = []; }
+    const taxaEntrega = 5.00;
+    const valorGeloExtra = 3.00;
 
     function renderizarVitrine(produtos) {
         baseProdutos = produtos;
@@ -703,8 +873,51 @@
                     document.getElementById('rua').value = data.logradouro; 
                     document.getElementById('bairro').value = data.bairro; 
                     document.getElementById('num').focus();
+                    atualizarMapa();
                 }
             } catch(err) {}
+        }
+    }
+
+    // Geolocalização por GPS do Celular
+    function usarGPS() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(async position => {
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+                try {
+                    const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
+                    const data = await res.json();
+                    if (data && data.address) {
+                        document.getElementById('rua').value = data.address.road || '';
+                        document.getElementById('bairro').value = data.address.suburb || data.address.neighbourhood || '';
+                        document.getElementById('cep').value = data.address.postcode || '';
+                        document.getElementById('num').focus();
+                        atualizarMapa();
+                    } else {
+                        alert('Não foi possível autocompletar o endereço exato pelo GPS. Preencha manualmente.');
+                    }
+                } catch(e) {
+                    alert('Erro ao obter dados de localização.');
+                }
+            }, () => {
+                alert('Permissão de GPS negada ou indisponível.');
+            });
+        } else {
+            alert('Geolocalização não suportada neste navegador.');
+        }
+    }
+
+    function atualizarMapa() {
+        const rua = document.getElementById('rua').value;
+        const num = document.getElementById('num').value;
+        const bairro = document.getElementById('bairro').value;
+        
+        if (rua) {
+            const enderecoCompleto = encodeURIComponent(`${rua}, ${num} - ${bairro}, Taboão da Serra - SP`);
+            const iframe = document.getElementById('mapaIframe');
+            iframe.src = `https://maps.google.com/maps?q=${enderecoCompleto}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
+            document.getElementById('mapaContainer').style.display = 'block';
         }
     }
 
@@ -734,14 +947,29 @@
         salvar();
     }
 
+    function alterarQtd(i, delta) {
+        carrinho.splice(i, 1);
+        salvar();
+        abrirModal();
+    }
+
     function remover(i) { carrinho.splice(i, 1); salvar(); abrirModal(); }
     function salvar() { localStorage.setItem('carrinho_qg', JSON.stringify(carrinho)); recalcular(); }
     function limparTudo() { carrinho = []; salvar(); fecharModal(); }
 
     function recalcular() {
-        const total = carrinho.reduce((a, b) => a + (Number(b.preco) || 0), 0);
-        document.getElementById('cart-total').innerText = `R$ ${total.toFixed(2)}`;
-        document.getElementById('modal-total').innerText = `R$ ${total.toFixed(2)}`;
+        const subtotal = carrinho.reduce((a, b) => a + (Number(b.preco) || 0), 0);
+        const adicionalGelo = document.getElementById('adicionalGelo') && document.getElementById('adicionalGelo').checked ? valorGeloExtra : 0;
+        const totalGeral = subtotal + (carrinho.length > 0 ? taxaEntrega : 0) + adicionalGelo;
+        
+        const totalQtdItens = carrinho.length;
+        document.getElementById('cart-qtd-text').innerText = `${totalQtdItens} ${totalQtdItens === 1 ? 'item' : 'itens'} no carrinho`;
+        document.getElementById('cart-total').innerText = `R$ ${totalGeral.toFixed(2)}`;
+        
+        if(document.getElementById('modal-subtotal')) {
+            document.getElementById('modal-subtotal').innerText = `R$ ${(subtotal + adicionalGelo).toFixed(2)}`;
+            document.getElementById('modal-total').innerText = `R$ ${totalGeral.toFixed(2)}`;
+        }
         document.getElementById('cart-bar').style.display = carrinho.length > 0 ? 'flex' : 'none';
     }
 
@@ -754,34 +982,42 @@
             html += `
                 <div class="item-lista">
                     <span><b>${p.nome}</b> ${infoTamanho}<br><span style="color:var(--primary);">R$ ${precoItem.toFixed(2)}</span></span>
-                    <button onclick="remover(${i})" style="background:none; border:none; color:#e74c3c; cursor:pointer; font-size:1.1rem; padding:5px;">🗑️</button>
+                    <div class="item-controles">
+                        <button class="btn-qtd" onclick="remover(${i})">🗑️</button>
+                    </div>
                 </div>`;
         });
         document.getElementById('lista-resumo').innerHTML = html;
+        recalcular();
         document.getElementById('modalPedido').style.display = 'block';
     }
 
     function fecharModal() { document.getElementById('modalPedido').style.display = 'none'; }
 
     function finalizarPedido() {
-        const nome = document.getElementById('nomeCliente').value;
-        const rua = document.getElementById('rua').value;
-        const num = document.getElementById('num').value;
-        const bairro = document.getElementById('bairro').value;
-        const cep = document.getElementById('cep').value;
+        const nome = document.getElementById('nomeCliente').value.trim();
+        const tel = document.getElementById('telCliente').value.trim();
+        const cep = document.getElementById('cep').value.trim();
+        const rua = document.getElementById('rua').value.trim();
+        const num = document.getElementById('num').value.trim();
+        const bairro = document.getElementById('bairro').value.trim();
         const pagamento = document.getElementById('pagamento').value;
-        const troco = document.getElementById('troco').value;
-        const obs = document.getElementById('obs').value;
+        const troco = document.getElementById('troco').value.trim();
+        const obs = document.getElementById('obs').value.trim();
+        const geloExtra = document.getElementById('adicionalGelo').checked;
 
-        if (!nome || !rua || !num || !bairro) {
-            alert('Por favor, preencha os campos obrigatórios de identificação e endereço.');
+        if (!nome || !tel || !cep || !rua || !num || !bairro || !pagamento) {
+            alert('Por favor, preencha todos os campos obrigatórios (*), incluindo o seu telefone e a forma de pagamento.');
             return;
         }
 
         let mensagem = `*NOVO PEDIDO - QG DAS BATIDAS*\n\n`;
         mensagem += `*Cliente:* ${nome}\n`;
+        mensagem += `*Telefone:* ${tel}\n`;
         mensagem += `*Endereço:* ${rua}, ${num} - ${bairro} (CEP: ${cep})\n`;
+        mensagem += `*Google Maps:* https://maps.google.com/?q=${encodeURIComponent(`${rua}, ${num} -${bairro}, Taboão da Serra - SP`)}\n`;
         mensagem += `*Pagamento:* ${pagamento}${troco ? ` (Troco para: ${troco})` : ''}\n`;
+        if (geloExtra) mensagem += `*Adicional:* Gelo Extra (+ R$ 3,00)\n`;
         if (obs) mensagem += `*Observações:* ${obs}\n`;
         
         mensagem += `\n*ITENS DO PEDIDO:*\n`;
@@ -790,10 +1026,15 @@
             mensagem += `- ${item.nome}${tamanhoTxt} - R$ ${item.preco.toFixed(2)}\n`;
         });
 
-        const totalGeral = carrinho.reduce((a, b) => a + b.preco, 0);
-        mensagem += `\n*TOTAL:* R$ ${totalGeral.toFixed(2)}`;
+        const subtotal = carrinho.reduce((a, b) => a + b.preco, 0);
+        const adicionalGeloVal = geloExtra ? valorGeloExtra : 0;
+        const totalGeral = subtotal + taxaEntrega + adicionalGeloVal;
+        
+        mensagem += `\n*Subtotal:* R$ ${(subtotal + adicionalGeloVal).toFixed(2)}`;
+        mensagem += `\n*Taxa de Entrega:* R$ ${taxaEntrega.toFixed(2)}`;
+        mensagem += `\n*TOTAL GERAL:* R$ ${totalGeral.toFixed(2)}`;
 
-        const telefoneLoja = "5511999999999";
+        const telefoneLoja = "5511942971753"; // Seu número configurado
         const urlWhatsApp = `https://api.whatsapp.com/send?phone=${telefoneLoja}&text=${encodeURIComponent(mensagem)}`;
         
         window.open(urlWhatsApp, '_blank');
