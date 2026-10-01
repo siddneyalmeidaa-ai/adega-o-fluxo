@@ -345,6 +345,38 @@
             padding-top: 15px;
         }
 
+        .cart-bar {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background: rgba(12, 12, 12, 0.95); backdrop-filter: blur(12px);
+            padding: 16px 20px; display: flex; justify-content: space-between;
+            align-items: center; border-top: 2px solid var(--primary);
+            box-sizing: border-box; z-index: 100; box-shadow: 0 -10px 30px rgba(0,0,0,0.9);
+        }
+        .cart-total-text { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+        .cart-total-value { color: var(--primary); font-size: 1.3rem; font-weight: 900; }
+        .btn-checkout { background: var(--accent); border: none; padding: 12px 24px; color: #fff; border-radius: 10px; font-weight: 900; font-size: 0.9rem; cursor: pointer; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4); }
+        
+        #modalPedido { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 200; overflow-y: auto; box-sizing: border-box; padding: 20px 15px; }
+        .modal-content { max-width: 480px; margin: 20px auto; background: rgba(20, 20, 20, 0.95); padding: 24px; border-radius: 18px; border: 1px solid var(--border); box-shadow: 0 15px 40px rgba(0,0,0,0.9); }
+        .modal-content h2 { color: var(--primary); margin-top: 0; font-size: 1.2rem; text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; }
+        .item-lista { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.85rem; }
+        .item-controles { display: flex; align-items: center; gap: 8px; }
+        .btn-qtd { background: #222; color: #fff; border: 1px solid var(--border); width: 26px; height: 26px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        .resumo-valores { background: rgba(9, 9, 9, 0.6); border: 1px solid var(--border); border-radius: 12px; padding: 12px; margin: 15px 0; font-size: 0.85rem; }
+        .resumo-linha { display: flex; justify-content: space-between; margin-bottom: 6px; color: var(--text-muted); }
+        .resumo-linha.total { margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--border); color: var(--text-main); font-weight: bold; font-size: 1rem; }
+        input, select, textarea { width: 100%; padding: 13px; margin: 8px 0; border-radius: 10px; border: 1px solid var(--border); background: #090909; color: #fff; box-sizing: border-box; font-size: 0.95rem; outline: none; }
+        .linha-gps { display: flex; gap: 8px; margin: 8px 0; }
+        .btn-gps { background: rgba(243, 156, 18, 0.15); border: 1px solid var(--primary); color: var(--primary); padding: 0 14px; border-radius: 10px; font-weight: bold; font-size: 0.8rem; cursor: pointer; white-space: nowrap; transition: 0.2s; }
+        .mapa-preview { width: 100%; height: 120px; border-radius: 10px; border: 1px solid var(--border); margin: 8px 0; overflow: hidden; display: none; background: #090909; }
+        .mapa-preview iframe { width: 100%; height: 100%; border: 0; }
+        .adicionais-box { background: rgba(9, 9, 9, 0.5); border: 1px dashed var(--border); border-radius: 10px; padding: 10px; margin: 10px 0; font-size: 0.85rem; }
+        .adicionais-box label { display: flex; align-items: center; gap: 8px; cursor: pointer; color: var(--text-muted); }
+        .adicionais-box input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var(--primary); }
+        .btn-action-green { width: 100%; padding: 14px; background: var(--accent); border: none; color: white; font-weight: bold; border-radius: 10px; cursor: pointer; font-size: 1rem; margin-top: 15px; }
+        .btn-action-red { width: 100%; padding: 10px; margin-top: 10px; background: #e74c3c; border: none; color: white; border-radius: 10px; cursor: pointer; font-weight: bold; }
+        .btn-action-ghost { width: 100%; padding: 10px; margin-top: 5px; background: transparent; border: none; color: var(--text-muted); cursor: pointer; }
+
         footer {
             max-width: 600px;
             margin: 40px auto 20px auto;
@@ -384,12 +416,14 @@
 </div>
 
 <div class="container">
+    <!-- ABA CARDÁPIO -->
     <div id="aba-cardapio" class="tab-content ativo">
         <div id="vitrine">
             <div style="text-align:center; padding: 40px; color: var(--text-muted);">A carregar cardápio...</div>
         </div>
     </div>
 
+    <!-- ABA QUEM SOMOS -->
     <div id="aba-sobre" class="tab-content">
         <div class="institucional-box">
             <h2>Nossa História</h2>
@@ -420,6 +454,7 @@
         </div>
     </div>
 
+    <!-- ABA CERTIFICADO -->
     <div id="aba-certificado" class="tab-content">
         <div class="institucional-box">
             <h2>Certificação Profissional</h2>
@@ -429,27 +464,18 @@
                 <div class="institucional-card">
                     <h4>📜 Bartender Profissional</h4>
                     <p><strong>Nome:</strong> Sidney Pereira de Almeida<br>
-                    <strong>Instituição:</strong> Prime Cursos do Brasil (ABED)[span_0](start_span)[span_0](end_span)<br>
-                    <strong>Carga Horária:</strong> 26 horas[span_1](start_span)[span_1](end_span)<br>
-                    <strong>Conclusão:</strong> 27 de setembro de 2023[span_2](start_span)[span_2](end_span)</p>
+                    <strong>Instituição:</strong> Prime Cursos do Brasil (ABED)<br>
+                    <strong>Carga Horária:</strong> 26 horas<br>
+                    <strong>Conclusão:</strong> 27 de setembro de 2023</p>
                 </div>
                 <div class="institucional-card">
                     <h4>⭐ Validação Técnica</h4>
-                    <p>Capacitação oficial em mixologia, balanceamento de sabores, manipulação correta de ingredientes e rigor técnico na elaboração das batidas[span_3](start_span)[span_3](end_span).</p>
+                    <p>Capacitação oficial em mixologia, balanceamento de sabores, manipulação correta de ingredientes e rigor técnico na elaboração das batidas.</p>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<a href="https://wa.me/5511942971753" class="whatsapp-float" target="_blank">💬 WhatsApp</a>
-
-<footer>
-    <p><strong>QG das Batidas</strong></p>
-    <p>Endereço: Rua André da Silva Pina, 309 - Taboão da Serra - SP</p>
-    <p>Responsável: Sidney Pereira de Almeida | CNPJ: 60.659.173/0001-48</p>
-    <p style="margin-top: 10px; color: #666;">Todos os direitos reservados.</p>
-</footer>
 <div class="cart-bar" id="cart-bar" style="display: none;">
     <div>
         <div class="cart-total-text" id="cart-qtd-text">0 itens no carrinho</div>
@@ -458,6 +484,7 @@
     <button class="btn-checkout" id="btnCheckout" onclick="abrirModal()">FECHAR PEDIDO</button>
 </div>
 
+<!-- MODAL DE PEDIDO -->
 <div id="modalPedido">
     <div class="modal-content">
         <h2>Finalizar Pedido</h2>
@@ -507,38 +534,14 @@
     </div>
 </div>
 
-<style>
-    .cart-bar {
-        position: fixed; bottom: 0; left: 0; width: 100%;
-        background: rgba(12, 12, 12, 0.95); backdrop-filter: blur(12px);
-        padding: 16px 20px; display: flex; justify-content: space-between;
-        align-items: center; border-top: 2px solid var(--primary);
-        box-sizing: border-box; z-index: 100; box-shadow: 0 -10px 30px rgba(0,0,0,0.9);
-    }
-    .cart-total-text { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
-    .cart-total-value { color: var(--primary); font-size: 1.3rem; font-weight: 900; }
-    .btn-checkout { background: var(--accent); border: none; padding: 12px 24px; color: #fff; border-radius: 10px; font-weight: 900; font-size: 0.9rem; cursor: pointer; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4); }
-    #modalPedido { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 200; overflow-y: auto; box-sizing: border-box; padding: 20px 15px; }
-    .modal-content { max-width: 480px; margin: 20px auto; background: rgba(20, 20, 20, 0.95); padding: 24px; border-radius: 18px; border: 1px solid var(--border); box-shadow: 0 15px 40px rgba(0,0,0,0.9); }
-    .modal-content h2 { color: var(--primary); margin-top: 0; font-size: 1.2rem; text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; }
-    .item-lista { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.85rem; }
-    .item-controles { display: flex; align-items: center; gap: 8px; }
-    .btn-qtd { background: #222; color: #fff; border: 1px solid var(--border); width: 26px; height: 26px; border-radius: 6px; cursor: pointer; font-weight: bold; }
-    .resumo-valores { background: rgba(9, 9, 9, 0.6); border: 1px solid var(--border); border-radius: 12px; padding: 12px; margin: 15px 0; font-size: 0.85rem; }
-    .resumo-linha { display: flex; justify-content: space-between; margin-bottom: 6px; color: var(--text-muted); }
-    .resumo-linha.total { margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--border); color: var(--text-main); font-weight: bold; font-size: 1rem; }
-    input, select, textarea { width: 100%; padding: 13px; margin: 8px 0; border-radius: 10px; border: 1px solid var(--border); background: #090909; color: #fff; box-sizing: border-box; font-size: 0.95rem; outline: none; }
-    .linha-gps { display: flex; gap: 8px; margin: 8px 0; }
-    .btn-gps { background: rgba(243, 156, 18, 0.15); border: 1px solid var(--primary); color: var(--primary); padding: 0 14px; border-radius: 10px; font-weight: bold; font-size: 0.8rem; cursor: pointer; white-space: nowrap; transition: 0.2s; }
-    .mapa-preview { width: 100%; height: 120px; border-radius: 10px; border: 1px solid var(--border); margin: 8px 0; overflow: hidden; display: none; background: #090909; }
-    .mapa-preview iframe { width: 100%; height: 100%; border: 0; }
-    .adicionais-box { background: rgba(9, 9, 9, 0.5); border: 1px dashed var(--border); border-radius: 10px; padding: 10px; margin: 10px 0; font-size: 0.85rem; }
-    .adicionais-box label { display: flex; align-items: center; gap: 8px; cursor: pointer; color: var(--text-muted); }
-    .adicionais-box input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var(--primary); }
-    .btn-action-green { width: 100%; padding: 14px; background: var(--accent); border: none; color: white; font-weight: bold; border-radius: 10px; cursor: pointer; font-size: 1rem; margin-top: 15px; }
-    .btn-action-red { width: 100%; padding: 10px; margin-top: 10px; background: #e74c3c; border: none; color: white; border-radius: 10px; cursor: pointer; font-weight: bold; }
-    .btn-action-ghost { width: 100%; padding: 10px; margin-top: 5px; background: transparent; border: none; color: var(--text-muted); cursor: pointer; }
-</style>
+<a href="https://wa.me/5511942971753" class="whatsapp-float" target="_blank">💬 WhatsApp</a>
+
+<footer>
+    <p><strong>QG das Batidas</strong></p>
+    <p>Endereço: Rua André da Silva Pina, 309 - Taboão da Serra - SP</p>
+    <p>Responsável: Sidney Pereira de Almeida | CNPJ: 60.659.173/0001-48</p>
+    <p style="margin-top: 10px; color: #666;">Todos os direitos reservados.</p>
+</footer>
 
 <script>
     const canvas = document.getElementById('matrixCanvas');
@@ -659,7 +662,7 @@
             renderizarVitrine(produtosGlobais);
         } catch (erro) {
             console.error(erro);
-            document.getElementById('vitrine').innerHTML = '<div style="text-align:center; padding: 40px; color: #e74c3c;">Erro ao carregar o cardápio. Verifique o arquivo produtos.json.</div>';
+            document.getElementById('vitrine').innerHTML = '<div style="text-align:center; padding: 40px; color: #e74c3c;">Erro ao carregar o cardápio. Verifique se o arquivo produtos.json está na mesma pasta no GitHub.</div>';
         }
     }
 
@@ -837,4 +840,18 @@
         const adicionalGeloVal = geloExtra ? valorGeloExtra : 0;
         const totalGeral = subtotal + taxaEntrega + adicionalGeloVal;
         
-        mensagem += `\n*Su
+        mensagem += `\n*Subtotal:* R$ ${(subtotal + adicionalGeloVal).toFixed(2)}`;
+        mensagem += `\n*Taxa de Entrega:* R$ ${taxaEntrega.toFixed(2)}`;
+        mensagem += `\n*TOTAL GERAL:* R$ ${totalGeral.toFixed(2)}`;
+
+        const telefoneLoja = "5511942971753";
+        const urlWhatsApp = `https://api.whatsapp.com/send?phone=${telefoneLoja}&text=${encodeURIComponent(mensagem)}`;
+        
+        window.open(urlWhatsApp, '_blank');
+    }
+
+    window.onload = carregar;
+</script>
+</body>
+                </html>
+            
