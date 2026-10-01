@@ -1,4 +1,4 @@
-<!-- PARTE 1: ARQUIVO INDEX.HTML (Estrutura, Estilos e Interface) -->
+<!-- PARTE 1: ARQUIVO INDEX.HTML (Estrutura, Estilos e Interface Atualizada) -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -128,10 +128,12 @@
             object-fit: contain;
             filter: drop-shadow(0 10px 15px rgba(0,0,0,0.7));
             transition: transform 0.5s ease;
+            opacity: 0; /* Começa invisível até carregar */
+            transition: opacity 0.3s ease;
         }
-
-        .card:hover .card-img-container img {
-            transform: scale(1.05);
+        
+        .card-img-container img.carregada {
+            opacity: 1; /* Mostra quando carrega */
         }
 
         .badge-tag {
@@ -419,36 +421,12 @@
         <button class="btn-action-red" onclick="limparTudo()">LIMPAR CARRINHO</button>
         <button class="btn-action-ghost" onclick="fecharModal()">Continuar Comprando</button>
     </div>
-    </div>
-    <!-- PARTE 2: LOGICA JAVASCRIPT (Carrinho, Fallback e Requisições) -->
+</div>
+<!-- PARTE 2: LOGICA JAVASCRIPT (Acrescentando o mapeamento correto das imagens) -->
 <script>
     let baseProdutos = [];
     let carrinho = JSON.parse(localStorage.getItem('carrinho_qg')) || [];
     if (!Array.isArray(carrinho)) { carrinho = []; }
-    carrinho = carrinho.map(item => ({
-        nome: item.nome || 'Produto',
-        tamanho: item.tamanho || '500ml',
-        preco: Number(item.preco) || 0
-    }));
-
-    const produtosFallback = [
-        {
-            cat: "Batidas Especiais",
-            badge: "Mais Vendida",
-            nome: "Batida de Morango com Leite Condensado",
-            desc: "Morangos frescos selecionados, leite condensado cremoso e vodka premium.",
-            tamanhos: { "300ml": 15.00, "500ml": 22.00, "1L": 40.00 },
-            img: "https://images.unsplash.com/photo-1551024709-8f23befc6f87?q=80&w=600&auto=format&fit=crop"
-        },
-        {
-            cat: "Batidas Especiais",
-            badge: "Exclusivo",
-            nome: "Batida de Maracujá com Cachaça Artesanal",
-            desc: "Polpa de maracujá natural, cachaça artesanal mineira e toque de limão.",
-            tamanhos: { "300ml": 14.00, "500ml": 20.00, "1L": 38.00 },
-            img: "https://images.unsplash.com/photo-1536935338788-846bb9981813?q=80&w=600&auto=format&fit=crop"
-        }
-    ];
 
     function renderizarVitrine(produtos) {
         baseProdutos = produtos;
@@ -478,8 +456,8 @@
 
             let precoInicial = 0;
             if (p.tamanhos) {
-                let primeiroChave = Object.keys(p.tamanhos)[0];
-                precoInicial = Number(p.tamanhos[primeiroChave]) || 0;
+                let primeiraChave = Object.keys(p.tamanhos)[0];
+                precoInicial = Number(p.tamanhos[primeiraChave]) || 0;
             } else {
                 precoInicial = Number(p.preco) || 0;
             }
@@ -488,7 +466,7 @@
                 <div class="card" id="card-${i}">
                     <div class="card-img-container">
                         ${p.badge ? `<span class="badge-tag">${p.badge}</span>` : ''}
-                        <img src="${p.img || 'https://images.unsplash.com/photo-1551024709-8f23befc6f87?q=80&w=600&auto=format&fit=crop'}" alt="${p.nome}">
+                        <img src="${p.img}" alt="${p.nome}" id="img-prod-${i}" onload="this.classList.add('carregada')" onerror="this.src='https://images.unsplash.com/photo-1570766718345-3d18612508c0?q=80&w=600'">
                     </div>
                     <div class="card-content">
                         <h3>${p.nome}</h3>
@@ -507,7 +485,7 @@
     async function carregar() {
         try {
             const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 4000);
+            const timeoutId = setTimeout(() => controller.abort(), 5000);
             const res = await fetch('produtos.json?t=' + new Date().getTime(), { signal: controller.signal });
             clearTimeout(timeoutId);
             if (!res.ok) throw new Error('Falha na rede');
@@ -518,6 +496,10 @@
             }
             throw new Error('Dados vazios');
         } catch (e) {
+            // Fallback caso o JSON falhe, agora com imagens reais também
+            const produtosFallback = [
+                { cat: "🏆 Destaques", nome: "Batida Morango (Erro JSON)", desc: "Carregamento de emergência", img: "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=600" }
+            ];
             renderizarVitrine(produtosFallback);
         }
     }
@@ -527,14 +509,12 @@
         card.querySelectorAll('.tamanho-opcao').forEach(el => el.classList.remove('selecionado'));
         elemento.classList.add('selecionado');
         
+        const produto = baseProdutos[i];
         let preco = 0;
-        const tamanhosObj = baseProdutos[i].tamanhos;
-        if (tamanhosObj) {
-            // Busca insensível a maiúsculas/minúsculas para evitar zerar
-            let chaveEncontrada = Object.keys(tamanhosObj).find(k => k.toLowerCase() === tamanho.toLowerCase());
-            preco = chaveEncontrada ? (Number(tamanhosObj[chaveEncontrada]) || 0) : 0;
+        if (produto && produto.tamanhos) {
+            let chaveEncontrada = Object.keys(produto.tamanhos).find(k => k.toLowerCase() === tamanho.toLowerCase());
+            preco = chaveEncontrada ? (Number(produto.tamanhos[chaveEncontrada]) || 0) : 0;
         }
-        
         document.getElementById(`preco-exibido-${i}`).innerText = `R$ ${preco.toFixed(2)}`;
     }
 
@@ -555,7 +535,7 @@
 
     function adicionar(i) {
         const p = baseProdutos[i];
-        let tamanhoEscolhido = '500ml';
+        let tamanhoEscolhido = '';
         let precoEscolhido = 0;
 
         if (p.tamanhos) {
@@ -566,11 +546,13 @@
             } else {
                 tamanhoEscolhido = Object.keys(p.tamanhos)[0];
             }
-
+            
             let chaveEncontrada = Object.keys(p.tamanhos).find(k => k.toLowerCase() === tamanhoEscolhido.toLowerCase());
             precoEscolhido = chaveEncontrada ? (Number(p.tamanhos[chaveEncontrada]) || 0) : 0;
+            
         } else {
             precoEscolhido = Number(p.preco) || 0;
+            tamanhoEscolhido = ''; // Sem tamanho p/ itens únicos
         }
 
         carrinho.push({ nome: p.nome, tamanho: tamanhoEscolhido, preco: precoEscolhido });
@@ -593,9 +575,10 @@
         let html = '';
         carrinho.forEach((p, i) => {
             let precoItem = Number(p.preco) || 0;
+            let infoTamanho = p.tamanho ? `(${p.tamanho})` : '';
             html += `
                 <div class="item-lista">
-                    <span><b>${p.nome}</b> (${p.tamanho || '500ml'})<br><span style="color:var(--primary);">R$ ${precoItem.toFixed(2)}</span></span>
+                    <span><b>${p.nome}</b> ${infoTamanho}<br><span style="color:var(--primary);">R$ ${precoItem.toFixed(2)}</span></span>
                     <button onclick="remover(${i})" style="background:none; border:none; color:#e74c3c; cursor:pointer; font-size:1.1rem; padding:5px;">🗑️</button>
                 </div>`;
         });
@@ -615,7 +598,8 @@
         let msg = `*NOVO PEDIDO - QG DAS BATIDAS*\n\n`;
         carrinho.forEach(item => {
             let pItem = Number(item.preco) || 0;
-            msg += `• ${item.nome} (${item.tamanho || '500ml'}) - R$ ${pItem.toFixed(2)}\n`;
+            let infoTamanho = item.tamanho ? ` (${item.tamanho})` : '';
+            msg += `• ${item.nome}${infoTamanho} - R$ ${pItem.toFixed(2)}\n`;
         });
         msg += `\n*TOTAL: R$ ${total.toFixed(2)}*\n\n*ENDEREÇO DE ENTREGA:*\nNome: ${nome}\nEnd: ${rua}, ${document.getElementById('num').value} - Bairro: ${document.getElementById('bairro').value}\nPagamento: ${document.getElementById('pagamento').value}\nTroco: ${document.getElementById('troco').value || "Não precisa"}\nObs: ${document.getElementById('obs').value || "Nenhuma"}`;
         
