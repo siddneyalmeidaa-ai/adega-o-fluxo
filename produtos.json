@@ -1,3 +1,4 @@
+
 [
   {
     "cat": "🍓 Batidas Especiais da Casa",
@@ -15,39 +16,39 @@
   {
     "cat": "🍓 Batidas Especiais da Casa",
     "nome": "Batida de Maracuja Classica",
-    "preco": 15.00,
+    "preco": 18.00,
     "desc": "Polpa de maracuja azedo natural, leite condensado, cachaça branca e gelo",
     "badge": "Clássico",
     "tamanhos": {
-      "300ml": 10.00,
-      "500ml": 15.00,
-      "1L": 28.00
+      "300ml": 12.00,
+      "500ml": 18.00,
+      "1L": 32.00
     },
     "img": "https://images.unsplash.com/photo-1536935338788-846bb9981813?w=600&auto=format&fit=crop&q=80"
   },
   {
     "cat": "🍓 Batidas Especiais da Casa",
     "nome": "Batida Cocadinha Tropical",
-    "preco": 16.00,
+    "preco": 18.00,
     "desc": "Leite de coco concentrado, rum branco, leite condensado e coco ralado queimado por cima",
     "badge": "Tropical",
     "tamanhos": {
-      "300ml": 11.00,
-      "500ml": 16.00,
-      "1L": 30.00
+      "300ml": 12.00,
+      "500ml": 18.00,
+      "1L": 32.00
     },
     "img": "https://images.unsplash.com/photo-1541658016709-82535e94bc69?w=600&auto=format&fit=crop&q=80"
   },
   {
     "cat": "🍓 Batidas Especiais da Casa",
     "nome": "Batida Paçoca dos Deuses",
-    "preco": 16.00,
+    "preco": 19.00,
     "desc": "Paçoca de rolha esmigalhada, cachaça especial, leite condensado e um toque de leite integral",
     "badge": "Cremoso",
     "tamanhos": {
-      "300ml": 11.00,
-      "500ml": 16.00,
-      "1L": 30.00
+      "300ml": 13.00,
+      "500ml": 19.00,
+      "1L": 34.00
     },
     "img": "https://images.unsplash.com/photo-1579372786545-d24232daf58c?w=600&auto=format&fit=crop&q=80"
   },
@@ -67,13 +68,13 @@
   {
     "cat": "🍓 Batidas Especiais da Casa",
     "nome": "Batida Manga com Coco",
-    "preco": 17.00,
+    "preco": 18.00,
     "desc": "Manga Palmer bem madura, leite de coco concentrado, rum dourado e leite condensado",
     "badge": "Exótico",
     "tamanhos": {
-      "300ml": 11.00,
-      "500ml": 17.00,
-      "1L": 30.00
+      "300ml": 12.00,
+      "500ml": 18.00,
+      "1L": 32.00
     },
     "img": "https://images.unsplash.com/photo-1553279768-865429fa0078?w=600&auto=format&fit=crop&q=80"
   },
@@ -84,9 +85,9 @@
     "desc": "Calda de chocolate meio amargo, licor de menta, vodka e leite condensado",
     "badge": "Doce",
     "tamanhos": {
-      "300ml": 13.00,
+      "300ml": 14.00,
       "500ml": 20.00,
-      "1L": 35.00
+      "1L": 36.00
     },
     "img": "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&auto=format&fit=crop&q=80"
   },
@@ -119,78 +120,78 @@
   {
     "cat": "🍓 Batidas Especiais da Casa",
     "nome": "Batida Café Expresso Cremoso",
-    "preco": 20.00,
+    "preco": 19.00,
     "desc": "Shot de cafe espresso forte, licor de cacau, creme de leite e leite condensado",
     "badge": "Energético",
     "tamanhos": {
       "300ml": 13.00,
-      "500ml": 20.00,
-      "1L": 35.00
+      "500ml": 19.00,
+      "1L": 34.00
     },
     "img": "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=600&auto=format&fit=crop&q=80"
   },
   {
     "cat": "🍓 Batidas Especiais da Casa",
     "nome": "Batida de Frutas Amarelas com Gengibre",
-    "preco": 19.00,
+    "preco": 18.00,
     "desc": "Maracuja, manga, gengibre ralado, rum branco e leite condensado",
     "badge": "Picante",
     "tamanhos": {
-      "300ml": 13.00,
-      "500ml": 19.00,
-      "1L": 34.00
+      "300ml": 12.00,
+      "500ml": 18.00,
+      "1L": 32.00
     },
     "img": "https://images.unsplash.com/photo-1546173159-315724a31696?w=600&auto=format&fit=crop&q=80"
   },
   {
     "cat": "🍓 Batidas Especiais da Casa",
     "nome": "Batida Tropical de Abacaxi com Coco e Rum",
-    "preco": 18.00,
+    "preco": 19.00,
     "desc": "Abacaxi pérola, leite de coco, rum dourado, xarope de acucar e gelo picado",
     "badge": "Tropical",
     "tamanhos": {
-      "300ml": 12.00,
-      "500ml": 18.00,
-      "1L": 32.00
+      "300ml": 13.00,
+      "500ml": 19.00,
+      "1L": 34.00
     },
     "img": "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=600&auto=format&fit=crop&q=80"
   },
   {
     "cat": "🍓 Batidas Especiais da Casa",
     "nome": "Batida de Limão Siciliano com Hortelã",
-    "preco": 18.00,
+    "preco": 19.00,
     "desc": "Suco de limao siciliano, folhas de hortelã socadas, vodka e xarope de acucar",
     "badge": "Refrescante",
     "tamanhos": {
-      "300ml": 12.00,
-      "500ml": 18.00,
-      "1L": 32.00
+      "300ml": 13.00,
+      "500ml": 19.00,
+      "1L": 34.00
     },
     "img": "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=600&auto=format&fit=crop&q=80"
   },
   {
     "cat": "🍓 Batidas Especiais da Casa",
     "nome": "Batida de Banana com Doce de Leite e Canela",
-    "preco": 16.00,
+    "preco": 18.00,
     "desc": "Banana nanica madura, doce de leite artesanal, cachaça e um toque de canela",
     "badge": "Doce",
     "tamanhos": {
-      "300ml": 11.00,
-      "500ml": 16.00,
-      "1L": 30.00
+      "300ml": 12.00,
+      "500ml": 18.00,
+      "1L": 32.00
     },
     "img": "https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=600&auto=format&fit=crop&q=80"
   },
   {
     "cat": "🍓 Batidas Especiais da Casa",
     "nome": "Batida de Tangerina com Gengibre e Vodka",
-    "preco": 17.00,
+    "preco": 18.00,
     "desc": "Gomos de tangerina bergamota, gengibre fresco ralado, vodka e xarope de acucar",
     "badge": "Cítrico",
     "tamanhos": {
-      "300ml": 11.00,
-      "500ml": 17.00,
-      "1L": 30.00
+      "300ml": 12.00,
+      "500ml": 18.00,
+      "1L": 32.00
     },
     "img": "https://images.unsplash.com/photo-1611080626919-7cf5a9dbab5b?w=600&auto=format&fit=crop&q=80"
   },
@@ -210,26 +211,26 @@
   {
     "cat": "🍓 Batidas Especiais da Casa",
     "nome": "Batida de Melancia com Hortelã e Gin",
-    "preco": 19.00,
+    "preco": 22.00,
     "desc": "Pedaços de melancia fresca, folhas de hortelã, gin nacional e xarope de acucar",
     "badge": "Leve",
     "tamanhos": {
-      "300ml": 13.00,
-      "500ml": 19.00,
-      "1L": 34.00
+      "300ml": 15.00,
+      "500ml": 22.00,
+      "1L": 40.00
     },
     "img": "https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?w=600&auto=format&fit=crop&q=80"
   },
   {
     "cat": "🍓 Batidas Especiais da Casa",
     "nome": "Batida de Goiaba com Pimenta Rosa",
-    "preco": 17.00,
+    "preco": 19.00,
     "desc": "Goiaba vermelha madura, leite condensado, rum branco e graos de pimenta rosa batidos",
     "badge": "Exótico",
     "tamanhos": {
-      "300ml": 11.00,
-      "500ml": 17.00,
-      "1L": 30.00
+      "300ml": 13.00,
+      "500ml": 19.00,
+      "1L": 34.00
     },
     "img": "https://images.unsplash.com/photo-1596591404067-04323c21c6ff?w=600&auto=format&fit=crop&q=80"
   },
@@ -255,20 +256,20 @@
     "tamanhos": {
       "300ml": 16.00,
       "500ml": 24.00,
-      "1L": 45.00
+      "1L": 42.00
     },
     "img": "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&auto=format&fit=crop&q=80"
   },
   {
     "cat": "🍓 Batidas Especiais da Casa",
     "nome": "Batida de Abacate com Limão e Rum",
-    "preco": 17.00,
+    "preco": 19.00,
     "desc": "Abacate maduro, suco de limao taiti, rum branco, leite condensado e gelo",
     "badge": "Cremoso",
     "tamanhos": {
-      "300ml": 11.00,
-      "500ml": 17.00,
-      "1L": 30.00
+      "300ml": 13.00,
+      "500ml": 19.00,
+      "1L": 34.00
     },
     "img": "https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?w=600&auto=format&fit=crop&q=80"
   },
@@ -301,91 +302,91 @@
   {
     "cat": "🍓 Batidas Especiais da Casa",
     "nome": "Batida de Cacau com Laranja e Conhaque",
-    "preco": 20.00,
+    "preco": 22.00,
     "desc": "Cacau em po solúvel, suco de laranja baia, conhaque e leite condensado",
     "badge": "Especial",
     "tamanhos": {
-      "300ml": 13.00,
-      "500ml": 20.00,
-      "1L": 35.00
+      "300ml": 15.00,
+      "500ml": 22.00,
+      "1L": 40.00
     },
     "img": "https://images.unsplash.com/photo-1543253687-c931c8e01820?w=600&auto=format&fit=crop&q=80"
   },
   {
     "cat": "🍓 Batidas Especiais da Casa",
     "nome": "Batida de Milho Verde com Canela",
-    "preco": 15.00,
+    "preco": 18.00,
     "desc": "Milho verde fresco, leite de coco, cachaça branca, leite condensado e canela em pó",
     "badge": "Tradicional",
     "tamanhos": {
-      "300ml": 10.00,
-      "500ml": 15.00,
-      "1L": 28.00
+      "300ml": 12.00,
+      "500ml": 18.00,
+      "1L": 32.00
     },
     "img": "https://images.unsplash.com/photo-1551754655-cd27e38d2076?w=600&auto=format&fit=crop&q=80"
   },
   {
     "cat": "🍓 Batidas Especiais da Casa",
     "nome": "Batida de Maracujá com Pimenta Dedo-de-Moça",
-    "preco": 18.00,
+    "preco": 19.00,
     "desc": "Polpa de maracuja, pimenta dedo-de-moça sem semente, vodka e leite condensado",
     "badge": "Picante",
     "tamanhos": {
-      "300ml": 12.00,
-      "500ml": 18.00,
-      "1L": 32.00
+      "300ml": 13.00,
+      "500ml": 19.00,
+      "1L": 34.00
     },
     "img": "https://images.unsplash.com/photo-1599810688001-d8d1cf540c5f?w=600&auto=format&fit=crop&q=80"
   },
   {
     "cat": "🍓 Batidas Especiais da Casa",
     "nome": "Batida de Uva com Hortelã e Vodka",
-    "preco": 16.00,
+    "preco": 18.00,
     "desc": "Suco de uva integral tinto, folhas de hortelã, vodka e xarope de acucar",
     "badge": "Frutado",
     "tamanhos": {
-      "300ml": 11.00,
-      "500ml": 16.00,
-      "1L": 30.00
+      "300ml": 12.00,
+      "500ml": 18.00,
+      "1L": 32.00
     },
     "img": "https://images.unsplash.com/photo-1537640538966-79f369143f8f?w=600&auto=format&fit=crop&q=80"
   },
   {
     "cat": "🍓 Batidas Especiais da Casa",
     "nome": "Batida de Capim-Santo com Limão e Cachaça",
-    "preco": 17.00,
+    "preco": 18.00,
     "desc": "Infusao de capim-santo, suco de limao taiti, cachaça de alambique e xarope de acucar",
     "badge": "Herbal",
     "tamanhos": {
-      "300ml": 11.00,
-      "500ml": 17.00,
-      "1L": 30.00
+      "300ml": 12.00,
+      "500ml": 18.00,
+      "1L": 32.00
     },
     "img": "https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=600&auto=format&fit=crop&q=80"
   },
   {
     "cat": "🍓 Batidas Especiais da Casa",
     "nome": "Batida de Pêra com Mel e Gin",
-    "preco": 24.00,
+    "preco": 22.00,
     "desc": "Pêra Williams madura, mel puro, gin nacional e creme de leite fresco",
     "badge": "Delicado",
     "tamanhos": {
-      "300ml": 16.00,
-      "500ml": 24.00,
-      "1L": 45.00
+      "300ml": 15.00,
+      "500ml": 22.00,
+      "1L": 40.00
     },
     "img": "https://images.unsplash.com/photo-1514733670128-4ee8d81f3d6e?w=600&auto=format&fit=crop&q=80"
   },
   {
     "cat": "🍓 Batidas Especiais da Casa",
     "nome": "Batida do Patrão (Mix Tropical da Casa)",
-    "preco": 25.00,
+    "preco": 26.00,
     "desc": "Abacaxi, morango, maracuja, leite condensado, vodka e cachaça em proporção secreta",
     "badge": "Exclusivo",
     "tamanhos": {
-      "300ml": 17.00,
-      "500ml": 25.00,
-      "1L": 45.00
+      "300ml": 18.00,
+      "500ml": 26.00,
+      "1L": 48.00
     },
     "img": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=600&auto=format&fit=crop&q=80"
   }
