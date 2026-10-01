@@ -429,13 +429,13 @@
                 <div class="institucional-card">
                     <h4>📜 Bartender Profissional</h4>
                     <p><strong>Nome:</strong> Sidney Pereira de Almeida<br>
-                    <strong>Instituição:</strong> Prime Cursos do Brasil (ABED)<br>
-                    <strong>Carga Horária:</strong> 26 horas<br>
-                    <strong>Conclusão:</strong> 27 de setembro de 2023</p>
+                    <strong>Instituição:</strong> Prime Cursos do Brasil (ABED)[span_0](start_span)[span_0](end_span)<br>
+                    <strong>Carga Horária:</strong> 26 horas[span_1](start_span)[span_1](end_span)<br>
+                    <strong>Conclusão:</strong> 27 de setembro de 2023[span_2](start_span)[span_2](end_span)</p>
                 </div>
                 <div class="institucional-card">
                     <h4>⭐ Validação Técnica</h4>
-                    <p>Capacitação oficial em mixologia, balanceamento de sabores, manipulação correta de ingredientes e rigor técnico na elaboração das batidas[span_1](start_span)[span_1](end_span).</p>
+                    <p>Capacitação oficial em mixologia, balanceamento de sabores, manipulação correta de ingredientes e rigor técnico na elaboração das batidas[span_3](start_span)[span_3](end_span).</p>
                 </div>
             </div>
         </div>
@@ -596,16 +596,15 @@
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    let baseProdutos = [];
+    let produtosGlobais = [];
     let carrinho = JSON.parse(localStorage.getItem('carrinho_qg')) || [];
     if (!Array.isArray(carrinho)) { carrinho = []; }
     const taxaEntrega = 5.00;
     const valorGeloExtra = 3.00;
 
     function renderizarVitrine(produtos) {
-        baseProdutos = produtos;
         let html = '', catAtual = '';
-        baseProdutos.forEach((p, i) => {
+        produtos.forEach((p, i) => {
             if (p.cat !== catAtual) { 
                 html += `<div class="categoria-titulo">${p.cat}</div>`; 
                 catAtual = p.cat; 
@@ -654,23 +653,13 @@
 
     async function carregar() {
         try {
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 5000);
-            const res = await fetch('produtos.json?t=' + new Date().getTime(), { signal: controller.signal });
-            clearTimeout(timeoutId);
-            if (!res.ok) throw new Error('Falha na rede');
-            const data = await res.json();
-            if (Array.isArray(data) && data.length > 0) {
-                renderizarVitrine(data);
-                return;
-            }
-            throw new Error('Dados vazios');
-        } catch (e) {
-            const produtosFallback = [
-                { cat: "🏆 Destaques", nome: "Batida Morango", desc: "Morangos frescos selecionados, xarope de açucar, vodka premium e gelo triturado", tamanhos: { "300ml": 12.00, "500ml": 18.00, "1L": 32.00 } },
-                { cat: "🏆 Destaques", nome: "Batida de Maracuja Classica", desc: "Polpa de maracuja azedo natural, leite condensado, cachaça branca e gelo", tamanhos: { "300ml": 12.00, "500ml": 18.00, "1L": 32.00 } }
-            ];
-            renderizarVitrine(produtosFallback);
+            const resposta = await fetch('produtos.json');
+            if (!resposta.ok) throw new Error('Erro ao carregar JSON');
+            produtosGlobais = await resposta.json();
+            renderizarVitrine(produtosGlobais);
+        } catch (erro) {
+            console.error(erro);
+            document.getElementById('vitrine').innerHTML = '<div style="text-align:center; padding: 40px; color: #e74c3c;">Erro ao carregar o cardápio. Verifique o arquivo produtos.json.</div>';
         }
     }
 
@@ -679,7 +668,7 @@
         card.querySelectorAll('.tamanho-opcao').forEach(el => el.classList.remove('selecionado'));
         elemento.classList.add('selecionado');
         
-        const produto = baseProdutos[i];
+        const produto = produtosGlobais[i];
         let preco = 0;
         if (produto && produto.tamanhos) {
             let chaveEncontrada = Object.keys(produto.tamanhos).find(k => k.toLowerCase() === tamanho.toLowerCase());
@@ -746,7 +735,7 @@
     }
 
     function adicionar(i) {
-        const p = baseProdutos[i];
+        const p = produtosGlobais[i];
         let tamanhoEscolhido = '';
         let precoEscolhido = 0;
 
@@ -834,4 +823,18 @@
         mensagem += `*Telefone:* ${tel}\n`;
         mensagem += `*Endereço:* ${rua}, ${num} - ${bairro} (CEP: ${cep})\n`;
         mensagem += `*Google Maps:* https://maps.google.com/?q=${encodeURIComponent(`${rua}, ${num} -${bairro}, Taboão da Serra - SP`)}\n`;
-        mensagem += `*Pagamento:* ${pagamento}${troco ? ` (Troco
+        mensagem += `*Pagamento:* ${pagamento}${troco ? ` (Troco para: ${troco})` : ''}\n`;
+        if (geloExtra) mensagem += `*Adicional:* Gelo Extra (+ R$ 3,00)\n`;
+        if (obs) mensagem += `*Observações:* ${obs}\n`;
+        
+        mensagem += `\n*ITENS DO PEDIDO:*\n`;
+        carrinho.forEach(item => {
+            let tamanhoTxt = item.tamanho ? ` [${item.tamanho}]` : '';
+            mensagem += `- ${item.nome}${tamanhoTxt} - R$ ${item.preco.toFixed(2)}\n`;
+        });
+
+        const subtotal = carrinho.reduce((a, b) => a + b.preco, 0);
+        const adicionalGeloVal = geloExtra ? valorGeloExtra : 0;
+        const totalGeral = subtotal + taxaEntrega + adicionalGeloVal;
+        
+        mensagem += `\n*Su
