@@ -1,4 +1,4 @@
-<!-- PARTE 1: ARQUIVO INDEX.HTML (Estrutura, Estilos e Interface Atualizada) -->
+// PARTE 1: ARQUIVO INDEX.HTML (Estrutura, Estilos e Interface Atualizada)
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -127,13 +127,12 @@
             max-width: 90%;
             object-fit: contain;
             filter: drop-shadow(0 10px 15px rgba(0,0,0,0.7));
-            transition: transform 0.5s ease;
-            opacity: 0; /* Começa invisível até carregar */
             transition: opacity 0.3s ease;
+            opacity: 0;
         }
         
         .card-img-container img.carregada {
-            opacity: 1; /* Mostra quando carrega */
+            opacity: 1;
         }
 
         .badge-tag {
@@ -421,8 +420,8 @@
         <button class="btn-action-red" onclick="limparTudo()">LIMPAR CARRINHO</button>
         <button class="btn-action-ghost" onclick="fecharModal()">Continuar Comprando</button>
     </div>
-</div>
-<!-- PARTE 2: LOGICA JAVASCRIPT (Acrescentando o mapeamento correto das imagens) -->
+    </div>
+       // PARTE 2: LÓGICA JAVASCRIPT
 <script>
     let baseProdutos = [];
     let carrinho = JSON.parse(localStorage.getItem('carrinho_qg')) || [];
@@ -496,7 +495,6 @@
             }
             throw new Error('Dados vazios');
         } catch (e) {
-            // Fallback caso o JSON falhe, agora com imagens reais também
             const produtosFallback = [
                 { cat: "🏆 Destaques", nome: "Batida Morango (Erro JSON)", desc: "Carregamento de emergência", img: "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=600" }
             ];
@@ -552,7 +550,7 @@
             
         } else {
             precoEscolhido = Number(p.preco) || 0;
-            tamanhoEscolhido = ''; // Sem tamanho p/ itens únicos
+            tamanhoEscolhido = '';
         }
 
         carrinho.push({ nome: p.nome, tamanho: tamanhoEscolhido, preco: precoEscolhido });
@@ -589,24 +587,42 @@
     function fecharModal() { document.getElementById('modalPedido').style.display = 'none'; }
 
     function finalizarPedido() {
-        const nome = document.getElementById('nomeCliente').value.trim();
-        const rua = document.getElementById('rua').value.trim();
-        if(!nome) { alert('Por favor, preencha o seu nome!'); document.getElementById('nomeCliente').focus(); return; }
-        if(!rua) { alert('Por favor, preencha o endereço!'); document.getElementById('rua').focus(); return; }
+        const nome = document.getElementById('nomeCliente').value;
+        const rua = document.getElementById('rua').value;
+        const num = document.getElementById('num').value;
+        const bairro = document.getElementById('bairro').value;
+        const cep = document.getElementById('cep').value;
+        const pagamento = document.getElementById('pagamento').value;
+        const troco = document.getElementById('troco').value;
+        const obs = document.getElementById('obs').value;
 
-        const total = carrinho.reduce((a, b) => a + (Number(b.preco) || 0), 0);
-        let msg = `*NOVO PEDIDO - QG DAS BATIDAS*\n\n`;
-        carrinho.forEach(item => {
-            let pItem = Number(item.preco) || 0;
-            let infoTamanho = item.tamanho ? ` (${item.tamanho})` : '';
-            msg += `• ${item.nome}${infoTamanho} - R$ ${pItem.toFixed(2)}\n`;
-        });
-        msg += `\n*TOTAL: R$ ${total.toFixed(2)}*\n\n*ENDEREÇO DE ENTREGA:*\nNome: ${nome}\nEnd: ${rua}, ${document.getElementById('num').value} - Bairro: ${document.getElementById('bairro').value}\nPagamento: ${document.getElementById('pagamento').value}\nTroco: ${document.getElementById('troco').value || "Não precisa"}\nObs: ${document.getElementById('obs').value || "Nenhuma"}`;
+        if (!nome || !rua || !num || !bairro) {
+            alert('Por favor, preencha os campos obrigatórios de identificação e endereço.');
+            return;
+        }
+
+        let mensagem = `*NOVO PEDIDO - QG DAS BATIDAS*\n\n`;
+        mensagem += `*Cliente:* ${nome}\n`;
+        mensagem += `*Endereço:* ${rua}, ${num} - ${bairro} (CEP: ${cep})\n`;
+        mensagem += `*Pagamento:* ${pagamento}${troco ? ` (Troco para: ${troco})` : ''}\n`;
+        if (obs) mensagem += `*Observações:* ${obs}\n`;
         
-        window.open(`https://api.whatsapp.com/send?phone=5511942971753&text=${encodeURIComponent(msg)}`, '_blank');
+        mensagem += `\n*ITENS DO PEDIDO:*\n`;
+        carrinho.forEach(item => {
+            let tamanhoTxt = item.tamanho ? ` [${item.tamanho}]` : '';
+            mensagem += `- ${item.nome}${tamanhoTxt} - R$ ${item.preco.toFixed(2)}\n`;
+        });
+
+        const totalGeral = carrinho.reduce((a, b) => a + b.preco, 0);
+        mensagem += `\n*TOTAL:* R$ ${totalGeral.toFixed(2)}`;
+
+        const telefoneLoja = "5511999999999";
+        const urlWhatsApp = `https://api.whatsapp.com/send?phone=${telefoneLoja}&text=${encodeURIComponent(mensagem)}`;
+        
+        window.open(urlWhatsApp, '_blank');
     }
 
-    window.onload = () => { carregar(); recalcular(); };
+    window.onload = carregar;
 </script>
 </body>
 </html>
