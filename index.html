@@ -586,7 +586,7 @@
 
 <header>
     <div id="statusLojaBadge" class="status-loja-badge">
-        <span class="status-ponto"></span> <span id="statusLojaTexto">Verificando horário...</span>
+        <span class="status-ponto"></span> <span id="statusLojaTexto">Loja Aberta - Aceitando Pedidos</span>
     </div>
     <div class="logo-badge-top">Artesanais & Exclusivas</div>
     <h1>QG das <span>Batidas</span></h1>
@@ -633,7 +633,7 @@
     <p>Endereço: Rua André da Silva Pina, 309 - Taboão da Serra - SP</p>
     <p>Responsável: Sidney Pereira de Almeida | CNPJ: 60.659.173/0001-48</p>
     <p style="margin-top: 10px; color: #666;">Todos os direitos reservados.</p>
-           </footer>
+                        </footer>
     <div class="cart-bar" id="cart-bar" style="display: none;">
     <div>
         <div class="cart-total-text" id="cart-qtd-text">0 itens no carrinho</div>
@@ -731,29 +731,19 @@
     }
     setInterval(desenharMatrix, 35);
 
-    // Verificação de Horário Automática (Exemplo: Aberto das 14h às 23h59)
+    // Horário de funcionamento forçado como ABERTO para testes
     function verificarHorarioLoja() {
-        const agora = new Date();
-        const hora = agora.getHours();
         const badge = document.getElementById('statusLojaBadge');
         const texto = document.getElementById('statusLojaTexto');
         const btnCheckout = document.getElementById('btnCheckout');
 
-        // Modifique aqui os horários se precisar (ex: aberto das 14 às 02)
-        const aberto = hora >= 14 || hora < 3; 
-
-        if (aberto) {
-            badge.className = 'status-loja-badge';
-            texto.innerText = 'Loja Aberta - Aceitando Pedidos';
-            if(btnCheckout) btnCheckout.disabled = false;
-        } else {
-            badge.className = 'status-loja-badge fechado';
-            texto.innerText = 'Loja Fechada (Abrimos às 14h)';
-            if(btnCheckout) {
-                btnCheckout.disabled = true;
-                btnCheckout.style.opacity = '0.5';
-                btnCheckout.innerText = 'LOJA FECHADA';
-            }
+        // Sempre aberto para testes
+        badge.className = 'status-loja-badge';
+        texto.innerText = 'Loja Aberta - Aceitando Pedidos';
+        if(btnCheckout) {
+            btnCheckout.disabled = false;
+            btnCheckout.style.opacity = '1';
+            btnCheckout.innerText = 'FECHAR PEDIDO';
         }
     }
     verificarHorarioLoja();
@@ -843,7 +833,7 @@
             throw new Error('Dados vazios');
         } catch (e) {
             const produtosFallback = [
-                { cat: "🏆 Destaques", nome: "Batida Morango", desc: "Carregamento de emergência simulado", tamanhos: { "500ml": 25.00, "1L": 45.00 } }
+                { cat: "🏆 Destaques", nome: "Batida Morango", desc: "Carregamento de emergência simulado", tamanhos: { "300ml": 12.00, "500ml": 18.00, "1L": 32.00 } }
             ];
             renderizarVitrine(produtosFallback);
         }
@@ -947,12 +937,6 @@
         salvar();
     }
 
-    function alterarQtd(i, delta) {
-        carrinho.splice(i, 1);
-        salvar();
-        abrirModal();
-    }
-
     function remover(i) { carrinho.splice(i, 1); salvar(); abrirModal(); }
     function salvar() { localStorage.setItem('carrinho_qg', JSON.stringify(carrinho)); recalcular(); }
     function limparTudo() { carrinho = []; salvar(); fecharModal(); }
@@ -1034,7 +1018,7 @@
         mensagem += `\n*Taxa de Entrega:* R$ ${taxaEntrega.toFixed(2)}`;
         mensagem += `\n*TOTAL GERAL:* R$ ${totalGeral.toFixed(2)}`;
 
-        const telefoneLoja = "5511942971753"; // Seu número configurado
+        const telefoneLoja = "5511942971753";
         const urlWhatsApp = `https://api.whatsapp.com/send?phone=${telefoneLoja}&text=${encodeURIComponent(mensagem)}`;
         
         window.open(urlWhatsApp, '_blank');
@@ -1043,4 +1027,5 @@
     window.onload = carregar;
 </script>
 </body>
-</html>
+                </html>
+    
