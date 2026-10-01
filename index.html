@@ -419,8 +419,8 @@
         <button class="btn-action-red" onclick="limparTudo()">LIMPAR CARRINHO</button>
         <button class="btn-action-ghost" onclick="fecharModal()">Continuar Comprando</button>
     </div>
-</div>
-<!-- PARTE 2: LOGICA JAVASCRIPT (Carrinho, Fallback e Requisições) -->
+    </div>
+    <!-- PARTE 2: LOGICA JAVASCRIPT (Carrinho, Fallback e Requisições) -->
 <script>
     let baseProdutos = [];
     let carrinho = JSON.parse(localStorage.getItem('carrinho_qg')) || [];
@@ -476,7 +476,13 @@
                 tamanhosHtml += '</div>';
             }
 
-            let precoInicial = p.tamanhos ? Number(Object.values(p.tamanhos)[0]) || 0 : Number(p.preco) || 0;
+            let precoInicial = 0;
+            if (p.tamanhos) {
+                let primeiroChave = Object.keys(p.tamanhos)[0];
+                precoInicial = Number(p.tamanhos[primeiroChave]) || 0;
+            } else {
+                precoInicial = Number(p.preco) || 0;
+            }
 
             html += `
                 <div class="card" id="card-${i}">
@@ -520,7 +526,15 @@
         const card = document.getElementById(`card-${i}`);
         card.querySelectorAll('.tamanho-opcao').forEach(el => el.classList.remove('selecionado'));
         elemento.classList.add('selecionado');
-        const preco = Number(baseProdutos[i].tamanhos[tamanho]) || 0;
+        
+        let preco = 0;
+        const tamanhosObj = baseProdutos[i].tamanhos;
+        if (tamanhosObj) {
+            // Busca insensível a maiúsculas/minúsculas para evitar zerar
+            let chaveEncontrada = Object.keys(tamanhosObj).find(k => k.toLowerCase() === tamanho.toLowerCase());
+            preco = chaveEncontrada ? (Number(tamanhosObj[chaveEncontrada]) || 0) : 0;
+        }
+        
         document.getElementById(`preco-exibido-${i}`).innerText = `R$ ${preco.toFixed(2)}`;
     }
 
@@ -542,18 +556,21 @@
     function adicionar(i) {
         const p = baseProdutos[i];
         let tamanhoEscolhido = '500ml';
-        let precoEscolhido = Number(p.preco) || 0;
+        let precoEscolhido = 0;
 
         if (p.tamanhos) {
             const card = document.getElementById(`card-${i}`);
             const selecionadoEl = card.querySelector('.tamanho-opcao.selecionado');
             if (selecionadoEl) {
                 tamanhoEscolhido = selecionadoEl.querySelector('label').innerText;
-                precoEscolhido = Number(p.tamanhos[tamanhoEscolhido]) || 0;
             } else {
                 tamanhoEscolhido = Object.keys(p.tamanhos)[0];
-                precoEscolhido = Number(p.tamanhos[tamanhoEscolhido]) || 0;
             }
+
+            let chaveEncontrada = Object.keys(p.tamanhos).find(k => k.toLowerCase() === tamanhoEscolhido.toLowerCase());
+            precoEscolhido = chaveEncontrada ? (Number(p.tamanhos[chaveEncontrada]) || 0) : 0;
+        } else {
+            precoEscolhido = Number(p.preco) || 0;
         }
 
         carrinho.push({ nome: p.nome, tamanho: tamanhoEscolhido, preco: precoEscolhido });
