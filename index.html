@@ -441,6 +441,13 @@
 <script>
     let baseProdutos = [];
     let carrinho = JSON.parse(localStorage.getItem('carrinho_qg')) || [];
+    // Corrige itens salvos sem preço ou corrompidos
+    if (!Array.isArray(carrinho)) { carrinho = []; }
+    carrinho = carrinho.map(item => ({
+        nome: item.nome || 'Produto',
+        tamanho: item.tamanho || '500ml',
+        preco: Number(item.preco) || 0
+    }));
 
     async function carregar() {
         try {
@@ -458,7 +465,7 @@
                     tamanhosHtml = '<div class="tamanhos-container">';
                     let primeiro = true;
                     for (let tam in p.tamanhos) {
-                        let precoTam = p.tamanhos[tam];
+                        let precoTam = Number(p.tamanhos[tam]) || 0;
                         tamanhosHtml += `
                             <div class="tamanho-opcao ${primeiro ? 'selecionado' : ''}" onclick="selecionarTamanho(${i}, '${tam}', this)">
                                 <label>${tam}</label>
@@ -470,7 +477,7 @@
                     tamanhosHtml += '</div>';
                 }
 
-                let precoInicial = p.tamanhos ? Object.values(p.tamanhos)[0] : p.preco;
+                let precoInicial = p.tamanhos ? Number(Object.values(p.tamanhos)[0]) || 0 : Number(p.preco) || 0;
 
                 html += `
                     <div class="card" id="card-${i}">
@@ -500,10 +507,8 @@
         card.querySelectorAll('.tamanho-opcao').forEach(el => el.classList.remove('selecionado'));
         elemento.classList.add('selecionado');
         
-        const preco = baseProdutos[i].tamanhos[tamanho];
+        const preco = Number(baseProdutos[i].tamanhos[tamanho]) || 0;
         document.getElementById(`preco-exibido-${i}`).innerText = `R$ ${preco.toFixed(2)}`;
-        card.dataset.tamanhoSelecionado = tamanho;
-        card.dataset.precoSelecionado = preco;
     }
 
     async function buscarCEP(cep) {
@@ -524,17 +529,17 @@
     function adicionar(i) {
         const p = baseProdutos[i];
         let tamanhoEscolhido = '500ml';
-        let precoEscolhido = p.preco;
+        let precoEscolhido = Number(p.preco) || 0;
 
         if (p.tamanhos) {
             const card = document.getElementById(`card-${i}`);
             const selecionadoEl = card.querySelector('.tamanho-opcao.selecionado');
             if (selecionadoEl) {
                 tamanhoEscolhido = selecionadoEl.querySelector('label').innerText;
-                precoEscolhido = p.tamanhos[tamanhoEscolhido];
+                precoEscolhido = Number(p.tamanhos[tamanhoEscolhido]) || 0;
             } else {
                 tamanhoEscolhido = Object.keys(p.tamanhos)[0];
-                precoEscolhido = p.tamanhos[tamanhoEscolhido];
+                precoEscolhido = Number(p.tamanhos[tamanhoEscolhido]) || 0;
             }
         }
 
@@ -551,7 +556,7 @@
     function limparTudo() { carrinho = []; salvar(); fecharModal(); }
 
     function recalcular() {
-        const total = carrinho.reduce((a, b) => a + b.preco, 0);
+        const total = carrinho.reduce((a, b) => a + (Number(b.preco) || 0), 0);
         document.getElementById('cart-total').innerText = `R$ ${total.toFixed(2)}`;
         document.getElementById('modal-total').innerText = `R$ ${total.toFixed(2)}`;
         document.getElementById('cart-bar').style.display = carrinho.length > 0 ? 'flex' : 'none';
@@ -561,9 +566,10 @@
         if(carrinho.length === 0) return;
         let html = '';
         carrinho.forEach((p, i) => {
+            let precoItem = Number(p.preco) || 0;
             html += `
                 <div class="item-lista">
-                    <span><b>${p.nome}</b> (${p.tamanho})<br><span style="color:var(--primary);">R$ ${p.preco.toFixed(2)}</span></span>
+                    <span><b>${p.nome}</b> (${p.tamanho || '500ml'})<br><span style="color:var(--primary);">R$ ${precoItem.toFixed(2)}</span></span>
                     <button onclick="remover(${i})" style="background:none; border:none; color:#e74c3c; cursor:pointer; font-size:1.1rem; padding:5px;">🗑️</button>
                 </div>`;
         });
@@ -579,15 +585,10 @@
         if(!nome) { alert('Por favor, preencha o seu nome!'); document.getElementById('nomeCliente').focus(); return; }
         if(!rua) { alert('Por favor, preencha o endereço!'); document.getElementById('rua').focus(); return; }
 
-        const total = carrinho.reduce((a, b) => a + b.preco, 0);
+        const total = carrinho.reduce((a, b) => a + (Number(b.preco) || 0), 0);
         let msg = `*NOVO PEDIDO - QG DAS BATIDAS*\n\n`;
-        carrinho.forEach(item => msg += `• ${item.nome} (${item.tamanho}) - R$ ${item.preco.toFixed(2)}\n`);
-        msg += `\n*TOTAL: R$ ${total.toFixed(2)}*\n\n*ENDEREÇO DE ENTREGA:*\nNome: ${nome}\nEnd: ${rua}, ${document.getElementById('num').value} - Bairro: ${document.getElementById('bairro').value}\nPagamento: ${document.getElementById('pagamento').value}\nTroco: ${document.getElementById('troco').value || "Não precisa"}\nObs: ${document.getElementById('obs').value || "Nenhuma"}`;
-        
-        window.open(`https://api.whatsapp.com/send?phone=5511942971753&text=${encodeURIComponent(msg)}`, '_blank');
-    }
-
-    window.onload = () => { carregar(); recalcular(); };
-</script>
-</body>
-</html
+        carrinho.forEach(item => {
+            let pItem = Number(item.preco) || 0;
+            msg += `• ${item.nome} (${item.tamanho || '500ml'}) - R$ ${pItem.toFixed(2)}\n`;
+        });
+        msg += `\n*TOTAL: R$ ${total.toFixed(2)}*\n\n*ENDEREÇO DE ENTREGA:*\nNome: ${nome}\nEnd: ${rua}, ${document.getElementById('num').value} - Bairro: ${d
