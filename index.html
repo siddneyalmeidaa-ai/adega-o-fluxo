@@ -11,17 +11,20 @@
 
 <header>
     <div id="statusLojaBadge" class="status-loja-badge">
-        <span class="status-ponto"></span> <span id="statusLojaTexto">Loja Aberta - Das 14h às 03h</span>
+        <span class="status-ponto"></span> <span id="statusLojaTexto">Verificando horário...</span>
     </div>
     <div style="font-size:0.75rem; color:var(--text-muted); letter-spacing:1px; text-transform:uppercase;">Artesanais & Exclusivas</div>
     <h1>QG das <span>Batidas</span></h1>
     <p>As melhores batidas da região na sua casa</p>
 </header>
 
+<div id="bannerAvisoGlobal" class="banner-aviso" style="display: none;"></div>
+
 <div class="nav-tabs">
     <button class="tab-btn ativo" onclick="mudarAba('cardapio', this)">Cardápio</button>
     <button class="tab-btn" onclick="mudarAba('sobre', this)">Quem Somos</button>
     <button class="tab-btn" onclick="mudarAba('certificado', this)">Certificado</button>
+    <button class="tab-btn" onclick="mudarAba('admin', this)">⚙️ Admin</button>
 </div>
 
 <div class="container">
@@ -53,7 +56,7 @@
                 </div>
                 <div class="institucional-card">
                     <h4>⏰ Horário de Funcionamento</h4>
-                    <p>Todos os dias, das <strong>14:00 às 03:00</strong> da manhã.</p>
+                    <p>Configurado via Painel Administrativo.</p>
                 </div>
             </div>
 
@@ -84,6 +87,83 @@
             </div>
         </div>
     </div>
+
+    <!-- ABA ADMIN -->
+    <div id="aba-admin" class="tab-content">
+        <div class="institucional-box" id="admin-login-box">
+            <h2>Painel Administrativo</h2>
+            <p>Insira o PIN de segurança para gerenciar o QG das Batidas.</p>
+            <input type="password" id="adminPinInput" placeholder="Digite o PIN (Ex: 5120)">
+            <button class="btn-action-green" onclick="fazerLoginAdmin()">ACESSAR PAINEL</button>
+        </div>
+
+        <div class="institucional-box" id="admin-dashboard-box" style="display: none;">
+            <h2>Painel de Gestão - QG das Batidas</h2>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <span style="color: var(--accent); font-weight: bold;">Status: Autenticado com sucesso</span>
+                <button class="btn-action-red" style="width: auto; padding: 6px 12px; margin: 0;" onclick="sairAdmin()">Sair</button>
+            </div>
+
+            <!-- Abas do Admin -->
+            <div style="display: flex; gap: 6px; margin-bottom: 20px; flex-wrap: wrap;">
+                <button class="tab-btn ativo" onclick="mudarPainelAdmin('estoque', this)">Estoque</button>
+                <button class="tab-btn" onclick="mudarPainelAdmin('horario', this)">Horário/Aviso</button>
+                <button class="tab-btn" onclick="mudarPainelAdmin('cupons', this)">Cupons</button>
+                <button class="tab-btn" onclick="mudarPainelAdmin('clientes', this)">Clientes</button>
+                <button class="tab-btn" onclick="mudarPainelAdmin('pedidos', this)">Pedidos (<span id="contadorPedidosAdmin">0</span>)</button>
+            </div>
+
+            <!-- SEÇÃO 1: ESTOQUE -->
+            <div id="painel-estoque" class="admin-secao ativo">
+                <h4 style="color:var(--primary);">Gerenciar Estoque de Batidas</h4>
+                <p style="font-size:0.8rem;">Clique no botão para alternar entre Disponível e Esgotado instantaneamente.</p>
+                <div id="listaEstoqueAdmin"></div>
+            </div>
+
+            <!-- SEÇÃO 2: HORÁRIO E AVISOS -->
+            <div id="painel-horario" class="admin-secao" style="display: none;">
+                <h4 style="color:var(--primary);">Configurações de Horário e Avisos</h4>
+                
+                <label style="font-size:0.8rem; color:var(--text-muted); display:block; margin-top:10px;">Abertura Manual de Emergência:</label>
+                <select id="adminForcarAberto" onchange="salvarConfigHorario()">
+                    <option value="auto">Automático (Pelo Horário do Sistema)</option>
+                    <option value="sim">Forçar Loja Aberta (Emergência)</option>
+                    <option value="nao">Forçar Loja Fechada</option>
+                </select>
+
+                <label style="font-size:0.8rem; color:var(--text-muted); display:block; margin-top:10px;">Mensagem de Aviso Global (Topo do Site):</label>
+                <textarea id="adminAvisoGlobal" rows="2" placeholder="Deixe em branco para nenhum aviso..."></textarea>
+                <button class="btn-action-green" onclick="salvarConfigHorario()" style="margin-top:8px;">Salvar Configurações de Horário</button>
+            </div>
+
+            <!-- SEÇÃO 3: CUPONS -->
+            <div id="painel-cupons" class="admin-secao" style="display: none;">
+                <h4 style="color:var(--primary);">Gerenciar Cupons de Desconto</h4>
+                <input type="text" id="novoCupomCodigo" placeholder="Código (Ex: QG10)" style="text-transform:uppercase;">
+                <select id="novoCupomTipo">
+                    <option value="porcentagem">Porcentagem (%)</option>
+                    <option value="fixo">Valor Fixo (R$)</option>
+                </select>
+                <input type="number" id="novoCupomValor" placeholder="Valor (Ex: 10 para 10% ou 5 para R$5)">
+                <button class="btn-action-green" onclick="adicionarCupomAdmin()">Cadastrar Cupom</button>
+                
+                <div id="listaCuponsAdmin" style="margin-top: 15px;"></div>
+            </div>
+
+            <!-- SEÇÃO 4: CLIENTES -->
+            <div id="painel-clientes" class="admin-secao" style="display: none;">
+                <h4 style="color:var(--primary);">Base de Clientes Cadastrados</h4>
+                <p style="font-size:0.8rem;">Clientes salvos para campanhas e reativação via WhatsApp.</p>
+                <div id="listaClientesAdmin"></div>
+            </div>
+
+            <!-- SEÇÃO 5: PEDIDOS -->
+            <div id="painel-pedidos" class="admin-secao" style="display: none;">
+                <h4 style="color:var(--primary);">Painel de Pedidos em Tempo Real</h4>
+                <div id="listaPedidosAdmin"></div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="cart-bar" id="cart-bar" style="display: none;">
@@ -106,8 +186,15 @@
             </label>
         </div>
 
+        <div class="cupom-box">
+            <input type="text" id="codigoCupom" placeholder="Tem um cupom? Digite aqui" style="margin:0; text-transform: uppercase;">
+            <button type="button" class="btn-cupom" onclick="aplicarCupom()">Aplicar</button>
+        </div>
+        <div id="mensagemCupom" style="font-size: 0.75rem; margin-top: 4px;"></div>
+
         <div class="resumo-valores">
             <div class="resumo-linha"><span>Subtotal:</span> <span id="modal-subtotal">R$ 0,00</span></div>
+            <div class="resumo-linha" id="linhaDescontoModal" style="display:none; color: var(--accent);"><span>Desconto Cupom:</span> <span id="modal-desconto">- R$ 0,00</span></div>
             <div class="resumo-linha"><span>Taxa de Entrega:</span> <span style="color:var(--primary);">R$ 5,00</span></div>
             <div class="resumo-linha total"><span>Total Geral:</span> <span id="modal-total" style="color:var(--primary);">R$ 5,00</span></div>
         </div>
@@ -147,9 +234,9 @@
 
 <footer>
     <p><strong>QG das Batidas</strong> - Todos os direitos reservados.</p>
-    <p>Taboão da Serra - SP | Atendimento Diário das 14h às 03h</p>
-                </footer>
-                <style>
+    <p>Taboão da Serra - SP | Atendimento Dinâmico Inteligente</p>
+                        </footer>
+            <style>
     :root {
         --bg-base: rgba(7, 7, 7, 0.85);
         --card-bg: rgba(18, 18, 18, 0.90);
@@ -190,6 +277,17 @@
         backdrop-filter: blur(4px);
     }
 
+    .banner-aviso {
+        background: rgba(243, 156, 18, 0.15);
+        border-bottom: 1px solid var(--primary);
+        color: var(--primary);
+        text-align: center;
+        padding: 10px 15px;
+        font-size: 0.85rem;
+        font-weight: bold;
+        letter-spacing: 0.5px;
+    }
+
     .status-loja-badge {
         display: inline-flex;
         align-items: center;
@@ -204,6 +302,12 @@
         letter-spacing: 1px;
         text-transform: uppercase;
         margin-bottom: 12px;
+    }
+
+    .status-loja-badge.fechado {
+        background: rgba(231, 76, 60, 0.1);
+        border-color: #e74c3c;
+        color: #e74c3c;
     }
 
     .status-ponto {
@@ -246,14 +350,14 @@
 
     .tab-btn {
         flex: 1;
-        min-width: 100px;
+        min-width: 85px;
         background: rgba(18, 18, 18, 0.9);
         border: 1px solid var(--border);
         color: var(--text-muted);
         padding: 12px 8px;
         border-radius: 12px;
         font-weight: 800;
-        font-size: 0.8rem;
+        font-size: 0.75rem;
         cursor: pointer;
         text-transform: uppercase;
         letter-spacing: 1px;
@@ -374,6 +478,22 @@
         transition: border-color 0.3s;
     }
 
+    .card.esgotado-card {
+        opacity: 0.55;
+        border-color: #333;
+    }
+
+    .badge-esgotado {
+        color: #e74c3c;
+        font-size: 0.75rem;
+        background: rgba(231, 76, 60, 0.1);
+        padding: 2px 6px;
+        border-radius: 6px;
+        border: 1px solid #e74c3c;
+        vertical-align: middle;
+        margin-left: 6px;
+    }
+
     .card:hover {
         border-color: rgba(243, 156, 18, 0.4);
     }
@@ -466,6 +586,17 @@
         box-shadow: 0 4px 15px var(--primary-glow);
     }
 
+    .btn-add-disabled {
+        background: #222;
+        color: #555;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 10px;
+        font-weight: bold;
+        font-size: 0.85rem;
+        cursor: not-allowed;
+    }
+
     .age-warning {
         text-align: center;
         font-size: 0.75rem;
@@ -503,6 +634,10 @@
     .adicionais-box { background: rgba(9, 9, 9, 0.5); border: 1px dashed var(--border); border-radius: 10px; padding: 10px; margin: 10px 0; font-size: 0.85rem; }
     .adicionais-box label { display: flex; align-items: center; gap: 8px; cursor: pointer; color: var(--text-muted); }
     .adicionais-box input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var(--primary); }
+    
+    .cupom-box { display: flex; gap: 8px; margin: 12px 0 4px 0; }
+    .btn-cupom { background: rgba(243, 156, 18, 0.15); border: 1px solid var(--primary); color: var(--primary); padding: 0 16px; border-radius: 10px; font-weight: bold; font-size: 0.8rem; cursor: pointer; white-space: nowrap; }
+
     .btn-action-green { width: 100%; padding: 14px; background: var(--accent); border: none; color: white; font-weight: bold; border-radius: 10px; cursor: pointer; font-size: 1rem; margin-top: 15px; }
     .btn-action-red { width: 100%; padding: 10px; margin-top: 10px; background: #e74c3c; border: none; color: white; border-radius: 10px; cursor: pointer; font-weight: bold; }
     .btn-action-ghost { width: 100%; padding: 10px; margin-top: 5px; background: transparent; border: none; color: var(--text-muted); cursor: pointer; }
@@ -524,8 +659,8 @@
     footer p {
         margin: 4px 0;
     }
-        </style>
-        <script>
+            </style>
+            <script>
     // Configuração do Fundo Matrix
     const canvas = document.getElementById('matrixCanvas');
     const ctx = canvas.getContext('2d');
@@ -565,21 +700,83 @@
         elementoBtn.classList.add('ativo');
     }
 
-    // Dados do Cardápio
-    const cardapioData = [
+    function mudarPainelAdmin(secaoId, elementoBtn) {
+        document.querySelectorAll('.admin-secao').forEach(el => el.style.display = 'none');
+        document.querySelectorAll('#admin-dashboard-box .tab-btn').forEach(el => el.classList.remove('ativo'));
+        document.getElementById('painel-' + secaoId).style.display = 'block';
+        elementoBtn.classList.add('ativo');
+        if (secaoId === 'estoque') renderizarEstoqueAdmin();
+        if (secaoId === 'cupons') renderizarCuponsAdmin();
+        if (secaoId === 'clientes') renderizarClientesAdmin();
+        if (secaoId === 'pedidos') renderizarPedidosAdmin();
+    }
+
+    // Dados Globais e Persistência
+    let cardapioData = JSON.parse(localStorage.getItem('qg_cardapio')) || [
         {
             categoria: "Batidas Especiais da Casa",
             itens: [
-                { id: 1, nome: "Batida Tropical de Morango", desc: "Morangos frescos selecionados, xarope de açúcar, vodka premium e gelo triturado", precos: { 300: 12.0, 500: 18.0, 1000: 32.0 } },
-                { id: 2, nome: "Batida de Maracujá Clássica", desc: "Polpa de maracujá azedo natural, leite condensado, cachaça branca e gelo", precos: { 300: 12.0, 500: 18.0, 1000: 32.0 } },
-                { id: 3, nome: "Batida Cocadinha Tropical", desc: "Leite de coco concentrado, rum branco, leite condensado e coco ralado queimado por cima", precos: { 300: 14.0, 500: 20.0, 1000: 35.0 } }
+                { id: 1, nome: "Batida Tropical de Morango", desc: "Morangos frescos selecionados, xarope de açúcar, vodka premium e gelo triturado", disponivel: true, precos: { 300: 12.0, 500: 18.0, 1000: 32.0 } },
+                { id: 2, nome: "Batida de Maracujá Clássica", desc: "Polpa de maracujá azedo natural, leite condensado, cachaça branca e gelo", disponivel: true, precos: { 300: 12.0, 500: 18.0, 1000: 32.0 } },
+                { id: 3, nome: "Batida Cocadinha Tropical", desc: "Leite de coco concentrado, rum branco, leite condensado e coco ralado queimado por cima", disponivel: true, precos: { 300: 14.0, 500: 20.0, 1000: 35.0 } }
             ]
         }
     ];
 
+    let cuponsValidos = JSON.parse(localStorage.getItem('qg_cupons')) || {
+        "QG10": { tipo: "porcentagem", valor: 0.10 },
+        "BATIDAO": { tipo: "fixo", valor: 5.00 }
+    };
+
+    let clientesCadastrados = JSON.parse(localStorage.getItem('qg_clientes')) || [];
+    let pedidosRealizados = JSON.parse(localStorage.getItem('qg_pedidos')) || [];
+    let configHorario = JSON.parse(localStorage.getItem('qg_config')) || { forcar: "auto", aviso: "" };
+
     let carrinho = [];
     let selecaoAtual = {};
+    let descontoAplicadoObj = { tipo: null, valor: 0, codigo: "" };
 
+    // Verificar Horário Dinâmico
+    function verificarHorarioLoja() {
+        const badge = document.getElementById('statusLojaBadge');
+        const texto = document.getElementById('statusLojaTexto');
+        const banner = document.getElementById('bannerAvisoGlobal');
+
+        // Aviso global
+        if (configHorario.aviso && configHorario.aviso.trim() !== "") {
+            banner.innerText = configHorario.aviso;
+            banner.style.display = 'block';
+        } else {
+            banner.style.display = 'none';
+        }
+
+        let aberto = false;
+        if (configHorario.forcar === "sim") {
+            aberto = true;
+        } else if (configHorario.forcar === "nao") {
+            aberto = false;
+        } else {
+            const horaAtual = new Date().getHours();
+            // Aberto das 14h às 03h da manhã
+            if (horaAtual >= 14 || horaAtual < 3) {
+                aberto = true;
+            } else {
+                aberto = false;
+            }
+        }
+
+        if (aberto) {
+            badge.className = "status-loja-badge";
+            texto.innerText = "Loja Aberta - Das 14h às 03h";
+        } else {
+            badge.className = "status-loja-badge fechado";
+            texto.innerText = "Loja Fechada - Abrimos às 14h";
+        }
+    }
+    setInterval(verificarHorarioLoja, 10000);
+    verificarHorarioLoja();
+
+    // Renderizar Cardápio na Vitrine
     function renderizarCardapio() {
         const vitrine = document.getElementById('vitrine');
         let html = '';
@@ -591,29 +788,33 @@
                     selecaoAtual[item.id] = { tamanho: 300, preco: item.precos[300] };
                 }
                 const sel = selecaoAtual[item.id];
+                const estaDisponivel = item.disponivel !== false;
 
                 html += `
-                    <div class="card">
+                    <div class="card ${!estaDisponivel ? 'esgotado-card' : ''}">
                         <div class="card-content">
-                            <h3>${item.nome}</h3>
+                            <h3>${item.nome} ${!estaDisponivel ? '<span class="badge-esgotado">[ESGOTADO]</span>' : ''}</h3>
                             <p>${item.desc}</p>
                             <div class="tamanhos-container">
-                                <div class="tamanho-opcao ${sel.tamanho === 300 ? 'selecionado' : ''}" onclick="mudarTamanho(${item.id}, 300, ${item.precos[300]})">
+                                <div class="tamanho-opcao ${sel.tamanho === 300 ? 'selecionado' : ''}" onclick="${estaDisponivel ? `mudarTamanho(${item.id}, 300,${item.precos[300]})` : ''}">
                                     <label>300ml</label>
                                     <span class="preco-tamanho">R$ ${item.precos[300].toFixed(2).replace('.', ',')}</span>
                                 </div>
-                                <div class="tamanho-opcao ${sel.tamanho === 500 ? 'selecionado' : ''}" onclick="mudarTamanho(${item.id}, 500, ${item.precos[500]})">
+                                <div class="tamanho-opcao ${sel.tamanho === 500 ? 'selecionado' : ''}" onclick="${estaDisponivel ? `mudarTamanho(${item.id}, 500,${item.precos[500]})` : ''}">
                                     <label>500ml</label>
                                     <span class="preco-tamanho">R$ ${item.precos[500].toFixed(2).replace('.', ',')}</span>
                                 </div>
-                                <div class="tamanho-opcao ${sel.tamanho === 1000 ? 'selecionado' : ''}" onclick="mudarTamanho(${item.id}, 1000, ${item.precos[1000]})">
+                                <div class="tamanho-opcao ${sel.tamanho === 1000 ? 'selecionado' : ''}" onclick="${estaDisponivel ? `mudarTamanho(${item.id}, 1000,${item.precos[1000]})` : ''}">
                                     <label>1 Litro</label>
                                     <span class="preco-tamanho">R$ ${item.precos[1000].toFixed(2).replace('.', ',')}</span>
                                 </div>
                             </div>
                             <div class="card-footer">
                                 <div class="preco" id="preco-item-${item.id}">R$ ${sel.preco.toFixed(2).replace('.', ',')}</div>
-                                <button class="btn-add" onclick="adicionarAoCarrinho(${item.id}, '${item.nome}')">+ ADICIONAR</button>
+                                ${estaDisponivel 
+                                    ? `<button class="btn-add" onclick="adicionarAoCarrinho(${item.id}, '${item.nome}')">+ ADICIONAR</button>`
+                                    : `<button class="btn-add-disabled" disabled>INDISPONÍVEL</button>`
+                                }
                             </div>
                         </div>
                     </div>
@@ -692,6 +893,24 @@
         fecharModal();
     }
 
+    function aplicarCupom() {
+        const codigo = document.getElementById('codigoCupom').value.trim().toUpperCase();
+        const msg = document.getElementById('mensagemCupom');
+
+        if (cuponsValidos[codigo]) {
+            const cupom = cuponsValidos[codigo];
+            descontoAplicadoObj = { tipo: cupom.tipo, valor: cupom.valor, codigo: codigo };
+            msg.style.color = "var(--accent)";
+            msg.innerText = `Cupom ${codigo} aplicado com sucesso!`;
+            recalcular();
+        } else {
+            descontoAplicadoObj = { tipo: null, valor: 0, codigo: "" };
+            msg.style.color = "#e74c3c";
+            msg.innerText = "Cupom inválido ou expirado.";
+            recalcular();
+        }
+    }
+
     function recalcular() {
         const listaResumo = document.getElementById('lista-resumo');
         let html = '';
@@ -712,12 +931,30 @@
         });
 
         listaResumo.innerHTML = html;
+
+        let valorDesconto = 0;
+        const linhaDesconto = document.getElementById('linhaDescontoModal');
+
+        if (descontoAplicadoObj.tipo === "porcentagem") {
+            valorDesconto = subtotal * descontoAplicadoObj.valor;
+        } else if (descontoAplicadoObj.tipo === "fixo") {
+            valorDesconto = descontoAplicadoObj.valor;
+            if (valorDesconto > subtotal) valorDesconto = subtotal;
+        }
+
+        if (valorDesconto > 0) {
+            linhaDesconto.style.display = 'flex';
+            document.getElementById('modal-desconto').innerText = `- R$ ${valorDesconto.toFixed(2).replace('.', ',')}`;
+        } else {
+            linhaDesconto.style.display = 'none';
+        }
+
         const taxaEntrega = 5.00;
         const adicionalGelo = document.getElementById('adicionalGelo').checked ? 3.00 : 0;
-        const totalGeral = subtotal + taxaEntrega + adicionalGelo;
+        const totalGeral = (subtotal - valorDesconto) + taxaEntrega + adicionalGelo;
 
         document.getElementById('modal-subtotal').innerText = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
-        document.getElementById('modal-total').innerText = `R$ ${totalGeral.toFixed(2).replace('.', ',')}`;
+        document.getElementById('modal-total').innerText = `R$ ${totalGeral < 0 ? 0 : totalGeral.toFixed(2).replace('.', ',')}`;
     }
 
     function _escaparHTML(str) {
@@ -782,6 +1019,13 @@
             return;
         }
 
+        // Salvar Cliente Automaticamente
+        const clienteExistente = clientesCadastrados.find(c => c.tel === tel);
+        if (!clienteExistente) {
+            clientesCadastrados.push({ nome, tel, rua, bairro, data: new Date().toLocaleDateString('pt-BR') });
+            localStorage.setItem('qg_clientes', JSON.stringify(clientesCadastrados));
+        }
+
         let mensagem = `*NOVO PEDIDO - QG DAS BATIDAS*\n\n`;
         mensagem += `*Cliente:* ${nome}\n`;
         mensagem += `*Telefone:* ${tel}\n\n`;
@@ -796,11 +1040,16 @@
         }
 
         const subtotal = carrinho.reduce((acc, item) => acc + (item.preco * item.qtd), 0);
+        let valorDesconto = 0;
+        if (descontoAplicadoObj.tipo === "porcentagem") valorDesconto = subtotal * descontoAplicadoObj.valor;
+        if (descontoAplicadoObj.tipo === "fixo") valorDesconto = Math.min(subtotal, descontoAplicadoObj.valor);
+
         const taxa = 5.00;
         const geloVal = document.getElementById('adicionalGelo').checked ? 3.00 : 0;
-        const total = subtotal + taxa + geloVal;
+        const total = (subtotal - valorDesconto) + taxa + geloVal;
 
         mensagem += `\n*Subtotal:* R$ ${subtotal.toFixed(2).replace('.', ',')}\n`;
+        if (valorDesconto > 0) mensagem += `*Desconto (${descontoAplicadoObj.codigo}):* - R$ ${valorDesconto.toFixed(2).replace('.', ',')}\n`;
         mensagem += `*Taxa de Entrega:* R$ ${taxa.toFixed(2).replace('.', ',')}\n`;
         if (geloVal > 0) mensagem += `*Gelo Extra:* R$ 3,00\n`;
         mensagem += `*TOTAL GERAL:* R$ ${total.toFixed(2).replace('.', ',')}\n\n`;
@@ -812,12 +1061,48 @@
         if (troco) mensagem += `*Troco para:* ${troco}\n`;
         if (obs) mensagem += `*Observações:* ${obs}\n`;
 
+        // Salvar Pedido no Admin
+        pedidosRealizados.unshift({
+            id: Date.now(),
+            cliente: nome,
+            tel: tel,
+            total: total.toFixed(2),
+            dataHora: new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'})
+        });
+        localStorage.setItem('qg_pedidos', JSON.stringify(pedidosRealizados));
+
         const numeroWhatsApp = "5511999999999"; // Substitua pelo número real do WhatsApp
         const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
         window.open(url, '_blank');
     }
 
-    // Inicialização
-    renderizarCardapio();
-        </script>
-        
+    // PAINEL ADMINISTRATIVO LOGICA (PIN 5120)
+    function fazerLoginAdmin() {
+        const pin = document.getElementById('adminPinInput').value.trim();
+        if (pin === "5120") {
+            document.getElementById('admin-login-box').style.display = 'none';
+            document.getElementById('admin-dashboard-box').style.display = 'block';
+            renderizarEstoqueAdmin();
+            atualizarContadorPedidosAdmin();
+        } else {
+            alert("PIN incorreto!");
+        }
+    }
+
+    function sairAdmin() {
+        document.getElementById('adminPinInput').value = "";
+        document.getElementById('admin-dashboard-box').style.display = 'none';
+        document.getElementById('admin-login-box').style.display = 'block';
+    }
+
+    function renderizarEstoqueAdmin() {
+        const container = document.getElementById('listaEstoqueAdmin');
+        let html = '';
+        cardapioData.forEach((cat, catIdx) => {
+            html += `<h5 style="color:var(--primary); margin:10px 0;">${cat.categoria}</h5>`;
+            cat.itens.forEach((item, itemIdx) => {
+                const disponivel = item.disponivel !== false;
+                html += `
+                    <div style="display:flex; justify-content:space-between; align-items:center; background:#090909; padding:10px; border-radius:8px; margin-bottom:6px; border:1px solid var(--border);">
+                        <span style="font-size:0.85rem;">${item.nome}</span>
+                        <button onclick="alternarEstoqueItem(${catIdx}, ${itemIdx})" style="background:${disponivel ? 'rgba(37,21
