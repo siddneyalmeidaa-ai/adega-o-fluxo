@@ -15,17 +15,6 @@
             --text-muted: #9e9e9e;
             --border: #222222;
         }
-                <style>
-        :root {
-            --bg-base: rgba(7, 7, 7, 0.85);
-            --card-bg: rgba(18, 18, 18, 0.90);
-            --primary: #f39c12;
-            --primary-glow: rgba(243, 156, 18, 0.2);
-            --accent: #25d366;
-            --text-main: #f8f9fa;
-            --text-muted: #9e9e9e;
-            --border: #222222;
-        }
                     body {
             background-color: #070707;
             color: var(--text-main);
@@ -92,7 +81,7 @@
             background-color: currentColor;
             border-radius: 50%;
             box-shadow: 0 0 8px currentColor;
-        }
+            }
                     header h1 {
             color: var(--text-main);
             margin: 0;
@@ -151,6 +140,7 @@
         .institucional-card p { color: var(--text-muted); font-size: 0.85rem; margin: 0; line-height: 1.5; text-align: left; }
                     .categoria-titulo { color: var(--primary); font-size: 0.95rem; margin: 30px 5px 15px 5px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800; display: flex; align-items: center; gap: 10px; }
         .categoria-titulo::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+        
         .card { background-color: var(--card-bg); backdrop-filter: blur(6px); margin: 18px 0; border-radius: 16px; display: flex; flex-direction: column; box-shadow: 0 8px 24px rgba(0,0,0,0.6); border: 1px solid var(--border); overflow: hidden; transition: border-color 0.3s; }
         .card.esgotado-card { opacity: 0.55; border-color: #333; }
         .badge-esgotado { color: #e74c3c; font-size: 0.75rem; background: rgba(231, 76, 60, 0.1); padding: 2px 6px; border-radius: 6px; border: 1px solid #e74c3c; vertical-align: middle; margin-left: 6px; }
@@ -163,6 +153,7 @@
         .tamanho-opcao .preco-tamanho { display: block; font-size: 0.9rem; font-weight: bold; color: var(--text-main); margin-top: 4px; }
         .tamanho-opcao.selecionado { border-color: var(--primary); background: rgba(243, 156, 18, 0.08); }
         .tamanho-opcao.selecionado .preco-tamanho { color: var(--primary); }
+        
         .card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 14px; }
         .preco { color: var(--primary); font-weight: 900; font-size: 1.25rem; }
         .btn-add { background: var(--primary); color: #000; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: 900; font-size: 0.85rem; letter-spacing: 0.5px; box-shadow: 0 4px 15px var(--primary-glow); }
@@ -182,19 +173,25 @@
         .resumo-valores { background: rgba(9, 9, 9, 0.6); border: 1px solid var(--border); border-radius: 12px; padding: 12px; margin: 15px 0; font-size: 0.85rem; }
         .resumo-linha { display: flex; justify-content: space-between; margin-bottom: 6px; color: var(--text-muted); }
         .resumo-linha.total { margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--border); color: var(--text-main); font-weight: bold; font-size: 1rem; }
+        
         input, select, textarea { width: 100%; padding: 13px; margin: 8px 0; border-radius: 10px; border: 1px solid var(--border); background: #090909; color: #fff; box-sizing: border-box; font-size: 0.95rem; outline: none; }
         .linha-gps { display: flex; gap: 8px; margin: 8px 0; }
         .btn-gps { background: rgba(243, 156, 18, 0.15); border: 1px solid var(--primary); color: var(--primary); padding: 0 14px; border-radius: 10px; font-weight: bold; font-size: 0.8rem; cursor: pointer; white-space: nowrap; transition: 0.2s; }
+        
         .mapa-preview { width: 100%; height: 120px; border-radius: 10px; border: 1px solid var(--border); margin: 8px 0; overflow: hidden; display: none; background: #090909; }
         .mapa-preview iframe { width: 100%; height: 100%; border: 0; }
+        
         .adicionais-box { background: rgba(9, 9, 9, 0.5); border: 1px dashed var(--border); border-radius: 10px; padding: 10px; margin: 10px 0; font-size: 0.85rem; }
         .adicionais-box label { display: flex; align-items: center; gap: 8px; cursor: pointer; color: var(--text-muted); }
         .adicionais-box input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var(--primary); }
+        
         .cupom-box { display: flex; gap: 8px; margin: 12px 0 4px 0; }
         .btn-cupom { background: rgba(243, 156, 18, 0.15); border: 1px solid var(--primary); color: var(--primary); padding: 0 16px; border-radius: 10px; font-weight: bold; font-size: 0.8rem; cursor: pointer; white-space: nowrap; }
+        
         .btn-action-green { width: 100%; padding: 14px; background: var(--accent); border: none; color: white; font-weight: bold; border-radius: 10px; cursor: pointer; font-size: 1rem; margin-top: 15px; }
         .btn-action-red { width: 100%; padding: 10px; margin-top: 10px; background: #e74c3c; border: none; color: white; border-radius: 10px; cursor: pointer; font-weight: bold; }
         .btn-action-ghost { width: 100%; padding: 10px; margin-top: 5px; background: transparent; border: none; color: var(--text-muted); cursor: pointer; }
+        
         footer { max-width: 600px; margin: 40px auto 20px auto; padding: 20px 15px; text-align: center; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.75rem; line-height: 1.5; background: rgba(12, 12, 12, 0.7); border-radius: 12px; backdrop-filter: blur(4px); }
         footer p { margin: 4px 0; }
     </style>
@@ -224,7 +221,7 @@
     <!-- ABA CARDÁPIO -->
     <div id="aba-cardapio" class="tab-content ativo">
         <div id="vitrine">
-            <div style="text-align:center; padding: 40px; color: var(--text-muted);">A carregar cardápio...</div>
+            <div style="text-align:center; padding: 40px; color: var(--text-muted);">A carregar o cardápio com as 30 batidas...</div>
         </div>
     </div>
         <!-- ABA QUEM SOMOS -->
@@ -248,7 +245,7 @@
                 </div>
                 <div class="institucional-card">
                     <h4>⏰ Horário de Funcionamento</h4>
-                    <p>Configurado via Painel Administrativo.</p>
+                    <p>Segunda a Domingo: das 18h às 02h</p>
                 </div>
             </div>
 
@@ -283,8 +280,8 @@
     <div id="aba-admin" class="tab-content">
         <div class="institucional-box" id="admin-login-box">
             <h2>Painel Administrativo</h2>
-            <p>Insira o PIN de segurança para gerenciar o QG das Batidas.</p>
-            <input type="password" id="adminPinInput" placeholder="Digite o PIN (5120)">
+            <p>Insira a chave de segurança para gerenciar o QG das Batidas.</p>
+            <input type="password" id="adminPinInput" placeholder="Digite sua senha de acesso">
             <button class="btn-action-green" onclick="fazerLoginAdmin()">ACESSAR PAINEL</button>
         </div>
                 <div class="institucional-box" id="admin-dashboard-box" style="display: none;">
@@ -305,131 +302,108 @@
 
             <div id="painel-estoque" class="admin-secao ativo">
                 <h4 style="color:var(--primary);">Gerenciar Estoque de Batidas</h4>
-                <p style="font-size:0.8rem;">Clique para alternar entre Disponível e Esgotado instantaneamente.</p>
                 <div id="listaEstoqueAdmin"></div>
             </div>
 
             <div id="painel-horario" class="admin-secao" style="display: none;">
                 <h4 style="color:var(--primary);">Configurações de Horário e Avisos</h4>
-                <label style="font-size:0.8rem; color:var(--text-muted); display:block; margin-top:10px;">Abertura Manual de Emergência:</label>
                 <select id="adminForcarAberto" onchange="salvarConfigHorario()">
-                    <option value="auto">Automático (Pelo Horário do Sistema)</option>
-                    <option value="sim">Forçar Loja Aberta (Emergência)</option>
-                    <option value="nao">Forçar Loja Fechada</option>
+                    <option value="auto">Automático</option>
+                    <option value="sim">Forçar Aberto</option>
+                    <option value="nao">Forçar Fechado</option>
                 </select>
-                <label style="font-size:0.8rem; color:var(--text-muted); display:block; margin-top:10px;">Mensagem de Aviso Global (Topo do Site):</label>
-                <textarea id="adminAvisoGlobal" rows="2" placeholder="Deixe em branco para nenhum aviso..."></textarea>
-                <button class="btn-action-green" onclick="salvarConfigHorario()" style="margin-top:8px;">Salvar Configurações</button>
+                <textarea id="adminAvisoGlobal" rows="2" placeholder="Mensagem de aviso global..."></textarea>
+                <button class="btn-action-green" onclick="salvarConfigHorario()">Salvar</button>
             </div>
                         <div id="painel-cupons" class="admin-secao" style="display: none;">
-                <h4 style="color:var(--primary);">Gerenciar Cupons de Desconto</h4>
-                <input type="text" id="novoCupomCodigo" placeholder="Código (Ex: QG10)" style="text-transform:uppercase;">
-                <select id="novoCupomTipo">
-                    <option value="porcentagem">Porcentagem (%)</option>
-                    <option value="fixo">Valor Fixo (R$)</option>
-                </select>
-                <input type="number" id="novoCupomValor" placeholder="Valor (Ex: 10 para 10% ou 5 para R$5)">
-                <button class="btn-action-green" onclick="adicionarCupomAdmin()">Cadastrar Cupom</button>
-                <div id="listaCuponsAdmin" style="margin-top: 15px;"></div>
+                <h4 style="color:var(--primary);">Cupons</h4>
+                <input type="text" id="novoCupomCodigo" placeholder="Código">
+                <select id="novoCupomTipo"><option value="porcentagem">%</option><option value="fixo">R$</option></select>
+                <input type="number" id="novoCupomValor" placeholder="Valor">
+                <button class="btn-action-green" onclick="adicionarCupomAdmin()">Cadastrar</button>
+                <div id="listaCuponsAdmin"></div>
             </div>
 
-            <div id="painel-indica" class="admin-secao" style="display: none;">
-                <h4 style="color:var(--primary);">Controle de Cortesias (Indique e Ganhe)</h4>
-                <p style="font-size:0.8rem;">Clientes que indicaram amigos e ganharam a garrafa de 500ml de cortesia:</p>
-                <div id="listaIndicaAdmin"></div>
-            </div>
-
-            <div id="painel-clientes" class="admin-secao" style="display: none;">
-                <h4 style="color:var(--primary);">Mailing de Clientes e Aniversários</h4>
-                <p style="font-size:0.8rem;">Cadastrados salvos para campanhas de reativação via WhatsApp.</p>
-                <div id="listaClientesAdmin"></div>
-            </div>
-
-            <div id="painel-pedidos" class="admin-secao" style="display: none;">
-                <h4 style="color:var(--primary);">Painel de Pedidos em Tempo Real</h4>
-                <div id="listaPedidosAdmin"></div>
-            </div>
+            <div id="painel-indica" class="admin-secao" style="display: none;"><div id="listaIndicaAdmin"></div></div>
+            <div id="painel-clientes" class="admin-secao" style="display: none;"><div id="listaClientesAdmin"></div></div>
+            <div id="painel-pedidos" class="admin-secao" style="display: none;"><div id="listaPedidosAdmin"></div></div>
         </div>
     </div>
 </div>
+
 <div class="cart-bar" id="cart-bar" style="display: none;">
     <div>
         <div class="cart-total-text" id="cart-qtd-text">0 itens no carrinho</div>
         <div class="cart-total-value" id="cart-total">R$ 0,00</div>
     </div>
-    <button class="btn-checkout" id="btnCheckout" onclick="abrirModal()">FECHAR PEDIDO</button>
-</div>
-
-<!-- MODAL DE PEDIDO -->
+    <button class="btn-checkout" onclick="abrirModal()">FECHAR PEDIDO</button>
+    </div>
+    <!-- MODAL DE PEDIDO -->
 <div id="modalPedido">
     <div class="modal-content">
         <h2>Finalizar Pedido</h2>
         <div id="lista-resumo"></div>
         
         <div class="adicionais-box">
-            <label>
-                <input type="checkbox" id="adicionalGelo" onchange="recalcular()"> Adicionar porção de Gelo Extra (+ R$ 3,00)
-            </label>
+            <label><input type="checkbox" id="adicionalGelo" onchange="recalcular()"> Gelo Extra (+ R$ 3,00)</label>
         </div>
 
         <div class="cupom-box">
-            <input type="text" id="codigoCupom" placeholder="Cupom ou Código de Indicação" style="margin:0; text-transform: uppercase;">
+            <input type="text" id="codigoCupom" placeholder="Cupom ou Indicação" style="margin:0;">
             <button type="button" class="btn-cupom" onclick="aplicarCupom()">Aplicar</button>
         </div>
         <div id="mensagemCupom" style="font-size: 0.75rem; margin-top: 4px;"></div>
 
         <div class="resumo-valores">
             <div class="resumo-linha"><span>Subtotal:</span> <span id="modal-subtotal">R$ 0,00</span></div>
-            <div class="resumo-linha" id="linhaDescontoModal" style="display:none; color: var(--accent);"><span>Desconto / Indicação:</span> <span id="modal-desconto">- R$ 0,00</span></div>
+            <div class="resumo-linha" id="linhaDescontoModal" style="display:none; color: var(--accent);"><span>Desconto:</span> <span id="modal-desconto">- R$ 0,00</span></div>
             <div class="resumo-linha"><span>Taxa de Entrega:</span> <span style="color:var(--primary);">R$ 5,00</span></div>
             <div class="resumo-linha total"><span>Total Geral:</span> <span id="modal-total" style="color:var(--primary);">R$ 5,00</span></div>
         </div>
-                <input type="text" id="nomeCliente" placeholder="* Seu Nome Completo" required>
-        <input type="tel" id="telCliente" placeholder="* Telefone / WhatsApp (Ex: 119XXXXXXXX)" required onblur="verificarClienteNovo(this.value)">
+                <input type="text" id="nomeCliente" placeholder="* Nome Completo" required>
+        <input type="tel" id="telCliente" placeholder="* WhatsApp (119XXXXXXXX)" required onblur="verificarClienteNovo(this.value)">
         
         <label style="font-size:0.75rem; color:var(--text-muted); display:block; margin-top:6px;">Data de Nascimento (Opcional):</label>
-        <input type="date" id="nascCliente" style="margin-top:2px;">
+        <input type="date" id="nascCliente">
 
         <div class="linha-gps" style="margin-top:8px;">
             <input type="text" id="cep" placeholder="* CEP" onblur="buscarCEP(this.value)" required style="margin:0;">
             <button type="button" class="btn-gps" onclick="usarGPS()">📍 GPS</button>
         </div>
         
-        <input type="text" id="rua" placeholder="* Endereço / Rua" required onblur="atualizarMapa()">
-        <input type="text" id="num" placeholder="* Número e Complemento" required onblur="atualizarMapa()">
+        <input type="text" id="rua" placeholder="* Rua / Avenida" required onblur="atualizarMapa()">
+        <input type="text" id="numero" placeholder="* Número" required>
         <input type="text" id="bairro" placeholder="* Bairro" required onblur="atualizarMapa()">
         
         <div id="mapaContainer" class="mapa-preview">
-            <iframe id="mapaIframe" src="" allowfullscreen="" loading="lazy"></iframe>
+            <iframe id="mapaIframe" src=""></iframe>
         </div>
-                <input type="text" id="troco" placeholder="Troco para quanto? (Opcional)">
+
+        <input type="text" id="troco" placeholder="Troco para quanto?">
         
         <select id="pagamento" required>
             <option value="" disabled selected>* Forma de Pagamento</option>
             <option value="Pix">Pix</option>
-            <option value="Cartão de Crédito/Débito">Cartão na Entrega</option>
+            <option value="Cartão">Cartão na Entrega</option>
             <option value="Dinheiro">Dinheiro</option>
         </select>
         
-        <textarea id="observacao" placeholder="Observações sobre o pedido ou entrega (Opcional)" rows="2"></textarea>
+        <textarea id="observacao" placeholder="Observações" rows="2"></textarea>
         
         <button class="btn-action-green" onclick="enviarPedidoWhatsApp()">ENVIAR PEDIDO VIA WHATSAPP</button>
         <button class="btn-action-red" onclick="fecharModal()">Continuar Comprando</button>
-        <button class="btn-action-ghost" onclick="limparCarrinho()">Limpar Carrinho</button>
     </div>
 </div>
-
 <footer>
     <p><strong>QG das Batidas</strong> - Todos os direitos reservados.</p>
-    <p>Taboão da Serra - SP[span_1](start_span)[span_1](end_span) | Atendimento Dinâmico Inteligente</p>
+    <p>Rua André da Silva Pina, 309 - Jd Record, Taboão da Serra - SP[span_1](start_span)[span_1](end_span)</p>
+    <p>CNPJ: 60.659.173/0001-48</p>
+    <p>Atendimento Dinâmico Inteligente</p>
 </footer>
 <script>
     const canvas = document.getElementById('matrixCanvas');
     const ctx = canvas.getContext('2d');
-    function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
+    function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
@@ -439,59 +413,99 @@
     let drops = Array(columns).fill(1);
 
     function drawMatrix() {
-        ctx.fillStyle = 'rgba(7, 7, 7, 0.08)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = '#f39c12';
-        ctx.font = fontSize + 'px monospace';
+        ctx.fillStyle = 'rgba(7, 7, 7, 0.08)'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#f39c12'; ctx.font = fontSize + 'px monospace';
         for (let i = 0; i < drops.length; i++) {
-            const text = chars.charAt(Math.floor(Math.random() * chars.length));
-            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                drops[i] = 0;
-            }
+            ctx.fillText(chars.charAt(Math.floor(Math.random() * chars.length)), i * fontSize, drops[i] * fontSize);
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
             drops[i]++;
         }
     }
     setInterval(drawMatrix, 50);
 
-    function mudarAba(abaId, elementoBtn) {
-        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('ativo'));
-        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('ativo'));
+    function mudarAba(abaId, el) {
+        document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('ativo'));
+        document.querySelectorAll('.tab-btn').forEach(x => x.classList.remove('ativo'));
         document.getElementById('aba-' + abaId).classList.add('ativo');
-        if (elementoBtn) elementoBtn.classList.add('ativo');
+        if (el) el.classList.add('ativo');
     }
 
-    function mudarPainelAdmin(secaoId, elementoBtn) {
-        document.querySelectorAll('.admin-secao').forEach(el => el.style.display = 'none');
-        document.querySelectorAll('#admin-dashboard-box .tab-btn').forEach(el => el.classList.remove('ativo'));
+    function mudarPainelAdmin(secaoId, el) {
+        document.querySelectorAll('.admin-secao').forEach(x => x.style.display = 'none');
+        document.querySelectorAll('#admin-dashboard-box .tab-btn').forEach(x => x.classList.remove('ativo'));
         document.getElementById('painel-' + secaoId).style.display = 'block';
-        elementoBtn.classList.add('ativo');
+        el.classList.add('ativo');
         if (secaoId === 'estoque') renderizarEstoqueAdmin();
         if (secaoId === 'cupons') renderizarCuponsAdmin();
         if (secaoId === 'indica') renderizarIndicaAdmin();
         if (secaoId === 'clientes') renderizarClientesAdmin();
         if (secaoId === 'pedidos') renderizarPedidosAdmin();
     }
-        let cardapioData = JSON.parse(localStorage.getItem('qg_cardapio')) || [
+        // 30 BATIDAS ARTESANAIS DO QG
+    let cardapioData = JSON.parse(localStorage.getItem('qg_cardapio')) || [
         {
-            categoria: "Batidas Especiais da Casa",
+            categoria: "Frutas Tropicais & Cítricas",
             itens: [
-                { id: 1, nome: "Batida Tropical de Morango", desc: "Morangos frescos selecionados, xarope de açúcar, vodka premium e gelo triturado", disponivel: true, precos: { 300: 12.0, 500: 18.0, 1000: 32.0 } },
-                { id: 2, nome: "Batida de Maracujá Clássica", desc: "Polpa de maracujá azedo natural, leite condensado, cachaça branca e gelo", disponivel: true, precos: { 300: 12.0, 500: 18.0, 1000: 32.0 } },
-                { id: 3, nome: "Batida Cocadinha Tropical", desc: "Leite de coco concentrado, rum branco, leite condensado e coco ralado queimado por cima", disponivel: true, precos: { 300: 14.0, 500: 20.0, 1000: 35.0 } }
+                { id: 1, nome: "Batida Tropical de Morango", desc: "Morangos frescos, açúcar, vodka premium e gelo triturado", disponivel: true, precos: { 300: 12.0, 500: 18.0, 1000: 32.0 } },
+                { id: 2, nome: "Batida de Maracujá Clássica", desc: "Polpa de maracujá natural, leite condensado e cachaça branca", disponivel: true, precos: { 300: 12.0, 500: 18.0, 1000: 32.0 } },
+                { id: 3, nome: "Batida de Limão Siciliano", desc: "Limão siciliano espremido na hora, vodka importada e toque adocicado", disponivel: true, precos: { 300: 13.0, 500: 19.0, 1000: 34.0 } },
+                { id: 4, nome: "Batida de Abacaxi com Hortelã", desc: "Abacaxi fresco batido com folhas de hortelã e rum branco", disponivel: true, precos: { 300: 12.0, 500: 18.0, 1000: 32.0 } },
+                { id: 5, nome: "Batida de Manga Rosa", desc: "Manga rosa madura, leite condensado e vodka", disponivel: true, precos: { 300: 13.0, 500: 19.0, 1000: 34.0 } },
+                { id: 6, nome: "Batida de Melancia com Gengibre", desc: "Melancia suculenta com raspas frescas de gengibre e vodka", disponivel: true, precos: { 300: 14.0, 500: 20.0, 1000: 35.0 } },
+                { id: 7, nome: "Batida de Kiwi Silvestre", desc: "Kiwis frescos selecionados, vodka e leite condensado", disponivel: true, precos: { 300: 13.0, 500: 19.0, 1000: 34.0 } },
+                { id: 8, nome: "Batida de Pêssego em Calda", desc: "Pêssegos selecionados, licor da fruta e vodka", disponivel: true, precos: { 300: 13.0, 500: 19.0, 1000: 34.0 } }
+            ]
+        },
+            {
+            categoria: "Cremosas & Especiais da Casa",
+            itens: [
+                { id: 9, nome: "Batida Cocadinha Tropical", desc: "Leite de coco concentrado, rum branco e coco ralado queimado", disponivel: true, precos: { 300: 14.0, 500: 20.0, 1000: 35.0 } },
+                { id: 10, nome: "Batida de Doce de Leite com Paçoca", desc: "Doce de leite artesanal batido com paçoca rolha e cachaça envelhecida", disponivel: true, precos: { 300: 15.0, 500: 22.0, 1000: 38.0 } },
+                { id: 11, nome: "Batida de Chocolate Cremoso", desc: "Cacau nobre, leite condensado e vodka", disponivel: true, precos: { 300: 14.0, 500: 20.0, 1000: 35.0 } },
+                { id: 12, nome: "Batida de Cappuccino Alcoólico", desc: "Café espresso concentrado, leite condensado, canela e licor", disponivel: true, precos: { 300: 15.0, 500: 21.0, 1000: 37.0 } },
+                { id: 13, nome: "Batida de Amarula Caseira", desc: "Creme de marula artesanal com toque de baunilha", disponivel: true, precos: { 300: 16.0, 500: 24.0, 1000: 42.0 } },
+                { id: 14, nome: "Batida de Leite Condensado com Ninho", desc: "Leite Ninho em pó integral, leite condensado e vodka", disponivel: true, precos: { 300: 15.0, 500: 22.0, 1000: 38.0 } },
+                { id: 15, nome: "Batida de Ovomaltine Crocante", desc: "Ovomaltine original cremoso com vodka e leite condensado", disponivel: true, precos: { 300: 15.0, 500: 22.0, 1000: 38.0 } }
+            ]
+        },
+            {
+            categoria: "Frutas Vermelhas & Exóticas",
+            itens: [
+                { id: 16, nome: "Batida Frutas Vermelhas", desc: "Amora, framboesa, morango, vodka e xarope de açúcar", disponivel: true, precos: { 300: 15.0, 500: 22.0, 1000: 38.0 } },
+                { id: 17, nome: "Batida de Pitaya Rosa", desc: "Pitaya rosa fresca batida com rum branco", disponivel: true, precos: { 300: 16.0, 500: 23.0, 1000: 40.0 } },
+                { id: 18, nome: "Batida de Jabuticaba Silvestre", desc: "Jabuticabas maceradas artesanalmente e cachaça branca", disponivel: true, precos: { 300: 14.0, 500: 20.0, 1000: 35.0 } },
+                { id: 19, nome: "Batida de Acerola com Laranja", desc: "Acerola fresca batida com suco natural de laranja e vodka", disponivel: true, precos: { 300: 12.0, 500: 18.0, 1000: 32.0 } },
+                { id: 20, nome: "Batida de Cajá Tropical", desc: "Polpa de cajá autêntica, leite condensado e cachaça", disponivel: true, precos: { 300: 13.0, 500: 19.0, 1000: 34.0 } },
+                { id: 21, nome: "Batida de Uva Bordô", desc: "Suco integral de uva bordô com vodka e toque cítrico", disponivel: true, precos: { 300: 12.0, 500: 18.0, 1000: 32.0 } }
+            ]
+        },
+            {
+            categoria: "Drinks Exclusivos & Premium",
+            itens: [
+                { id: 22, nome: "Batida de Capim-Santo com Limão", desc: "Infusão artesanal de capim-santo com limão taiti e vodka", disponivel: true, precos: { 300: 14.0, 500: 20.0, 1000: 35.0 } },
+                { id: 23, nome: "Batida de Coco com Abacaxi (Piña QG)", desc: "Abacaxi fresco, leite de coco concentrado e rum", disponivel: true, precos: { 300: 15.0, 500: 21.0, 1000: 37.0 } },
+                { id: 24, nome: "Batida de Banana com Canela", desc: "Banana nanica madura, pitada de canela em pó, leite condensado e cachaça", disponivel: true, precos: { 300: 13.0, 500: 19.0, 1000: 34.0 } },
+                { id: 25, nome: "Batida de Figo Turco", desc: "Figos em calda selecionados com licor e vodka", disponivel: true, precos: { 300: 16.0, 500: 23.0, 1000: 40.0 } },
+                { id: 26, nome: "Batida de Tangerina com Pimenta Rosa", desc: "Tangerina espremida, grãos de pimenta rosa e vodka", disponivel: true, precos: { 300: 14.0, 500: 20.0, 1000: 35.0 } },
+                { id: 27, nome: "Batida de Açaí com Guaraná", desc: "Polpa de açaí puro, xarope de guaraná natural e vodka", disponivel: true, precos: { 300: 15.0, 500: 22.0, 1000: 38.0 } },
+                { id: 28, nome: "Batida de Maracujá com Pimenta", desc: "Maracujá azedo com leve toque de pimenta dedo-de-moça", disponivel: true, precos: { 300: 13.0, 500: 19.0, 1000: 34.0 } },
+                { id: 29, nome: "Batida de Melão com Hortelã", desc: "Melão fresco batido com folhas de hortelã e rum", disponivel: true, precos: { 300: 13.0, 500: 19.0, 1000: 34.0 } },
+                { id: 30, nome: "Batida Suprema do QG (Especial)", desc: "Segredo do mestre bartender: mix exclusivo de frutas vermelhas, coco e vodka importada", disponivel: true, precos: { 300: 18.0, 500: 26.0, 1000: 48.0 } }
             ]
         }
     ];
-
-    let cuponsValidos = JSON.parse(localStorage.getItem('qg_cupons')) || {
-        "QG10": { tipo: "porcentagem", valor: 0.10 },
-        "BATIDAO": { tipo: "fixo", valor: 5.00 }
-    };
-
+        let cuponsValidos = JSON.parse(localStorage.getItem('qg_cupons')) || { "QG10": { tipo: "porcentagem", valor: 0.10 } };
     let clientesCadastrados = JSON.parse(localStorage.getItem('qg_clientes')) || [];
     let pedidosRealizados = JSON.parse(localStorage.getItem('qg_pedidos')) || [];
     let indicacoesResgate = JSON.parse(localStorage.getItem('qg_indicacoes')) || [];
     let configHorario = JSON.parse(localStorage.getItem('qg_config')) || { forcar: "auto", aviso: "" };
+
+    const mensagensCampanhas = {
+        aniversario: "Parabéns! Feliz aniversário! Para comemorar a sua data especial, o QG das Batidas te dá de presente neste mês uma garrafa de 1 litro de batida de cortesia no seu pedido. Aproveite!",
+        promocaoDoisLitros: "Promoção especial do QG das Batidas: Na compra de 2 litros de batidas artesanais, você ganha 300ml grátis do sabor que preferir. Peça já a sua!",
+        indiqueGanhe: "Participe do programa Indique e Ganhe do QG das Batidas: indique amigos para conhecerem nossas batidas e ganhe uma garrafa de 500ml de cortesia após a primeira compra deles!",
+        reativacaoCliente: "Olá! Sentimos sua falta aqui no QG das Batidas. Que tal pedir aquela batida artesanal caprichada hoje? Temos novidades te esperando!"
+    };
 
     let carrinho = [];
     let selecaoAtual = {};
@@ -501,682 +515,148 @@
         const badge = document.getElementById('statusLojaBadge');
         const texto = document.getElementById('statusLojaTexto');
         const banner = document.getElementById('bannerAvisoGlobal');
-
         if (!badge || !texto) return;
-
-        if (configHorario.aviso && configHorario.aviso.trim() !== "") {
-            banner.innerText = configHorario.aviso;
-            banner.style.display = 'block';
-        } else {
-            banner.style.display = 'none';
-        }
-
-        let aberto = false;
-        if (configHorario.forcar === "sim") {
-            aberto = true;
-        } else if (configHorario.forcar === "nao") {
-            aberto = false;
-        } else {
-            const horaAtual = new Date().getHours();
-            if (horaAtual >= 14 || horaAtual < 3) {
-                aberto = true;
-            } else {
-                aberto = false;
-            }
-        }
-
-        if (aberto) {
-            badge.className = "status-loja-badge";
-            texto.innerText = "Loja Aberta - Das 14h às 03h";
-        } else {
-            badge.className = "status-loja-badge fechado";
-            texto.innerText = "Loja Fechada - Abrimos às 14h";
-        }
+        if (configHorario.aviso && configHorario.aviso.trim() !== "") { banner.innerText = configHorario.aviso; banner.style.display = 'block'; } else { banner.style.display = 'none'; }
+        let aberto = configHorario.forcar === "sim" ? true : configHorario.forcar === "nao" ? false : (new Date().getHours() >= 14 || new Date().getHours() < 3);
+        badge.className = aberto ? "status-loja-badge" : "status-loja-badge fechado";
+        texto.innerText = aberto ? "Loja Aberta - Das 14h às 03h" : "Loja Fechada - Abrimos às 14h";
     }
 
-    function gerarCodigoIndicacao(tel) {
-        const limpo = tel.replace(/\D/g, '');
-        if (limpo.length < 4) return "QGINDICA";
-        return "QG" + limpo.slice(-4);
-    }
-        function renderizarCardapio() {
+    function renderizarCardapio() {
         const vitrine = document.getElementById('vitrine');
         if (!vitrine) return;
         let html = '';
-
         cardapioData.forEach(cat => {
             html += `<div class="categoria-titulo">${cat.categoria}</div>`;
             cat.itens.forEach(item => {
-                if (!selecaoAtual[item.id]) {
-                    selecaoAtual[item.id] = { tamanho: 300, preco: item.precos[300] };
-                }
-                const sel = selecaoAtual[item.id];
-                const estaDisponivel = item.disponivel !== false;
-
+                if (!selecaoAtual[item.id]) selecaoAtual[item.id] = { tamanho: 300, preco: item.precos[300] };
+                let sel = selecaoAtual[item.id];
+                let disp = item.disponivel !== false;
                 html += `
-                    <div class="card ${!estaDisponivel ? 'esgotado-card' : ''}">
+                    <div class="card ${!disp ? 'esgotado-card' : ''}">
                         <div class="card-content">
-                            <h3>${item.nome} ${!estaDisponivel ? '<span class="badge-esgotado">[ESGOTADO]</span>' : ''}</h3>
+                            <h3>${item.nome} ${!disp ? '<span class="badge-esgotado">[ESGOTADO]</span>' : ''}</h3>
                             <p>${item.desc}</p>
                             <div class="tamanhos-container">
-                                <div class="tamanho-opcao ${sel.tamanho === 300 ? 'selecionado' : ''}" onclick="${estaDisponivel ? `mudarTamanho(${item.id}, 300,${item.precos[300]})` : ''}">
-                                    <label>300ml</label>
-                                    <span class="preco-tamanho">R$ ${item.precos[300].toFixed(2).replace('.', ',')}</span>
-                                </div>
-                                <div class="tamanho-opcao ${sel.tamanho === 500 ? 'selecionado' : ''}" onclick="${estaDisponivel ? `mudarTamanho(${item.id}, 500,${item.precos[500]})` : ''}">
-                                    <label>500ml</label>
-                                    <span class="preco-tamanho">R$ ${item.precos[500].toFixed(2).replace('.', ',')}</span>
-                                </div>
-                                <div class="tamanho-opcao ${sel.tamanho === 1000 ? 'selecionado' : ''}" onclick="${estaDisponivel ? `mudarTamanho(${item.id}, 1000,${item.precos[1000]})` : ''}">
-                                    <label>1 Litro</label>
-                                    <span class="preco-tamanho">R$ ${item.precos[1000].toFixed(2).replace('.', ',')}</span>
-                                </div>
+                                <div class="tamanho-opcao ${sel.tamanho === 300 ? 'selecionado' : ''}" onclick="${disp ? `mudarTamanho(${item.id}, 300,${item.precos[300]})` : ''}"><label>300ml</label><span class="preco-tamanho">R$ ${item.precos[300].toFixed(2).replace('.', ',')}</span></div>
+                                <div class="tamanho-opcao ${sel.tamanho === 500 ? 'selecionado' : ''}" onclick="${disp ? `mudarTamanho(${item.id}, 500,${item.precos[500]})` : ''}"><label>500ml</label><span class="preco-tamanho">R$ ${item.precos[500].toFixed(2).replace('.', ',')}</span></div>
+                                <div class="tamanho-opcao ${sel.tamanho === 1000 ? 'selecionado' : ''}" onclick="${disp ? `mudarTamanho(${item.id}, 1000,${item.precos[1000]})` : ''}"><label>1 Litro</label><span class="preco-tamanho">R$ ${item.precos[1000].toFixed(2).replace('.', ',')}</span></div>
                             </div>
                             <div class="card-footer">
-                                <div class="preco" id="preco-item-${item.id}">R$ ${sel.preco.toFixed(2).replace('.', ',')}</div>
-                                ${estaDisponivel 
-                                    ? `<button class="btn-add" onclick="adicionarAoCarrinho(${item.id}, '${item.nome}')">+ ADICIONAR</button>`
-                                    : `<button class="btn-add-disabled" disabled>INDISPONÍVEL</button>`
-                                }
+                                <div class="preco">R$ ${sel.preco.toFixed(2).replace('.', ',')}</div>
+                                ${disp ? `<button class="btn-add" onclick="adicionarAoCarrinho(${item.id}, '${item.nome}')">+ ADICIONAR</button>` : `<button class="btn-add-disabled" disabled>INDISPONÍVEL</button>`}
                             </div>
                         </div>
-                    </div>
-                `;
+                    </div>`;
             });
         });
         vitrine.innerHTML = html;
     }
 
-    function mudarTamanho(itemId, tamanho, preco) {
-        selecaoAtual[itemId] = { tamanho, preco };
-        renderizarCardapio();
-    }
-        function adicionarAoCarrinho(itemId, nomeItem) {
-        const sel = selecaoAtual[itemId];
-        const key = `${itemId}-${sel.tamanho}`;
-        const existente = carrinho.find(i => i.key === key);
-
-        if (existente) {
-            existente.qtd++;
-        } else {
-            carrinho.push({
-                key,
-                nome: nomeItem,
-                tamanho: sel.tamanho === 1000 ? '1 Litro' : `${sel.tamanho}ml`,
-                preco: sel.preco,
-                qtd: 1
-            });
-        }
+    function mudarTamanho(id, tam, preco) { selecaoAtual[id] = { tamanho: tam, preco }; renderizarCardapio(); }
+    function adicionarAoCarrinho(id, nome) {
+        let sel = selecaoAtual[id]; let key = `${id}-${sel.tamanho}`;
+        let ex = carrinho.find(i => i.key === key);
+        if (ex) ex.qtd++; else carrinho.push({ key, nome, tamanho: sel.tamanho === 1000 ? '1 Litro' : `${sel.tamanho}ml`, preco: sel.preco, qtd: 1 });
         atualizarBarraCarrinho();
     }
-
     function atualizarBarraCarrinho() {
-        const bar = document.getElementById('cart-bar');
-        const qtdText = document.getElementById('cart-qtd-text');
-        const totalVal = document.getElementById('cart-total');
-        if (!bar) return;
-
-        const totalItens = carrinho.reduce((acc, item) => acc + item.qtd, 0);
-        const subtotal = carrinho.reduce((acc, item) => acc + (item.preco * item.qtd), 0);
-
-        if (totalItens > 0) {
-            bar.style.display = 'flex';
-            qtdText.innerText = `${totalItens} ${totalItens === 1 ? 'item' : 'itens'} no carrinho`;
-            totalVal.innerText = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
-        } else {
-            bar.style.display = 'none';
-        }
+        let bar = document.getElementById('cart-bar');
+        let totalItens = carrinho.reduce((a, b) => a + b.qtd, 0);
+        let subtotal = carrinho.reduce((a, b) => a + (b.preco * b.qtd), 0);
+        if (totalItens > 0) { bar.style.display = 'flex'; document.getElementById('cart-qtd-text').innerText = `${totalItens} ${totalItens === 1 ? 'item' : 'itens'} no carrinho`; document.getElementById('cart-total').innerText = `R$ ${subtotal.toFixed(2).replace('.', ',')}`; } else { bar.style.display = 'none'; }
     }
-
-    function abrirModal() {
-        document.getElementById('modalPedido').style.display = 'block';
-        recalcular();
-    }
-
-    function fecharModal() {
-        document.getElementById('modalPedido').style.display = 'none';
-    }
-
+    function abrirModal() { document.getElementById('modalPedido').style.display = 'block'; recalcular(); }
+    function fecharModal() { document.getElementById('modalPedido').style.display = 'none'; }
     function alterarQtd(key, delta) {
-        const item = carrinho.find(i => i.key === key);
-        if (item) {
-            item.qtd += delta;
-            if (item.qtd <= 0) {
-                carrinho = carrinho.filter(i => i.key !== key);
-            }
-        }
-        atualizarBarraCarrinho();
-        recalcular();
-        if (carrinho.length === 0) fecharModal();
+        let item = carrinho.find(i => i.key === key);
+        if (item) { item.qtd += delta; if (item.qtd <= 0) carrinho = carrinho.filter(i => i.key !== key); }
+        atualizarBarraCarrinho(); recalcular(); if (carrinho.length === 0) fecharModal();
     }
-
-    function limparCarrinho() {
-        carrinho = [];
-        atualizarBarraCarrinho();
-        fecharModal();
-    }
-        function verificarClienteNovo(tel) {
-        const telLimpo = tel.replace(/\D/g, '');
-        const jaExiste = clientesCadastrados.some(c => c.tel.replace(/\D/g, '') === telLimpo);
-        window.clienteAntigoDetectado = jaExiste;
-    }
-
+        function verificarClienteNovo(tel) { window.clienteAntigoDetectado = clientesCadastrados.some(c => c.tel.replace(/\D/g, '') === tel.replace(/\D/g, '')); }
     function aplicarCupom() {
-        const codigo = document.getElementById('codigoCupom').value.trim().toUpperCase();
-        const telCliente = document.getElementById('telCliente').value.trim().replace(/\D/g, '');
-        const msg = document.getElementById('mensagemCupom');
-
-        if (!telCliente) {
-            msg.style.color = "#e74c3c";
-            msg.innerText = "Preencha o seu Telefone primeiro para validar o código.";
-            return;
+        let cod = document.getElementById('codigoCupom').value.trim().toUpperCase();
+        let tel = document.getElementById('telCliente').value.trim().replace(/\D/g, '');
+        let msg = document.getElementById('mensagemCupom');
+        if (!tel) { msg.style.color = "#e74c3c"; msg.innerText = "Preencha o telefone primeiro."; return; }
+        if (cod.startsWith("QG") && cod.length === 6) {
+            let ind = clientesCadastrados.find(c => c.tel.replace(/\D/g, '').endsWith(cod.slice(2)));
+            if (!ind) { msg.style.color = "#e74c3c"; msg.innerText = "Código de indicação não encontrado."; return; }
+            if (window.clienteAntigoDetectado) { msg.style.color = "#e74c3c"; msg.innerText = "Indicação exclusiva para novos clientes!"; return; }
+            descontoAplicadoObj = { tipo: "fixo", valor: 5.00, codigo: cod, indicadorTel: ind.tel };
+            msg.style.color = "var(--accent)"; msg.innerText = `Desconto de indicação aplicado!`; recalcular(); return;
         }
-
-        if (codigo.startsWith("QG") && codigo.length === 6) {
-            const finalTel = codigo.slice(2);
-            const indicador = clientesCadastrados.find(c => c.tel.replace(/\D/g, '').endsWith(finalTel));
-
-            if (!indicador) {
-                msg.style.color = "#e74c3c";
-                msg.innerText = "Código de indicação não encontrado.";
-                return;
-            }
-
-            if (indicador.tel.replace(/\D/g, '') === telCliente) {
-                msg.style.color = "#e74c3c";
-                msg.innerText = "Você não pode indicar a si mesmo!";
-                return;
-            }
-
-            if (window.clienteAntigoDetectado) {
-                msg.style.color = "#e74c3c";
-                msg.innerText = "O programa Indique e Ganhe é exclusivo para novos clientes!";
-                return;
-            }
-
-            descontoAplicadoObj = { tipo: "fixo", valor: 5.00, codigo: codigo, indicadorTel: indicador.tel };
-            msg.style.color = "var(--accent)";
-            msg.innerText = `Indicação de ${indicador.nome} aplicada! R$ 5,00 de desconto.`;
-            recalcular();
-            return;
-        }
-
-        if (cuponsValidos[codigo]) {
-            const cupom = cuponsValidos[codigo];
-            descontoAplicadoObj = { tipo: cupom.tipo, valor: cupom.valor, codigo: codigo, indicadorTel: null };
-            msg.style.color = "var(--accent)";
-            msg.innerText = `Cupom ${codigo} aplicado com sucesso!`;
-            recalcular();
-        } else {
-            descontoAplicadoObj = { tipo: null, valor: 0, codigo: "", indicadorTel: null };
-            msg.style.color = "#e74c3c";
-            msg.innerText = "Código ou cupom inválido.";
-            recalcular();
-        }
+        if (cuponsValidos[cod]) {
+            descontoAplicadoObj = { tipo: cuponsValidos[cod].tipo, valor: cuponsValidos[cod].valor, codigo: cod, indicadorTel: null };
+            msg.style.color = "var(--accent)"; msg.innerText = `Cupom aplicado!`; recalcular();
+        } else { msg.style.color = "#e74c3c"; msg.innerText = "Cupom inválido."; recalcular(); }
     }
-        function recalcular() {
-        const listaResumo = document.getElementById('lista-resumo');
-        if (!listaResumo) return;
-        let html = '';
-        let subtotal = 0;
-
+    function recalcular() {
+        let listaResumo = document.getElementById('lista-resumo'); let subtotal = 0; let html = '';
         carrinho.forEach(item => {
             subtotal += item.preco * item.qtd;
-            html += `
-                <div class="item-lista">
-                    <div><strong>${_escaparHTML(item.nome)}</strong> (${item.tamanho})<br>R$ ${(item.preco * item.qtd).toFixed(2).replace('.', ',')}</div>
-                    <div class="item-controles">
-                        <button class="btn-qtd" onclick="alterarQtd('${item.key}', -1)">-</button>
-                        <span>${item.qtd}</span>
-                        <button class="btn-qtd" onclick="alterarQtd('${item.key}', 1)">+</button>
-                    </div>
-                </div>
-            `;
+            html += `<div class="item-lista"><div><strong>${item.nome}</strong> (${item.tamanho})<br>R$ ${(item.preco * item.qtd).toFixed(2).replace('.', ',')}</div><div class="item-controles"><button class="btn-qtd" onclick="alterarQtd('${item.key}', -1)">-</button><span>${item.qtd}</span><button class="btn-qtd" onclick="alterarQtd('${item.key}', 1)">+</button></div></div>`;
         });
-
         listaResumo.innerHTML = html;
-
-        let valorDesconto = 0;
-        const linhaDesconto = document.getElementById('linhaDescontoModal');
-
-        if (descontoAplicadoObj.tipo === "porcentagem") {
-            valorDesconto = subtotal * descontoAplicadoObj.valor;
-        } else if (descontoAplicadoObj.tipo === "fixo") {
-            valorDesconto = descontoAplicadoObj.valor;
-            if (valorDesconto > subtotal) valorDesconto = subtotal;
-        }
-
-        if (valorDesconto > 0) {
-            linhaDesconto.style.display = 'flex';
-            document.getElementById('modal-desconto').innerText = `- R$ ${valorDesconto.toFixed(2).replace('.', ',')}`;
-        } else {
-            linhaDesconto.style.display = 'none';
-        }
-
-        const taxaEntrega = 5.00;
-        const adicionalGelo = document.getElementById('adicionalGelo').checked ? 3.00 : 0;
-        const totalGeral = (subtotal - valorDesconto) + taxaEntrega + adicionalGelo;
-
+        let desc = descontoAplicadoObj.tipo === "porcentagem" ? subtotal * descontoAplicadoObj.valor : descontoAplicadoObj.tipo === "fixo" ? Math.min(subtotal, descontoAplicadoObj.valor) : 0;
+        if (desc > 0) { document.getElementById('linhaDescontoModal').style.display = 'flex'; document.getElementById('modal-desconto').innerText = `- R$ ${desc.toFixed(2).replace('.', ',')}`; } else { document.getElementById('linhaDescontoModal').style.display = 'none'; }
+        let total = (subtotal - desc) + 5.00 + (document.getElementById('adicionalGelo').checked ? 3.00 : 0);
         document.getElementById('modal-subtotal').innerText = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
-        document.getElementById('modal-total').innerText = `R$ ${totalGeral < 0 ? 0 : totalGeral.toFixed(2).replace('.', ',')}`;
+        document.getElementById('modal-total').innerText = `R$ ${total < 0 ? 0 : total.toFixed(2).replace('.', ',')}`;
     }
-
-    function _escaparHTML(str) {
-        return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
-    }
-
     function buscarCEP(cep) {
         cep = cep.replace(/\D/g, '');
-        if (cep.length === 8) {
-            fetch(`https://viacep.com.br/ws/${cep}/json/`)
-                .then(res => res.json())
-                .then(data => {
-                    if (!data.erro) {
-                        document.getElementById('rua').value = data.logradouro || '';
-                        document.getElementById('bairro').value = data.bairro || '';
-                        document.getElementById('num').focus();
-                        atualizarMapa();
-                    }
-                }).catch(err => console.log(err));
-        }
+        if (cep.length === 8) fetch(`https://viacep.com.br/ws/${cep}/json/`).then(r => r.json()).then(d => { if(!d.erro){ document.getElementById('rua').value = d.logradouro||''; document.getElementById('bairro').value = d.bairro||''; document.getElementById('numero').focus(); atualizarMapa(); } });
     }
-
     function usarGPS() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(pos => {
-                const lat = pos.coords.latitude;
-                const lon = pos.coords.longitude;
-                document.getElementById('rua').value = `Lat: ${lat.toFixed(4)}, Lon: ${lon.toFixed(4)}`;
-                document.getElementById('bairro').value = "Localização GPS";
-                document.getElementById('num').value = "GPS";
-                atualizarMapa();
-            }, () => alert("Não foi possível obter a localização. Preencha manualmente."));
-        } else {
-            alert("Geolocalização não suportada pelo navegador.");
-        }
+        if(navigator.geolocation) navigator.geolocation.getCurrentPosition(p => { document.getElementById('rua').value = `Lat: ${p.coords.latitude.toFixed(4)}`; document.getElementById('bairro').value = "GPS"; document.getElementById('numero').value = "GPS"; atualizarMapa(); });
     }
-
     function atualizarMapa() {
-        const rua = document.getElementById('rua').value;
-        const num = document.getElementById('num').value;
-        const bairro = document.getElementById('bairro').value;
-        if (rua && bairro) {
-            const enderecoCompleto = encodeURIComponent(`${rua}, ${num} - ${bairro}, Taboão da Serra - SP`);
-            const iframe = document.getElementById('mapaIframe');
-            iframe.src = `https://maps.google.com/maps?q=${enderecoCompleto}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
-            document.getElementById('mapaContainer').style.display = 'block';
-        }
-                                                    }
-        function enviarPedidoWhatsApp() {
-        const nome = document.getElementById('nomeCliente').value.trim();
-        const tel = document.getElementById('telCliente').value.trim();
-        const nasc = document.getElementById('nascCliente').value;
-        const rua = document.getElementById('rua').value.trim();
-        const num = document.getElementById('num').value.trim();
-        const bairro = document.getElementById('bairro').value.trim();
-        const pagamento = document.getElementById('pagamento').value;
-        const troco = document.getElementById('troco').value.trim();
-        const obs = document.getElementById('observacao').value.trim();
-
-        if (!nome || !tel || !rua || !num || !bairro || !pagamento) {
-            alert("Por favor, preencha todos os campos obrigatórios (*).");
-            return;
-        }
-
-        const clienteExistente = clientesCadastrados.find(c => c.tel === tel);
-        const ehNovoCliente = !clienteExistente;
-
-        if (ehNovoCliente) {
-            clientesCadastrados.push({ nome, tel, nasc: nasc || 'Não informada', rua, bairro, data: new Date().toLocaleDateString('pt-BR') });
-            localStorage.setItem('qg_clientes', JSON.stringify(clientesCadastrados));
-        } else {
-            if (nasc) clienteExistente.nasc = nasc;
-            localStorage.setItem('qg_clientes', JSON.stringify(clientesCadastrados));
-        }
-
-        if (ehNovoCliente && descontoAplicadoObj.indicadorTel) {
-            indicacoesResgate.push({
-                indicadorTel: descontoAplicadoObj.indicadorTel,
-                indicadoNome: nome,
-                indicadoTel: tel,
-                status: "Garrafa 500ml Pendente",
-                data: new Date().toLocaleDateString('pt-BR')
-            });
-            localStorage.setItem('qg_indicacoes', JSON.stringify(indicacoesResgate));
-        }
-
-        let mensagem = `*NOVO PEDIDO - QG DAS BATIDAS*\n\n`;
-        mensagem += `*Cliente:* ${nome}\n`;
-        mensagem += `*Telefone:* ${tel}\n\n`;
-        mensagem += `*ITENS DO PEDIDO:*\n`;
-
-        carrinho.forEach(item => {
-            mensagem += `- ${item.qtd}x ${item.nome} (${item.tamanho}) = R$ ${(item.preco * item.qtd).toFixed(2).replace('.', ',')}\n`;
-        });
-
-        if (document.getElementById('adicionalGelo').checked) {
-            mensagem += `- 1x Gelo Extra = R$ 3,00\n`;
-        }
-
-        const subtotal = carrinho.reduce((acc, item) => acc + (item.preco * item.qtd), 0);
-        let valorDesconto = 0;
-        if (descontoAplicadoObj.tipo === "porcentagem") valorDesconto = subtotal * descontoAplicadoObj.valor;
-        if (descontoAplicadoObj.tipo === "fixo") valorDesconto = Math.min(subtotal, descontoAplicadoObj.valor);
-
-        const taxa = 5.00;
-        const geloVal = document.getElementById('adicionalGelo').checked ? 3.00 : 0;
-        const total = (subtotal - valorDesconto) + taxa + geloVal;
-
-        mensagem += `\n*Subtotal:* R$ ${subtotal.toFixed(2).replace('.', ',')}\n`;
-        if (valorDesconto > 0) mensagem += `*Desconto (${descontoAplicadoObj.codigo}):* - R$ ${valorDesconto.toFixed(2).replace('.', ',')}\n`;
-        mensagem += `*Taxa de Entrega:* R$ ${taxa.toFixed(2).replace('.', ',')}\n`;
-        if (geloVal > 0) mensagem += `*Gelo Extra:* R$ 3,00\n`;
-        mensagem += `*TOTAL GERAL:* R$ ${total.toFixed(2).replace('.', ',')}\n\n`;
-
-        mensagem += `*ENDEREÇO DE ENTREGA:*\n`;
-        mensagem += `${rua}, Nº ${num} - ${bairro}\n\n`;
-
-        mensagem += `*PAGAMENTO:* ${pagamento}\n`;
-        if (troco) mensagem += `*Troco para:* ${troco}\n`;
-        if (obs) mensagem += `*Observações:* ${obs}\n`;
-
-        pedidosRealizados.unshift({
-            id: Date.now(),
-            cliente: nome,
-            tel: tel,
-            total: total.toFixed(2),
-            dataHora: new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'})
-        });
-        localStorage.setItem('qg_pedidos', JSON.stringify(pedidosRealizados));
-
-        const numeroWhatsApp = "5511999999999"; 
-        const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
-        window.open(url, '_blank');
+        let r = document.getElementById('rua').value, n = document.getElementById('numero').value, b = document.getElementById('bairro').value;
+        if(r && b) { document.getElementById('mapaIframe').src = `https://maps.google.com/maps?q=${encodeURIComponent(r+', '+n+' - '+b+', Taboão da Serra - SP')}&t=&z=15&output=embed`; document.getElementById('mapaContainer').style.display = 'block'; }
     }
-
+        function enviarPedidoWhatsApp() {
+        let nome = document.getElementById('nomeCliente').value.trim();
+        let tel = document.getElementById('telCliente').value.trim();
+        let rua = document.getElementById('rua').value.trim();
+        let num = document.getElementById('numero').value.trim();
+        let bairro = document.getElementById('bairro').value.trim();
+        let pag = document.getElementById('pagamento').value;
+        if(!nome || !tel || !rua || !num || !bairro || !pag) { alert("Preencha todos os campos obrigatórios (*)."); return; }
+        let novo = !clientesCadastrados.some(c => c.tel === tel);
+        if(novo) { clientesCadastrados.push({nome, tel, rua, numero: num, bairro}); localStorage.setItem('qg_clientes', JSON.stringify(clientesCadastrados)); }
+        if(novo && descontoAplicadoObj.indicadorTel) { indicacoesResgate.push({indicadorTel: descontoAplicadoObj.indicadorTel, indicadoNome: nome, indicadoTel: tel, status: "Pendente"}); localStorage.setItem('qg_indicacoes', JSON.stringify(indicacoesResgate)); }
+        let msg = `*NOVO PEDIDO - QG DAS BATIDAS*\n\n*Cliente:* ${nome}\n*Tel:* ${tel}\n*Endereço:* ${rua}, Nº ${num} - ${bairro}\n\n*ITENS:*\n`;
+        carrinho.forEach(i => msg += `- ${i.qtd}x ${i.nome} (${i.tamanho}) = R$ ${(i.preco*i.qtd).toFixed(2)}\n`);
+        window.open(`https://wa.me/5511942971753?text=${encodeURIComponent(msg)}`, '_blank');
+    }
     function fazerLoginAdmin() {
-        const pin = document.getElementById('adminPinInput').value.trim();
-        if (pin === "5120") {
+        if (document.getElementById('adminPinInput').value.trim() === "5120") {
             document.getElementById('admin-login-box').style.display = 'none';
             document.getElementById('admin-dashboard-box').style.display = 'block';
             renderizarEstoqueAdmin();
-            atualizarContadorPedidosAdmin();
-        } else {
-            alert("PIN incorreto!");
-        }
+        } else { alert("Chave incorreta!"); }
     }
-
-    function sairAdmin() {
-        document.getElementById('adminPinInput').value = "";
-        document.getElementById('admin-dashboard-box').style.display = 'none';
-        document.getElementById('admin-login-box').style.display = 'block';
-                                                     }
-        function enviarPedidoWhatsApp() {
-        const nome = document.getElementById('nomeCliente').value.trim();
-        const tel = document.getElementById('telCliente').value.trim();
-        const nasc = document.getElementById('nascCliente').value;
-        const rua = document.getElementById('rua').value.trim();
-        const num = document.getElementById('num').value.trim();
-        const bairro = document.getElementById('bairro').value.trim();
-        const pagamento = document.getElementById('pagamento').value;
-        const troco = document.getElementById('troco').value.trim();
-        const obs = document.getElementById('observacao').value.trim();
-
-        if (!nome || !tel || !rua || !num || !bairro || !pagamento) {
-            alert("Por favor, preencha todos os campos obrigatórios (*).");
-            return;
-        }
-
-        const clienteExistente = clientesCadastrados.find(c => c.tel === tel);
-        const ehNovoCliente = !clienteExistente;
-
-        if (ehNovoCliente) {
-            clientesCadastrados.push({ nome, tel, nasc: nasc || 'Não informada', rua, bairro, data: new Date().toLocaleDateString('pt-BR') });
-            localStorage.setItem('qg_clientes', JSON.stringify(clientesCadastrados));
-        } else {
-            if (nasc) clienteExistente.nasc = nasc;
-            localStorage.setItem('qg_clientes', JSON.stringify(clientesCadastrados));
-        }
-
-        if (ehNovoCliente && descontoAplicadoObj.indicadorTel) {
-            indicacoesResgate.push({
-                indicadorTel: descontoAplicadoObj.indicadorTel,
-                indicadoNome: nome,
-                indicadoTel: tel,
-                status: "Garrafa 500ml Pendente",
-                data: new Date().toLocaleDateString('pt-BR')
-            });
-            localStorage.setItem('qg_indicacoes', JSON.stringify(indicacoesResgate));
-        }
-
-        let mensagem = `*NOVO PEDIDO - QG DAS BATIDAS*\n\n`;
-        mensagem += `*Cliente:* ${nome}\n`;
-        mensagem += `*Telefone:* ${tel}\n\n`;
-        mensagem += `*ITENS DO PEDIDO:*\n`;
-
-        carrinho.forEach(item => {
-            mensagem += `- ${item.qtd}x ${item.nome} (${item.tamanho}) = R$ ${(item.preco * item.qtd).toFixed(2).replace('.', ',')}\n`;
-        });
-
-        if (document.getElementById('adicionalGelo').checked) {
-            mensagem += `- 1x Gelo Extra = R$ 3,00\n`;
-        }
-
-        const subtotal = carrinho.reduce((acc, item) => acc + (item.preco * item.qtd), 0);
-        let valorDesconto = 0;
-        if (descontoAplicadoObj.tipo === "porcentagem") valorDesconto = subtotal * descontoAplicadoObj.valor;
-        if (descontoAplicadoObj.tipo === "fixo") valorDesconto = Math.min(subtotal, descontoAplicadoObj.valor);
-
-        const taxa = 5.00;
-        const geloVal = document.getElementById('adicionalGelo').checked ? 3.00 : 0;
-        const total = (subtotal - valorDesconto) + taxa + geloVal;
-
-        mensagem += `\n*Subtotal:* R$ ${subtotal.toFixed(2).replace('.', ',')}\n`;
-        if (valorDesconto > 0) mensagem += `*Desconto (${descontoAplicadoObj.codigo}):* - R$ ${valorDesconto.toFixed(2).replace('.', ',')}\n`;
-        mensagem += `*Taxa de Entrega:* R$ ${taxa.toFixed(2).replace('.', ',')}\n`;
-        if (geloVal > 0) mensagem += `*Gelo Extra:* R$ 3,00\n`;
-        mensagem += `*TOTAL GERAL:* R$ ${total.toFixed(2).replace('.', ',')}\n\n`;
-
-        mensagem += `*ENDEREÇO DE ENTREGA:*\n`;
-        mensagem += `${rua}, Nº ${num} - ${bairro}\n\n`;
-
-        mensagem += `*PAGAMENTO:* ${pagamento}\n`;
-        if (troco) mensagem += `*Troco para:* ${troco}\n`;
-        if (obs) mensagem += `*Observações:* ${obs}\n`;
-
-        pedidosRealizados.unshift({
-            id: Date.now(),
-            cliente: nome,
-            tel: tel,
-            total: total.toFixed(2),
-            dataHora: new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'})
-        });
-        localStorage.setItem('qg_pedidos', JSON.stringify(pedidosRealizados));
-
-        const numeroWhatsApp = "5511999999999"; 
-        const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
-        window.open(url, '_blank');
-    }
-
-    function fazerLoginAdmin() {
-        const pin = document.getElementById('adminPinInput').value.trim();
-        if (pin === "5120") {
-            document.getElementById('admin-login-box').style.display = 'none';
-            document.getElementById('admin-dashboard-box').style.display = 'block';
-            renderizarEstoqueAdmin();
-            atualizarContadorPedidosAdmin();
-        } else {
-            alert("PIN incorreto!");
-        }
-    }
-
-    function sairAdmin() {
-        document.getElementById('adminPinInput').value = "";
-        document.getElementById('admin-dashboard-box').style.display = 'none';
-        document.getElementById('admin-login-box').style.display = 'block';
-    }
-        function renderizarEstoqueAdmin() {
-        const container = document.getElementById('listaEstoqueAdmin');
-        if (!container) return;
+    function sairAdmin() { document.getElementById('adminPinInput').value = ""; document.getElementById('admin-dashboard-box').style.display = 'none'; document.getElementById('admin-login-box').style.display = 'block'; }
+    function renderizarEstoqueAdmin() {
         let html = '';
-        cardapioData.forEach((cat, catIdx) => {
-            html += `<h5 style="color:var(--primary); margin:10px 0;">${cat.categoria}</h5>`;
-            cat.itens.forEach((item, itemIdx) => {
-                const disponivel = item.disponivel !== false;
-                html += `
-                    <div style="display:flex; justify-content:space-between; align-items:center; background:#090909; padding:10px; border-radius:8px; margin-bottom:6px; border:1px solid var(--border);">
-                        <span style="font-size:0.85rem;">${item.nome}</span>
-                        <button onclick="alternarEstoqueItem(${catIdx}, ${itemIdx})" style="background:${disponivel ? 'rgba(37,211,102,0.2)' : 'rgba(231,76,60,0.2)'}; color:${disponivel ? 'var(--accent)' : '#e74c3c'}; border:1px solid currentColor; padding:6px 12px; border-radius:6px; font-weight:bold; cursor:pointer; font-size:0.75rem;">
-                            ${disponivel ? 'DISPONÍVEL' : 'ESGOTADO'}
-                        </button>
-                    </div>
-                `;
+        cardapioData.forEach((cat, cIdx) => {
+            html += `<h5 style="color:var(--primary);">${cat.categoria}</h5>`;
+            cat.itens.forEach((it, iIdx) => {
+                let disp = it.disponivel !== false;
+                html += `<div style="display:flex; justify-content:space-between; align-items:center; background:#090909; padding:8px; border-radius:8px; margin-bottom:5px;"><span>${it.nome}</span><button onclick="cardapioData[${cIdx}].itens[${iIdx}].disponivel = !${disp}; localStorage.setItem('qg_cardapio', JSON.stringify(cardapioData)); renderizarEstoqueAdmin(); renderizarCardapio();" style="background:${disp?'rgba(37,211,102,0.2)':'rgba(231,76,60,0.2)'}; color:${disp?'var(--accent)':'#e74c3c'}; border:1px solid currentColor; padding:4px 8px; border-radius:4px; cursor:pointer; font-size:0.7rem;">${disp?'DISPONÍVEL':'ESGOTADO'}</button></div>`;
             });
         });
-        container.innerHTML = html;
+        document.getElementById('listaEstoqueAdmin').innerHTML = html;
     }
-
-    function alternarEstoqueItem(catIdx, itemIdx) {
-        const atual = cardapioData[catIdx].itens[itemIdx].disponivel !== false;
-        cardapioData[catIdx].itens[itemIdx].disponivel = !atual;
-        localStorage.setItem('qg_cardapio', JSON.stringify(cardapioData));
-        renderizarEstoqueAdmin();
-        renderizarCardapio();
+    function enviarMensagemMailing(tipo, nomeCliente, telefoneCliente) {
+        let texto = `Olá ${nomeCliente}! %0A%0A`;
+        if (tipo === 'aniversario') texto += mensagensCampanhas.aniversario;
+        else if (tipo === 'promocao2l') texto += mensagensCampanhas.promocaoDoisLitros;
+        else if (tipo === 'indique') texto += mensagensCampanhas.indiqueGanhe;
+        else texto += mensagensCampanhas.reativacaoCliente;
+        window.open(`https://wa.me/55${telefoneCliente.replace(/\D/g,'')}?text=${texto}`, '_blank');
     }
-
-    function salvarConfigHorario() {
-        const forcar = document.getElementById('adminForcarAberto').value;
-        const aviso = document.getElementById('adminAvisoGlobal').value;
-        configHorario = { forcar, aviso };
-        localStorage.setItem('qg_config', JSON.stringify(configHorario));
-        verificarHorarioLoja();
-        alert("Configurações salvas com sucesso!");
-    }
-
-    function renderizarCuponsAdmin() {
-        const container = document.getElementById('listaCuponsAdmin');
-        if (!container) return;
-        let html = '<h5 style="color:var(--primary);">Cupons Ativos</h5>';
-        for (let codigo in cuponsValidos) {
-            const c = cuponsValidos[codigo];
-            html += `
-                <div style="display:flex; justify-content:space-between; align-items:center; background:#090909; padding:8px 12px; border-radius:8px; margin-bottom:6px; border:1px solid var(--border); font-size:0.85rem;">
-                    <span><strong>${codigo}</strong> (${c.tipo === 'porcentagem' ? (c.valor * 100) + '%' : 'R$ ' + c.valor.toFixed(2)})</span>
-                    <button onclick="removerCupomAdmin('${codigo}')" style="background:transparent; border:none; color:#e74c3c; cursor:pointer; font-weight:bold;">Remover</button>
-                </div>
-            `;
-        }
-        container.innerHTML = html;
-    }
-
-    function adicionarCupomAdmin() {
-        const codigo = document.getElementById('novoCupomCodigo').value.trim().toUpperCase();
-        const tipo = document.getElementById('novoCupomTipo').value;
-        let valor = parseFloat(document.getElementById('novoCupomValor').value);
-
-        if (!codigo || isNaN(valor)) {
-            alert("Preencha todos os campos do cupom corretamente.");
-            return;
-        }
-
-        if (tipo === 'porcentagem') valor = valor / 100;
-
-        cuponsValidos[codigo] = { tipo, valor };
-        localStorage.setItem('qg_cupons', JSON.stringify(cuponsValidos));
-        document.getElementById('novoCupomCodigo').value = "";
-        document.getElementById('novoCupomValor').value = "";
-        renderizarCuponsAdmin();
-        alert(`Cupom ${codigo} cadastrado com sucesso!`);
-    }
-
-    function removerCupomAdmin(codigo) {
-        delete cuponsValidos[codigo];
-        localStorage.setItem('qg_cupons', JSON.stringify(cuponsValidos));
-        renderizarCuponsAdmin();
-    }
-
-    function renderizarIndicaAdmin() {
-        const container = document.getElementById('listaIndicaAdmin');
-        if (!container) return;
-        if (indicacoesResgate.length === 0) {
-            container.innerHTML = '<p style="font-size:0.8rem; color:var(--text-muted);">Nenhuma indicação convertida ainda.</p>';
-            return;
-        }
-        let html = '';
-        indicacoesResgate.forEach((ind, index) => {
-            const indicadorObj = clientesCadastrados.find(c => c.tel === ind.indicadorTel);
-            const nomeIndicador = indicadorObj ? indicadorObj.nome : ind.indicadorTel;
-            const msgZap = encodeURIComponent(`Olá ${nomeIndicador}, parabéns! Sua indicação (${ind.indicadoNome}) realizou a primeira compra. Você ganhou 1 Garrafa de 500ml de cortesia para o próximo pedido!`);
-            
-            html += `
-                <div style="background:#090909; padding:10px; border-radius:8px; margin-bottom:8px; border:1px solid var(--border); font-size:0.85rem;">
-                    <strong>Indicador:</strong> ${nomeIndicador} (${ind.indicadorTel})<br>
-                    <span style="color:var(--text-muted); font-size:0.75rem;">Indicou o novo cliente: <strong>${ind.indicadoNome}</strong> (${ind.data})</span><br>
-                    <span style="color:var(--accent); font-weight:bold; font-size:0.75rem;">Status: ${ind.status}</span><br>
-                    <a href="https://wa.me/55${ind.indicadorTel.replace(/\D/g,'')}?text=${msgZap}" target="_blank" style="display:inline-block; margin-top:6px; color:var(--primary); text-decoration:none; font-weight:bold; font-size:0.75rem; margin-right:10px;">💬 Avisar no WhatsApp</a>
-                    <button onclick="darBaixaCortesia(${index})" style="background:rgba(37,211,102,0.2); color:var(--accent); border:1px solid var(--accent); padding:4px 8px; border-radius:6px; font-weight:bold; cursor:pointer; font-size:0.7rem;">Dar Baixa Cortesia</button>
-                </div>
-            `;
-        });
-        container.innerHTML = html;
-    }
-
-    function darBaixaCortesia(index) {
-        indicacoesResgate[index].status = "Resgatado / Entregue ✅";
-        localStorage.setItem('qg_indicacoes', JSON.stringify(indicacoesResgate));
-        renderizarIndicaAdmin();
-        alert("Cortesia dada como baixada com sucesso!");
-    }
-
-    function renderizarClientesAdmin() {
-        const container = document.getElementById('listaClientesAdmin');
-        if (!container) return;
-        if (clientesCadastrados.length === 0) {
-            container.innerHTML = '<p style="font-size:0.8rem; color:var(--text-muted);">Nenhum cliente cadastrado ainda.</p>';
-            return;
-        }
-        let html = '';
-        clientesCadastrados.forEach(c => {
-            const codigoInd = gerarCodigoIndicacao(c.tel);
-            const msgZap = encodeURIComponent(`Olá ${c.nome}, tudo bem? Aqui é do QG das Batidas! O seu código pessoal de indicação é *${codigoInd}*. Indique amigos e ganhe uma garrafa de 500ml de cortesia!`);
-            html += `
-                <div style="background:#090909; padding:10px; border-radius:8px; margin-bottom:8px; border:1px solid var(--border); font-size:0.85rem;">
-                    <strong>${c.nome}</strong> - ${c.tel}<br>
-                    <span style="color:var(--primary); font-size:0.75rem;">Código de Indicação: <strong>${codigoInd}</strong> | Nasc: ${c.nasc || 'Não informada'}</span><br>
-                    <span style="color:var(--text-muted); font-size:0.75rem;">Endereço: ${c.rua}, ${c.bairro}</span><br>
-                    <a href="https://wa.me/55${c.tel.replace(/\D/g,'')}?text=${msgZap}" target="_blank" style="display:inline-block; margin-top:6px; color:var(--accent); text-decoration:none; font-weight:bold; font-size:0.75rem;">💬 Enviar Código por WhatsApp</a>
-                </div>
-            `;
-        });
-        container.innerHTML = html;
-    }
-
-    function renderizarPedidosAdmin() {
-        const container = document.getElementById('listaPedidosAdmin');
-        if (!container) return;
-        if (pedidosRealizados.length === 0) {
-            container.innerHTML = '<p style="font-size:0.8rem; color:var(--text-muted);">Nenhum pedido recente registrado.</p>';
-            return;
-        }
-        let html = '';
-        pedidosRealizados.forEach(p => {
-            html += `
-                <div style="background:#090909; padding:10px; border-radius:8px; margin-bottom:8px; border:1px solid var(--border); font-size:0.85rem;">
-                    <strong>${p.cliente}</strong> (${p.tel})<br>
-                    <span style="color:var(--primary); font-weight:bold;">Total: R$ ${p.total}</span> - <span style="color:var(--text-muted); font-size:0.75rem;">${p.dataHora}</span>
-                </div>
-            `;
-        });
-        container.innerHTML = html;
-    }
-
-    function atualizarContadorPedidosAdmin() {
-        const contador = document.getElementById('contadorPedidosAdmin');
-        if (contador) contador.innerText = pedidosRealizados.length;
-    }
-
-    verificarHorarioLoja();
-    renderizarCardapio();
-    setInterval(verificarHorarioLoja, 10000);
+    verificarHorarioLoja(); renderizarCardapio(); setInterval(verificarHorarioLoja, 10000);
 </script>
 </html>
