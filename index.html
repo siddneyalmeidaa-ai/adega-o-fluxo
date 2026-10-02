@@ -11,7 +11,7 @@
 
 <header>
     <div id="statusLojaBadge" class="status-loja-badge">
-        <span class="status-ponto"></span> <span id="statusLojaTexto">Verificando horário...</span>
+        <span class="status-ponto"></span> <span id="statusLojaTexto">Loja Aberta - Das 14h às 03h</span>
     </div>
     <div style="font-size:0.75rem; color:var(--text-muted); letter-spacing:1px; text-transform:uppercase;">Artesanais & Exclusivas</div>
     <h1>QG das <span>Batidas</span></h1>
@@ -61,7 +61,7 @@
             </div>
 
             <div class="age-warning">
-                ⚠️ Venda proibida para menores de 18 anos. Beba com moderação.
+                ⚠️️ Venda proibida para menores de 18 anos. Beba com moderação.
             </div>
         </div>
     </div>
@@ -93,7 +93,7 @@
         <div class="institucional-box" id="admin-login-box">
             <h2>Painel Administrativo</h2>
             <p>Insira o PIN de segurança para gerenciar o QG das Batidas.</p>
-            <input type="password" id="adminPinInput" placeholder="Digite o PIN (Ex: 5120)">
+            <input type="password" id="adminPinInput" placeholder="Digite o PIN (5120)">
             <button class="btn-action-green" onclick="fazerLoginAdmin()">ACESSAR PAINEL</button>
         </div>
 
@@ -109,7 +109,7 @@
                 <button class="tab-btn ativo" onclick="mudarPainelAdmin('estoque', this)">Estoque</button>
                 <button class="tab-btn" onclick="mudarPainelAdmin('horario', this)">Horário/Aviso</button>
                 <button class="tab-btn" onclick="mudarPainelAdmin('cupons', this)">Cupons</button>
-                <button class="tab-btn" onclick="mudarPainelAdmin('clientes', this)">Clientes</button>
+                <button class="tab-btn" onclick="mudarPainelAdmin('clientes', this)">Mailing</button>
                 <button class="tab-btn" onclick="mudarPainelAdmin('pedidos', this)">Pedidos (<span id="contadorPedidosAdmin">0</span>)</button>
             </div>
 
@@ -150,10 +150,10 @@
                 <div id="listaCuponsAdmin" style="margin-top: 15px;"></div>
             </div>
 
-            <!-- SEÇÃO 4: CLIENTES -->
+            <!-- SEÇÃO 4: CLIENTES / MAILING -->
             <div id="painel-clientes" class="admin-secao" style="display: none;">
-                <h4 style="color:var(--primary);">Base de Clientes Cadastrados</h4>
-                <p style="font-size:0.8rem;">Clientes salvos para campanhas e reativação via WhatsApp.</p>
+                <h4 style="color:var(--primary);">Mailing de Clientes e Aniversários</h4>
+                <p style="font-size:0.8rem;">Clientes salvos com histórico, telefone e data de nascimento.</p>
                 <div id="listaClientesAdmin"></div>
             </div>
 
@@ -202,7 +202,10 @@
         <input type="text" id="nomeCliente" placeholder="* Seu Nome Completo" required>
         <input type="tel" id="telCliente" placeholder="* Telefone / WhatsApp (Ex: 119XXXXXXXX)" required>
         
-        <div class="linha-gps">
+        <label style="font-size:0.75rem; color:var(--text-muted); display:block; margin-top:6px;">Data de Nascimento (Opcional para promoções):</label>
+        <input type="date" id="nascCliente" style="margin-top:2px;">
+
+        <div class="linha-gps" style="margin-top:8px;">
             <input type="text" id="cep" placeholder="* CEP" onblur="buscarCEP(this.value)" required style="margin:0;">
             <button type="button" class="btn-gps" onclick="usarGPS()">📍 GPS</button>
         </div>
@@ -235,8 +238,8 @@
 <footer>
     <p><strong>QG das Batidas</strong> - Todos os direitos reservados.</p>
     <p>Taboão da Serra - SP | Atendimento Dinâmico Inteligente</p>
-                        </footer>
-            <style>
+</footer>
+<style>
     :root {
         --bg-base: rgba(7, 7, 7, 0.85);
         --card-bg: rgba(18, 18, 18, 0.90);
@@ -659,8 +662,8 @@
     footer p {
         margin: 4px 0;
     }
-            </style>
-            <script>
+</style>
+<script>
     // Configuração do Fundo Matrix
     const canvas = document.getElementById('matrixCanvas');
     const ctx = canvas.getContext('2d');
@@ -697,7 +700,7 @@
         document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('ativo'));
         document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('ativo'));
         document.getElementById('aba-' + abaId).classList.add('ativo');
-        elementoBtn.classList.add('ativo');
+        if (elementoBtn) elementoBtn.classList.add('ativo');
     }
 
     function mudarPainelAdmin(secaoId, elementoBtn) {
@@ -736,13 +739,14 @@
     let selecaoAtual = {};
     let descontoAplicadoObj = { tipo: null, valor: 0, codigo: "" };
 
-    // Verificar Horário Dinâmico
+    // Verificar Horário Dinâmico (Executado imediatamente)
     function verificarHorarioLoja() {
         const badge = document.getElementById('statusLojaBadge');
         const texto = document.getElementById('statusLojaTexto');
         const banner = document.getElementById('bannerAvisoGlobal');
 
-        // Aviso global
+        if (!badge || !texto) return;
+
         if (configHorario.aviso && configHorario.aviso.trim() !== "") {
             banner.innerText = configHorario.aviso;
             banner.style.display = 'block';
@@ -757,7 +761,6 @@
             aberto = false;
         } else {
             const horaAtual = new Date().getHours();
-            // Aberto das 14h às 03h da manhã
             if (horaAtual >= 14 || horaAtual < 3) {
                 aberto = true;
             } else {
@@ -773,12 +776,11 @@
             texto.innerText = "Loja Fechada - Abrimos às 14h";
         }
     }
-    setInterval(verificarHorarioLoja, 10000);
-    verificarHorarioLoja();
 
     // Renderizar Cardápio na Vitrine
     function renderizarCardapio() {
         const vitrine = document.getElementById('vitrine');
+        if (!vitrine) return;
         let html = '';
 
         cardapioData.forEach(cat => {
@@ -852,6 +854,7 @@
         const bar = document.getElementById('cart-bar');
         const qtdText = document.getElementById('cart-qtd-text');
         const totalVal = document.getElementById('cart-total');
+        if (!bar) return;
 
         const totalItens = carrinho.reduce((acc, item) => acc + item.qtd, 0);
         const subtotal = carrinho.reduce((acc, item) => acc + (item.preco * item.qtd), 0);
@@ -913,6 +916,7 @@
 
     function recalcular() {
         const listaResumo = document.getElementById('lista-resumo');
+        if (!listaResumo) return;
         let html = '';
         let subtotal = 0;
 
@@ -1007,6 +1011,7 @@
     function enviarPedidoWhatsApp() {
         const nome = document.getElementById('nomeCliente').value.trim();
         const tel = document.getElementById('telCliente').value.trim();
+        const nasc = document.getElementById('nascCliente').value;
         const rua = document.getElementById('rua').value.trim();
         const num = document.getElementById('num').value.trim();
         const bairro = document.getElementById('bairro').value.trim();
@@ -1019,10 +1024,13 @@
             return;
         }
 
-        // Salvar Cliente Automaticamente
+        // Salvar Cliente com Data de Nascimento no Mailing
         const clienteExistente = clientesCadastrados.find(c => c.tel === tel);
         if (!clienteExistente) {
-            clientesCadastrados.push({ nome, tel, rua, bairro, data: new Date().toLocaleDateString('pt-BR') });
+            clientesCadastrados.push({ nome, tel, nasc: nasc || 'Não informada', rua, bairro, data: new Date().toLocaleDateString('pt-BR') });
+            localStorage.setItem('qg_clientes', JSON.stringify(clientesCadastrados));
+        } else {
+            if (nasc) clienteExistente.nasc = nasc;
             localStorage.setItem('qg_clientes', JSON.stringify(clientesCadastrados));
         }
 
@@ -1061,7 +1069,6 @@
         if (troco) mensagem += `*Troco para:* ${troco}\n`;
         if (obs) mensagem += `*Observações:* ${obs}\n`;
 
-        // Salvar Pedido no Admin
         pedidosRealizados.unshift({
             id: Date.now(),
             cliente: nome,
@@ -1071,12 +1078,12 @@
         });
         localStorage.setItem('qg_pedidos', JSON.stringify(pedidosRealizados));
 
-        const numeroWhatsApp = "5511999999999"; // Substitua pelo número real do WhatsApp
+        const numeroWhatsApp = "5511999999999"; 
         const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
         window.open(url, '_blank');
     }
 
-    // PAINEL ADMINISTRATIVO LOGICA (PIN 5120)
+    // PAINEL ADMINISTRATIVO (PIN 5120)
     function fazerLoginAdmin() {
         const pin = document.getElementById('adminPinInput').value.trim();
         if (pin === "5120") {
@@ -1097,12 +1104,11 @@
 
     function renderizarEstoqueAdmin() {
         const container = document.getElementById('listaEstoqueAdmin');
+        if (!container) return;
         let html = '';
         cardapioData.forEach((cat, catIdx) => {
             html += `<h5 style="color:var(--primary); margin:10px 0;">${cat.categoria}</h5>`;
             cat.itens.forEach((item, itemIdx) => {
                 const disponivel = item.disponivel !== false;
                 html += `
-                    <div style="display:flex; justify-content:space-between; align-items:center; background:#090909; padding:10px; border-radius:8px; margin-bottom:6px; border:1px solid var(--border);">
-                        <span style="font-size:0.85rem;">${item.nome}</span>
-                        <button onclick="alternarEstoqueItem(${catIdx}, ${itemIdx})" style="background:${disponivel ? 'rgba(37,21
+                    <div style="display:flex; justify-content:space-between; align-items:center; background:#090909; padding:10px; border-radius:8px; margin-bot
