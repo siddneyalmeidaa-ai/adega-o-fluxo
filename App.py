@@ -115,11 +115,13 @@ def adicionar_estilo_moderno():
 
 adicionar_estilo_moderno()
 
-# --- INICIALIZAÇÃO DO CARRINHO E ESTADOS ---
+# --- INICIALIZAÇÃO DE ESTADOS ---
 if "carrinho" not in st.session_state:
     st.session_state.carrinho = []
 if "pagina_atual" not in st.session_state:
     st.session_state.pagina_atual = "🛒 Cardápio"
+if "ultimo_pedido" not in st.session_state:
+    st.session_state.ultimo_pedido = None
 
 # --- BARRA DE NAVEGAÇÃO TOPO ---
 col_nav1, col_nav2, col_nav3 = st.columns([2, 2, 2])
@@ -137,7 +139,6 @@ with col_nav3:
         st.rerun()
 
 st.markdown("---")
-# --- BASE DE DADOS DOS PRODUTOS ---
 cardapio_detalhado = [
     {"id": 1, "nome": "Batida Tropical de Morango", "categoria": "⭐ Especiais da Casa", "preco_base": 32.00, "desc": "Morangos frescos selecionados, xarope de açúcar, vodka premium e gelo triturado."},
     {"id": 2, "nome": "Batida de Maracujá Clássica", "categoria": "⭐ Especiais da Casa", "preco_base": 32.00, "desc": "Polpa de maracujá azedo natural, leite condensado, cachaça branca e gelo."},
@@ -166,14 +167,14 @@ cardapio_detalhado = [
     {"id": 22, "nome": "Batida de Gengibre com Mel", "categoria": "🌶 Exóticas & Potentes", "preco_base": 35.00, "desc": "Gengibre fresco ralado, limão tahiti, mel silvestre puro e Cachaça Envelhecida."},
     {"id": 23, "nome": "Batida de Catuaba com Açaí", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 34.00, "desc": "Açaí na polpa batido com Catuaba selvagem e leite condensado."},
     {"id": 24, "nome": "Batida de Limão Siciliano com Capim-Santo", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 33.00, "desc": "Infusão aromática de capim-santo com limão siciliano e vodka."},
-    {"id": 25, "nome": "Batida de Kiwi com Hortelã", "categoria": "🌶️️ Exóticas & Potentes", "preco_base": 32.00, "desc": "Kiwi verde fresco, folhas de hortelã, vodka premium e xarope de açúcar."},
+    {"id": 25, "nome": "Batida de Kiwi com Hortelã", "categoria": "🌶 Exóticas & Potentes", "preco_base": 32.00, "desc": "Kiwi verde fresco, folhas de hortelã, vodka premium e xarope de açúcar."},
     {"id": 26, "nome": "Batida de Tangerina com Pimenta", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 33.00, "desc": "Suco natural de tangerina poncã com um toque exótico de pimenta rosa."},
     {"id": 27, "nome": "Batida de Café Expresso com Licor", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 36.00, "desc": "Café expresso forte, licor de cacau, leite condensado e vodka."},
     {"id": 28, "nome": "Batida de Acerola com Laranja", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 30.00, "desc": "Acerola rica em vitamina C combinada com suco de laranja natural e cachaça."},
     {"id": 29, "nome": "Batida de Cajá Tropical", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 32.00, "desc": "Polpa selecionada de cajá com acidez marcante, leite condensado e rum."},
     {"id": 30, "nome": "Batida Tropical de Pitaya", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 38.00, "desc": "Pitaya vermelha fresca batida com vodka premium, limão e xarope leve."}
 ]
-# --- PÁGINA 1: VITRINE DO CLIENTE ---
+
 if st.session_state.pagina_atual == "🛒 Cardápio":
     st.markdown("""
         <div class="hero-banner">
@@ -190,13 +191,7 @@ if st.session_state.pagina_atual == "🛒 Cardápio":
         "🌶️ Exóticas & Potentes"
     ]
     
-    cat_selecionada = st.radio(
-        "Filtre por Categoria:",
-        categorias_disponiveis,
-        horizontal=True,
-        label_visibility="collapsed"
-    )
-
+    cat_selecionada = st.radio("Filtre por Categoria:", categorias_disponiveis, horizontal=True, label_visibility="collapsed")
     st.markdown(f"### {cat_selecionada}")
 
     itens_filtrados = [item for item in cardapio_detalhado if item["categoria"] == cat_selecionada]
@@ -211,12 +206,7 @@ if st.session_state.pagina_atual == "🛒 Cardápio":
                         st.markdown(f"#### {item['nome']}")
                         st.markdown(f"<span style='color: #999999; font-size: 0.8rem; display: block; min-height: 40px;'>{item['desc']}</span>", unsafe_allow_html=True)
                         
-                        tamanho = st.radio(
-                            "Tamanho:",
-                            ["300ml", "500ml", "1 Litro"],
-                            horizontal=True,
-                            key=f"tam_{item['id']}"
-                        )
+                        tamanho = st.radio("Tamanho:", ["300ml", "500ml", "1 Litro"], horizontal=True, key=f"tam_{item['id']}")
                         
                         if tamanho == "300ml":
                             preco_final = 12.00 if item['preco_base'] >= 32.00 else 11.00
@@ -230,11 +220,7 @@ if st.session_state.pagina_atual == "🛒 Cardápio":
                             st.markdown(f"<div style='margin-top: 8px;'><span class='preco-destaque'>R$ {preco_final:.2f}</span></div>", unsafe_allow_html=True)
                         with col_b:
                             if st.button("🛒 Adicionar", key=f"add_{item['id']}", use_container_width=True):
-                                item_carrinho = {
-                                    "nome": f"{item['nome']} ({tamanho})",
-                                    "preco": preco_final
-                                }
-                                st.session_state.carrinho.append(item_carrinho)
+                                st.session_state.carrinho.append({"nome": f"{item['nome']} ({tamanho})", "preco": preco_final})
                                 st.success("Adicionado!")
 
     total_itens = len(st.session_state.carrinho)
@@ -250,10 +236,17 @@ if st.session_state.pagina_atual == "🛒 Cardápio":
         if st.button("🚀 Ir para o Checkout / Finalizar Pedido", use_container_width=True):
             st.session_state.pagina_atual = "🛍 Carrinho"
             st.rerun()
-        # --- PÁGINA 2: CARRINHO E CHECKOUT ---
-elif st.session_state.pagina_atual == "🛍 Carrinho":
+        elif st.session_state.pagina_atual == "🛍 Carrinho":
     st.markdown("<h2>🛍 Seu Carrinho de Compras</h2>", unsafe_allow_html=True)
     st.markdown("---")
+
+    if st.session_state.get("ultimo_pedido"):
+        st.markdown(f"""
+            <div style="background: rgba(255, 184, 0, 0.15); border: 1px solid #FFB800; padding: 15px; border-radius: 12px; text-align: center; margin-bottom: 20px;">
+                <h3 style="color: #FFB800; margin: 0 0 5px 0;">🎫 Último Pedido Confirmado: {st.session_state.ultimo_pedido}</h3>
+                <p style="color: #dddddd; margin: 0; font-size: 0.9rem;">Guarde este ID para acompanhar o status na Central Administrativa.</p>
+            </div>
+        """, unsafe_allow_html=True)
 
     if len(st.session_state.carrinho) == 0:
         st.info("Seu carrinho está vazio no momento. Volte ao cardápio e escolha suas batidas!")
@@ -327,18 +320,22 @@ elif st.session_state.pagina_atual == "🛍 Carrinho":
                 if not nome_cliente or not whatsapp or not rua or not numero:
                     st.error("Preencha Nome, WhatsApp, Rua e Número para prosseguir.")
                 else:
+                    # GERAÇÃO EXPLÍCITA DO ID DO PEDIDO
                     numero_pedido = f"QG-2026-{random.randint(1000, 9999)}"
+                    timestamp_criacao = datetime.datetime.now().isoformat()
                     data_hora_atual = datetime.datetime.now().strftime("%d/%m/%Y às %H:%M")
                     endereco_completo = f"{rua}, nº {numero} - {bairro}, {cidade}"
                     
                     novo_registro = {
                         "pedido_id": numero_pedido,
+                        "timestamp": timestamp_criacao,
                         "data_hora": data_hora_atual,
                         "cliente": nome_cliente,
                         "whatsapp": whatsapp,
                         "nascimento": data_nascimento,
                         "endereco": endereco_completo,
                         "pagamento": pagamento,
+                        "status": "Recebido",
                         "itens": st.session_state.carrinho,
                         "total": total_carrinho
                     }
@@ -359,26 +356,23 @@ elif st.session_state.pagina_atual == "🛍 Carrinho":
 
                     st.session_state.ultimo_pedido = numero_pedido
                     st.session_state.carrinho = []
-                    st.success(f"🎉 Pedido **{numero_pedido}** gerado com sucesso!")
+                    st.success(f"🎉 Pedido gerado com sucesso! ID de Rastreio: {numero_pedido}")
                     st.balloons()
 
-    if "ultimo_pedido" in st.session_state and st.session_state.ultimo_pedido:
+    if st.session_state.get("ultimo_pedido"):
         st.markdown("---")
         if st.button("🔄 Fazer Novo Pedido"):
             st.session_state.ultimo_pedido = None
             st.session_state.pagina_atual = "🛒 Cardápio"
             st.rerun()
-
-# --- PÁGINA 3: PAINEL ADMINISTRATIVO ---
-elif st.session_state.pagina_atual == "📊 Admin":
-    st.markdown("<h2>📦 Painel de Pedidos em Tempo Real</h2>", unsafe_allow_html=True)
-    st.markdown("<p style='color: #888888;'>Acompanhe os pedidos que entram pelo cardápio.</p>", unsafe_allow_html=True)
+    elif st.session_state.pagina_atual == "📊 Admin":
+    st.markdown("<h2>📊 Painel Administrativo do QG das Batidas</h2>", unsafe_allow_html=True)
+    st.markdown("<p style='color: #888888;'>Central de controle operacional de pedidos e temporizadores por estado.</p>", unsafe_allow_html=True)
     st.markdown("---")
 
     arquivo_pedidos = "pedidos_qg.json"
-    
     if not os.path.exists(arquivo_pedidos):
-        st.info("Nenhum pedido registrado até o momento.")
+        st.info("Nenhum pedido registrado no sistema ainda.")
     else:
         try:
             with open(arquivo_pedidos, "r", encoding="utf-8") as f:
@@ -387,28 +381,170 @@ elif st.session_state.pagina_atual == "📊 Admin":
             pedidos = []
 
         if not pedidos:
-            st.info("A base de pedidos está vazia.")
+            st.info("A base de dados de pedidos está vazia.")
         else:
-            st.markdown(f"**Total de Pedidos na Base: {len(pedidos)}**")
+            col_f1, col_f2 = st.columns([2, 2])
+            with col_f1:
+                filtro_status = st.selectbox("Filtrar por Estado:", ["Todos", "Recebido", "Preparado", "A caminho", "Entregue"])
+            with col_f2:
+                if st.button("🔄 Atualizar Painel"):
+                    st.rerun()
+
             st.markdown("---")
 
-            for p in reversed(pedidos):
+            for i, p in enumerate(pedidos):
+                status_atual = p.get("status", "Recebido")
+                if filtro_status != "Todos" and status_atual != filtro_status:
+                    continue
+
+                timestamp_str = p.get("timestamp")
+                if timestamp_str:
+                    try:
+                        tempo_criacao = datetime.datetime.fromisoformat(timestamp_str)
+                        delta = datetime.datetime.now() - tempo_criacao
+                        minutos_decorridos = int(delta.total_seconds() / 60)
+                        tempo_str = f"{minutos_decorridos} min atrás"
+                    except:
+                        tempo_str = p.get("data_hora", "Desconhecido")
+                else:
+                    tempo_str = p.get("data_hora", "Desconhecido")
+
                 with st.container(border=True):
-                    st.markdown(f"### 🛒 Pedido <span style='color: #00FF7F;'>{p.get('pedido_id')}</span> - **{p.get('cliente')}**", unsafe_allow_html=True)
-                    st.markdown(f"📅 **Data/Hora:** {p.get('data_hora')}")
-                    st.markdown(f"📱 **WhatsApp:** {p.get('whatsapp')}")
-                    st.markdown(f"🎂 **Data de Nascimento:** {p.get('nascimento', 'Não informada')}")
-                    st.markdown(f"💳 **Forma de Pagamento:** {p.get('pagamento')}")
-                    st.markdown(f"📍 **Endereço:** {p.get('endereco')}")
-                    st.markdown(f"💰 **Total: R$ {p.get('total', 0):.2f}**")
+                    col_h1, col_h2, col_h3 = st.columns([2, 2, 2])
+                    with col_h1:
+                        id_pedido_atual = p.get('pedido_id', 'ID NÃO INFORMADO')
+                        st.markdown(f"### 🎫 ID: {id_pedido_atual}")
+                        st.markdown(f"👤 **Cliente:** {p.get('cliente')}")
+                        st.markdown(f"📱 **WhatsApp:** {p.get('whatsapp')}")
+                    with col_h2:
+                        st.markdown(f"📍 **Endereço:** {p.get('endereco')}")
+                        st.markdown(f"💳 **Pagamento:** {p.get('pagamento')} — **R$ {p.get('total', 0):.2f}**")
+                    with col_h3:
+                        st.markdown(f"🕒 **Entrada:** {tempo_str}")
+                        
+                        cor_status = "#FFB800" if status_atual == "Recebido" else ("#00BFFF" if status_atual == "Preparado" else ("#9370DB" if status_atual == "A caminho" else "#00FF7F"))
+                        st.markdown(f"📌 Estado Atual: <span style='color: {cor_status}; font-weight: bold;'>{status_atual}</span>", unsafe_allow_html=True)
+
+                    with st.expander(f"📦 Ver Itens do Pedido ({id_pedido_atual})"):
+                        for item in p.get("itens", []):
+                            st.markdown(f"- {item['nome']} (R$ {item['preco']:.2f})")
+
                     st.markdown("---")
-                    st.markdown("**Itens do Pedido:**")
+                    col_b1, col_b2, col_b3, col_b4 = st.columns(4)
                     
-                    for idx, item in enumerate(p.get('itens', []), 1):
-                        st.markdown(f"- {idx}. {item['nome']} (R$ {item['preco']:.2f})")
+                    with col_b1:
+                        if st.button("🕒 Recebido", key=f"rec_{i}", use_container_width=True):
+                            pedidos[i]["status"] = "Recebido"
+                            with open(arquivo_pedidos, "w", encoding="utf-8") as f:
+                                json.dump(pedidos, f, ensure_ascii=False, indent=4)
+                            st.rerun()
+                    with col_b2:
+                        if st.button("🍸 Preparado", key=f"prep_{i}", use_container_width=True):
+                            pedidos[i]["status"] = "Preparado"
+                            with open(arquivo_pedidos, "w", encoding="utf-8") as f:
+                                json.dump(pedidos, f, ensure_ascii=False, indent=4)
+                            st.rerun()
+                    with col_b3:
+                        if st.button("🛵 A caminho", key=f"cami_{i}", use_container_width=True):
+                            pedidos[i]["status"] = "A caminho"
+                            with open(arquivo_pedidos, "w", encoding="utf-8") as f:
+                                json.dump(pedidos, f, ensure_ascii=False, indent=4)
+                            st.rerun()
+                    with col_b4:
+                        if st.button("✅ Entregue", key=f"ent_{i}", use_container_width=True):
+                            pedidos[i]["status"] = "Entregue"
+                            with open(arquivo_pedidos, "w", encoding="utf-8") as f:
+                                json.dump(pedidos, f, ensure_ascii=False, indent=4)
+                            st.rerun()
+                            elif st.session_state.pagina_atual == "📊 Admin":
+    st.markdown("<h2>📊 Painel Administrativo do QG das Batidas</h2>", unsafe_allow_html=True)
+    st.markdown("<p style='color: #888888;'>Central de controle operacional de pedidos e temporizadores por estado.</p>", unsafe_allow_html=True)
+    st.markdown("---")
+
+    arquivo_pedidos = "pedidos_qg.json"
+    if not os.path.exists(arquivo_pedidos):
+        st.info("Nenhum pedido registrado no sistema ainda.")
+    else:
+        try:
+            with open(arquivo_pedidos, "r", encoding="utf-8") as f:
+                pedidos = json.load(f)
+        except:
+            pedidos = []
+
+        if not pedidos:
+            st.info("A base de dados de pedidos está vazia.")
+        else:
+            col_f1, col_f2 = st.columns([2, 2])
+            with col_f1:
+                filtro_status = st.selectbox("Filtrar por Estado:", ["Todos", "Recebido", "Preparado", "A caminho", "Entregue"])
+            with col_f2:
+                if st.button("🔄 Atualizar Painel"):
+                    st.rerun()
+
+            st.markdown("---")
+
+            for i, p in enumerate(pedidos):
+                status_atual = p.get("status", "Recebido")
+                if filtro_status != "Todos" and status_atual != filtro_status:
+                    continue
+
+                timestamp_str = p.get("timestamp")
+                if timestamp_str:
+                    try:
+                        tempo_criacao = datetime.datetime.fromisoformat(timestamp_str)
+                        delta = datetime.datetime.now() - tempo_criacao
+                        minutos_decorridos = int(delta.total_seconds() / 60)
+                        tempo_str = f"{minutos_decorridos} min atrás"
+                    except:
+                        tempo_str = p.get("data_hora", "Desconhecido")
+                else:
+                    tempo_str = p.get("data_hora", "Desconhecido")
+
+                with st.container(border=True):
+                    col_h1, col_h2, col_h3 = st.columns([2, 2, 2])
+                    with col_h1:
+                        id_pedido_atual = p.get('pedido_id', 'ID NÃO INFORMADO')
+                        st.markdown(f"### 🎫 ID: {id_pedido_atual}")
+                        st.markdown(f"👤 **Cliente:** {p.get('cliente')}")
+                        st.markdown(f"📱 **WhatsApp:** {p.get('whatsapp')}")
+                    with col_h2:
+                        st.markdown(f"📍 **Endereço:** {p.get('endereco')}")
+                        st.markdown(f"💳 **Pagamento:** {p.get('pagamento')} — **R$ {p.get('total', 0):.2f}**")
+                    with col_h3:
+                        st.markdown(f"🕒 **Entrada:** {tempo_str}")
+                        
+                        cor_status = "#FFB800" if status_atual == "Recebido" else ("#00BFFF" if status_atual == "Preparado" else ("#9370DB" if status_atual == "A caminho" else "#00FF7F"))
+                        st.markdown(f"📌 Estado Atual: <span style='color: {cor_status}; font-weight: bold;'>{status_atual}</span>", unsafe_allow_html=True)
+
+                    with st.expander(f"📦 Ver Itens do Pedido ({id_pedido_atual})"):
+                        for item in p.get("itens", []):
+                            st.markdown(f"- {item['nome']} (R$ {item['preco']:.2f})")
+
+                    st.markdown("---")
+                    col_b1, col_b2, col_b3, col_b4 = st.columns(4)
                     
-                    whatsapp_limpo = "".join(filter(str.isdigit, str(p.get('whatsapp', ''))))
-                    if whatsapp_limpo:
-                        link_wpp = f"https://wa.me/55{whatsapp_limpo}?text=Olá%20{p.get('cliente')},%20recebemos%20seu%20pedido%20{p.get('pedido_id')}!"
-                        st.markdown(f"💬 [Falar com o Cliente no WhatsApp]({link_wpp})")
-        
+                    with col_b1:
+                        if st.button("🕒 Recebido", key=f"rec_{i}", use_container_width=True):
+                            pedidos[i]["status"] = "Recebido"
+                            with open(arquivo_pedidos, "w", encoding="utf-8") as f:
+                                json.dump(pedidos, f, ensure_ascii=False, indent=4)
+                            st.rerun()
+                    with col_b2:
+                        if st.button("🍸 Preparado", key=f"prep_{i}", use_container_width=True):
+                            pedidos[i]["status"] = "Preparado"
+                            with open(arquivo_pedidos, "w", encoding="utf-8") as f:
+                                json.dump(pedidos, f, ensure_ascii=False, indent=4)
+                            st.rerun()
+                    with col_b3:
+                        if st.button("🛵 A caminho", key=f"cami_{i}", use_container_width=True):
+                            pedidos[i]["status"] = "A caminho"
+                            with open(arquivo_pedidos, "w", encoding="utf-8") as f:
+                                json.dump(pedidos, f, ensure_ascii=False, indent=4)
+                            st.rerun()
+                    with col_b4:
+                        if st.button("✅ Entregue", key=f"ent_{i}", use_container_width=True):
+                            pedidos[i]["status"] = "Entregue"
+                            with open(arquivo_pedidos, "w", encoding="utf-8") as f:
+                                json.dump(pedidos, f, ensure_ascii=False, indent=4)
+                            st.rerun()
+                    
