@@ -7,7 +7,18 @@ def render():
     st.subheader("🚀 Central de CRM & Gestão de Pedidos")
     
     # Abas internas do Centro de Comando
-    aba_crm, aba_pedidos = st.tabs(["📢 Campanhas de WhatsApp", "📦 Pedidos Recebidos da Vitrine"])
+    aba_crm, aba_pedidos = st.tabs(["📢 Campanhas de WhatsApp", "📦 Pedidos & Clientes da Vitrine"])
+
+    # Carregar pedidos do arquivo JSON local de backup
+    pedidos = []
+    arquivo_pedidos = "pedidos_qg.json"
+    
+    if os.path.exists(arquivo_pedidos):
+        try:
+            with open(arquivo_pedidos, "r", encoding="utf-8") as f:
+                pedidos = json.load(f)
+        except:
+            pedidos = []
 
     with aba_crm:
         st.markdown("Selecione a campanha estratégica para conversão e retenção da base:")
@@ -52,44 +63,37 @@ def render():
         else:
             msg_padrao = "Fala, [Nome]! Tudo certo? A batida de Maracujá que você pediu da última vez fez sucesso? Preparei um lote fresquinho aqui, quer repetir a dose hoje? 🍸🔥"
 
-        st.text_area("Texto da Mensagem (Editável):", value=msg_padrao, height=120, key="txt_msg_crm")
+        texto_msg = st.text_area("Texto da Mensagem (Editável - Use [Nome] para personalizar):", value=msg_padrao, height=120, key="txt_msg_crm")
 
+        total_clientes = len(pedidos)
         col_zap1, col_zap2 = st.columns(2)
         with col_zap1:
-            st.metric(label="Público-Alvo Estimado", value="54 Clientes Selecionados")
+            st.metric(label="Público-Alvo Estimado", value=f"{total_clientes} Cliente(s) na Base")
         with col_zap2:
+            st.markdown("<br>", unsafe_allow_html=True)
             if st.button("🚀 Disparar Campanha via WhatsApp", key="btn_disparar_crm"):
-                st.success("Campanha de CRM disparada com sucesso para a base!")
+                st.success(f"Campanha disparada para {total_clientes} cliente(s) com sucesso!")
+
+        st.markdown("---")
+        st.markdown("### 📋 Lista de Clientes Capturados para Disparo Direto")
+        if not pedidos:
+            st.info("Nenhum cliente cadastrado via pedidos ainda.")
+        else:
+            for p in pedidos:
+                c_nome = p.get("cliente", "Cliente")
+                c_whats = p.get("whatsapp", "")
+                c_nasc = p.get("nascimento", "Não informada")
+                whats_clean = "".join(filter(str.isdigit, str(c_whats)))
+                
+                st.markdown(f"👤 **{c_nome}** | 🎂 Nasc: `{c_nasc}` | 📱 WhatsApp: `{c_whats}`")
+                if whats_clean:
+                    msg_personalizada = texto_msg.replace("[Nome]", c_nome)
+                    st.markdown(f"[💬 Enviar WhatsApp Direto](https://wa.me/55{whats_clean}?text={msg_personalizada.replace(' ', '%20')})", unsafe_allow_html=True)
+                st.markdown("---")
 
     with aba_pedidos:
         st.markdown("### 📦 Acompanhamento de Pedidos em Tempo Real")
-        st.markdown("Aqui aparecem automaticamente todos os pedidos finalizados pelos clientes na vitrine.")
-
-        # Carregar pedidos do arquivo JSON local de backup ou do database
-        pedidos = []
-        arquivo_pedidos = "pedidos_qg.json"
-        
-        if os.path.exists(arquivo_pedidos):
-            try:
-                with open(arquivo_pedidos, "r", encoding="utf-8") as f:
-                    pedidos = json.load(f)
-            except:
-                pedidos = []
-
-        # Tenta também ler do database oficial se houver dados lá
-        try:
-            for metodo in ["carregar_dados", "ler_dados", "carregar_banco", "obter_dados", "get_dados"]:
-                if hasattr(db, metodo):
-                    res = getattr(db, metodo)()
-                    if isinstance(res, list) and res:
-                        pedidos = res
-                    elif isinstance(res, dict):
-                        for chave in ["clientes", "pedidos", "data"]:
-                            if chave in res and isinstance(res[chave], list):
-                                pedidos = res[chave]
-                    break
-        except:
-            pass
+        st.markdown("Aqui aparecem automaticamente todos os pedidos finalizados pelos clientes na vitrine com nomes, telefones e datas de nascimento.")
 
         if not pedidos:
             st.info("📭 Nenhum pedido registado até o momento. Faça um teste simulando um pedido na vitrine do cardápio!")
@@ -109,11 +113,11 @@ def render():
                     itens = pedido.get("itens", [])
 
                     with st.container():
-                        st.markdown(f"### 🛒 Pedido `{num_ped}` - **{cliente}**")
+                        st.markdown(f"### 🛒 Pedido `{num_ped}` - **{cliente}**[span_0](start_span)[span_0](end_span)")
                         c1, c2 = st.columns(2)
                         with c1:
-                            st.markdown(f"📱 **WhatsApp:** `{whatsapp}`")
-                            st.markdown(f"🎂 **Nascimento:** `{nascimento}`")
+                            st.markdown(f"📱 **WhatsApp:** `{whatsapp}`[span_1](start_span)[span_1](end_span)")
+                            st.markdown(f"🎂 **Data de Nascimento:** `{nascimento}`[span_2](start_span)[span_2](end_span)")
                             st.markdown(f"💳 **Forma de Pagamento:** `{pagamento}`")
                         with c2:
                             st.markdown(f"📍 **Endereço:** {endereco}")
