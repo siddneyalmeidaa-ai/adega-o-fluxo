@@ -1,0 +1,55 @@
+import streamlit as st
+
+def render():
+    st.subheader("🚀 Central de Disparos de WhatsApp (CRM Omega-10)")
+    st.markdown("Selecione a campanha estratégica para conversão e retenção da base:")
+
+    tipo_campanha = st.selectbox("Escolha a Campanha Estratégica:", [
+        "🎉 Aniversariantes do Mês",
+        "⚡ Promoção Relâmpago",
+        "💤 Clientes Inativos (+30 dias)",
+        "🧊 Esquenta de Sexta / Fim de Semana (Antecipação)",
+        "🛒 Recuperação de Carrinho / Pedido Não Concluído",
+        "🎁 Programa VIP 'Clube do Mestre' (Indicação)",
+        "⭐ Pesquisa de Satisfação Pós-Compra",
+        "💰 Saldo de Cashback Disponível",
+        "🚨 Alerta de Fim de Estoque / Lote Limitado",
+        "🍸 Sugestão de Combo / Acompanhamento Automático (Cross-selling)",
+        "🎁 Reativação 'Cliente Sumido há 60 Dias' com Brinde",
+        "🧠 Abordagem VIP Baseada no Histórico de Compra Anterior"
+    ], key="select_campanha_crm")
+
+    if tipo_campanha == "🎉 Aniversariantes do Mês":
+        msg_padrao = "Fala, [Nome]! Parabéns pelo seu dia! 🥂 Para comemorar em grande estilo, o QG das Batidas te dá um presente especial na sua próxima garrafa. Me chama aqui para resgatar!"
+    elif tipo_campanha == "⚡ Promoção Relâmpago":
+        msg_padrao = "Atenção, [Nome]! ⚡ Promoção relâmpago nas próximas 2 horas: Batida artesanal com frete grátis e preço especial. Vai perder essa?"
+    elif tipo_campanha == "💤 Clientes Inativos (+30 dias)":
+        msg_padrao = "Oi, [Nome]! Sentimos sua falta por aqui. 🍹 Passando para avisar que temos sabores novos geladinhos te esperando. Bora pedir uma hoje?"
+    elif tipo_campanha == "🧊 Esquenta de Sexta / Fim de Semana (Antecipação)":
+        msg_padrao = "Fala, [Nome]! O fim de semana está batendo na porta. 🧊 Garanta já a sua batida artesanal geladinha para o rolê de hoje e evite a espera. Vai de Coco, Maracujá ou Vinho? 🍹🔥"
+    elif tipo_campanha == "🛒 Recuperação de Carrinho / Pedido Não Concluído":
+        msg_padrao = "E aí, [Nome], tudo bem? Vi aqui que você montou sua batida no QG mas acabou não finalizando. Ficou alguma dúvida sobre os sabores ou os tamanhos? Me avisa aqui que eu te ajudo a liberar a entrega! 🚀"
+    elif tipo_campanha == "🎁 Programa VIP 'Clube do Mestre' (Indicação)":
+        msg_padrao = "Salve, [Nome]! Quer ganhar R$ 15 de desconto na sua próxima garrafa? Indique um amigo para conhecer o QG das Batidas. Assim que ele fizer o primeiro pedido, o seu bônus é liberado automaticamente! 🎁✨"
+    elif tipo_campanha == "⭐ Pesquisa de Satisfação Pós-Compra":
+        msg_padrao = "Fala, [Nome]! Curtiu a batida de ontem? 🍸 Seu feedback é sagrado para o nosso padrão. Para agradecer a moral, deixei um cupom de 10% OFF garantido para a sua próxima recarga. É só me chamar por aqui! 👊"
+    elif tipo_campanha == "💰 Saldo de Cashback Disponível":
+        msg_padrao = "Fala, [Nome]! Você tem R$ 12,50 de cashback acumulado no QG das Batidas esperando por você. Quer resgatar hoje no seu pedido? 💰🚀"
+    elif tipo_campanha == "🚨 Alerta de Fim de Estoque / Lote Limitado":
+        msg_padrao = "Atenção, [Nome]! 🚨 Nosso lote exclusivo de Batida de Vinho com Morango está na reta final (restam apenas 3 garrafas). Garanta a sua antes que esgote! 🍷🔥"
+    elif tipo_campanha == "🍸 Sugestão de Combo / Acompanhamento Automático (Cross-selling)":
+        msg_padrao = "Boa escolha, [Nome]! Vai levar a batida de Coco? Que tal turbinar o rolê com o nosso kit com Gelo de Água de Coco e Copos Térmicos por apenas +R$ 15? 🧊✨"
+    elif tipo_campanha == "🎁 Reativação 'Cliente Sumido há 60 Dias' com Brinde":
+        msg_padrao = "Sumido nada, [Nome]! 👊 Para celebrar o seu retorno ao QG das Batidas, na compra de qualquer 500ml hoje, você leva um copo exclusivo de cortesia. Vamos nessa? 🍹🎁"
+    else:
+        msg_padrao = "Fala, [Nome]! Tudo certo? A batida de Maracujá que você pediu da última vez fez sucesso? Preparei um lote fresquinho aqui, quer repetir a dose hoje? 🍸🔥"
+
+    st.text_area("Texto da Mensagem (Editável):", value=msg_padrao, height=120, key="txt_msg_crm")
+
+    col_zap1, col_zap2 = st.columns(2)
+    with col_zap1:
+        st.metric(label="Público-Alvo Estimado", value="54 Clientes Selecionados")
+    with col_zap2:
+        if st.button("🚀 Disparar Campanha via WhatsApp", key="btn_disparar_crm"):
+            st.success("Campanha de CRM disparada com sucesso para a base!")
+          
