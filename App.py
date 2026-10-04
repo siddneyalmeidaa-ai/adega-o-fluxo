@@ -1,23 +1,54 @@
 import streamlit as st
 from datetime import datetime
-import database as db
 
-# Importação segura dos módulos estruturados na pasta views
-try:
-    from views import vitrine_cardapio, produtos, caixa, crm, metricas
-except ImportError:
-    import vitrine_cardapio, produtos, caixa, crm, metricas
-
-# Configuração da Página
+# Configuração Inicial da Página
 st.set_page_config(
     page_title="QG das Batidas - Sistema Operacional",
     page_icon="🍸",
     layout="wide"
 )
 
+# Tentativa segura de importação individual de cada módulo
+try:
+    from views import vitrine_cardapio
+except ImportError:
+    import vitrine_cardapio
+
+try:
+    from views import produtos
+except ImportError:
+    try:
+        import produtos
+    except ImportError:
+        produtos = None
+
+try:
+    from views import caixa
+except ImportError:
+    try:
+        import caixa
+    except ImportError:
+        caixa = None
+
+try:
+    from views import crm
+except ImportError:
+    try:
+        import crm
+    except ImportError:
+        crm = None
+
+try:
+    from views import metricas
+except ImportError:
+    try:
+        import metricas
+    except ImportError:
+        metricas = None
+
 # Sidebar Informativa & Operacional
 st.sidebar.markdown(f"📅 **Data:** 04/10/2026")
-st.sidebar.markdown(f"🕒 **Hora:** 00:21 -03")
+st.sidebar.markdown(f"🕒 **Hora:** 00:22 -03")
 st.sidebar.markdown(f"📍 **Local:** Taboão da Serra, SP")
 st.sidebar.markdown("---")
 
@@ -29,7 +60,10 @@ menu_principal = st.sidebar.selectbox("Escolha a Tela:", [
 
 # Roteamento das Telas
 if menu_principal == "🏠 Vitrine & Cardápio (30 Batidas)":
-    vitrine_cardapio.render()
+    if vitrine_cardapio and hasattr(vitrine_cardapio, 'render'):
+        vitrine_cardapio.render()
+    else:
+        st.error("Módulo de vitrine não encontrado.")
 
 elif menu_principal == "⚙️ Painel Administrativo / Centro de Comando":
     st.sidebar.markdown("---")
@@ -54,11 +88,26 @@ elif menu_principal == "⚙️ Painel Administrativo / Centro de Comando":
     ])
 
     with tab_op:
-        produtos.render()
+        if produtos and hasattr(produtos, 'render'):
+            produtos.render()
+        else:
+            st.info("Módulo de produtos em carregamento.")
+
     with tab_caixa:
-        caixa.render()
+        if caixa and hasattr(caixa, 'render'):
+            caixa.render()
+        else:
+            st.info("Módulo de caixa em carregamento.")
+
     with tab_crm:
-        crm.render()
+        if crm and hasattr(crm, 'render'):
+            crm.render()
+        else:
+            st.info("Módulo de CRM em carregamento.")
+
     with tab_metricas:
-        metricas.render()
-        
+        if metricas and hasattr(metricas, 'render'):
+            metricas.render()
+        else:
+            st.info("Módulo de métricas em carregamento.")
+            
