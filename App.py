@@ -1,44 +1,51 @@
 import streamlit as st
 from datetime import datetime
 
-# Importando os módulos da pasta views
+# Importando os módulos estruturados na pasta views
 from views import vitrine_cardapio, produtos, caixa, crm, metricas
 
+# Configuração da Página
 st.set_page_config(
     page_title="QG das Batidas - Sistema Operacional",
     page_icon="🍸",
     layout="wide"
 )
 
-# Carimbo de data e hora no sidebar
+# Sidebar Informativa & Operacional
 st.sidebar.markdown(f"📅 **Data:** 04/10/2026")
-st.sidebar.markdown(f"🕒 **Hora:** 01:00 -03")
+st.sidebar.markdown(f"🕒 **Hora:** 00:09 -03")
 st.sidebar.markdown(f"📍 **Local:** Taboão da Serra, SP")
 st.sidebar.markdown("---")
 
-menu_principal = st.sidebar.selectbox("Navegação do Sistema:", [
+st.sidebar.markdown("### 🧭 Navegação Principal")
+menu_principal = st.sidebar.selectbox("Escolha a Tela:", [
     "🏠 Vitrine & Cardápio (30 Batidas)", 
     "⚙️ Painel Administrativo / Centro de Comando"
 ])
 
+# Roteamento das Telas
 if menu_principal == "🏠 Vitrine & Cardápio (30 Batidas)":
     vitrine_cardapio.render()
 
-elif menu_principal == "⚙️ Painel Administrativo / Centro de Comando":
-    pin_input = st.text_input("Digite o PIN Administrativo:", type="password", key="admin_pin")
+elif menu_principal == "⚙️️ Painel Administrativo / Centro de Comando":
+    st.sidebar.markdown("---")
+    pin_input = st.sidebar.text_input("PIN de Acesso Restrito:", type="password", key="admin_pin")
     
     if pin_input != "5120":
         if pin_input != "":
-            st.error("PIN incorreto. Acesso restrito.")
-        st.warning("Insira o PIN correto para gerenciar o painel.")
+            st.sidebar.error("PIN incorreto.")
+        st.warning("🔒 Insira o PIN correto na barra lateral para desbloquear o Centro de Comando.")
         st.stop()
 
-    st.success("Acesso Liberado ao Centro de Comando pelo Mestre Sidney!")
+    st.sidebar.success("Acesso Autorizado!")
+    st.title("⚙️ Centro de Comando Operacional")
+    st.markdown("Gestão unificada de estoque, fluxo de caixa, campanhas de CRM e métricas de desempenho.")
 
+    # Abas do Painel Administrativo
     tab_op, tab_caixa, tab_crm, tab_metricas = st.tabs([
-        "🛒 Gestão de Produtos & Estoque", 
+        "🛒 Produtos & Estoque", 
         "💰 Caixa & Sangrias", 
-        "🚀 Automação & CRM (12 Campanhas)", 
+        "🚀 Automação & CRM", 
         "📊 Métricas & Desempenho"
     ])
 
@@ -50,4 +57,4 @@ elif menu_principal == "⚙️ Painel Administrativo / Centro de Comando":
         crm.render()
     with tab_metricas:
         metricas.render()
-    
+        
