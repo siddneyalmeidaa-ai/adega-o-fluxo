@@ -35,7 +35,6 @@ def adicionar_estilo_moderno():
             z-index: 1;
             padding-top: 2rem;
         }
-        /* Cartão de Produto Estilo Glassmorphism */
         .card-produto {
             background: linear-gradient(145deg, #161616, #111111);
             border: 1px solid #262626;
@@ -49,7 +48,6 @@ def adicionar_estilo_moderno():
             border-color: #00FF7F;
             box-shadow: 0 8px 25px rgba(0, 255, 127, 0.15);
         }
-        /* Badge de Status da Loja */
         .badge-loja {
             background: rgba(0, 255, 127, 0.1);
             color: #00FF7F;
@@ -61,13 +59,11 @@ def adicionar_estilo_moderno():
             display: inline-block;
             letter-spacing: 0.5px;
         }
-        /* Preço Dourado Destacado */
         .preco-destaque {
             color: #FFB800;
             font-size: 1.35rem;
             font-weight: 800;
         }
-        /* Ajuste de fontes e títulos */
         h1, h2, h3 {
             font-family: 'Inter', sans-serif;
         }
@@ -142,9 +138,7 @@ if pagina == "🛒 Cardápio (Vitrine do Cliente)":
     if "carrinho" not in st.session_state:
         st.session_state.carrinho = []
 
-    # Lista completa das 30 Batidas
     cardapio_detalhado = [
-        # ⭐ Batidas Especiais da Casa
         {"id": 1, "nome": "Batida Tropical de Morango", "categoria": "⭐ Especiais da Casa", "preco_base": 32.00, "desc": "Morangos frescos selecionados, xarope de açúcar, vodka premium e gelo triturado."},
         {"id": 2, "nome": "Batida de Maracujá Clássica", "categoria": "⭐ Especiais da Casa", "preco_base": 32.00, "desc": "Polpa de maracujá azedo natural, leite condensado, cachaça branca e gelo."},
         {"id": 3, "nome": "Batida de Ninho com Nutella", "categoria": "⭐ Especiais da Casa", "preco_base": 38.00, "desc": "Creme cremoso de Leite Ninho, toque generoso de Nutella original e vodka."},
@@ -153,7 +147,6 @@ if pagina == "🛒 Cardápio (Vitrine do Cliente)":
         {"id": 6, "nome": "Batida de Abacaxi com Hortelã", "categoria": "⭐ Especiais da Casa", "preco_base": 32.00, "desc": "Abacaxi fresco, folhas de hortelã batidas, rum branco e gelo."},
         {"id": 7, "nome": "Batida de Limão com Leite Condensado", "categoria": "⭐ Especiais da Casa", "preco_base": 30.00, "desc": "Limão tahiti fresco, leite condensado e cachaça artesanal."},
 
-        # 🥥 Clássicas & Tropicais
         {"id": 8, "nome": "Batida Cocadinha Tropical", "categoria": "🥥 Clássicas & Tropicais", "preco_base": 30.00, "desc": "Leite de coco concentrado, rum branco, leite condensado e coco ralado."},
         {"id": 9, "nome": "Batida de Coco Cremoso", "categoria": "🥥 Clássicas & Tropicais", "preco_base": 30.00, "desc": "Cachaça Artesanal, Leite de Coco Integral, Leite Condensado e Coco Ralado."},
         {"id": 10, "nome": "Batida de Manga com Maracujá", "categoria": "🥥 Clássicas & Tropicais", "preco_base": 32.00, "desc": "Polpa de manga doce combinada com o toque cítrico do maracujá."},
@@ -162,7 +155,6 @@ if pagina == "🛒 Cardápio (Vitrine do Cliente)":
         {"id": 13, "nome": "Batida de Banana com Canela", "categoria": "🥥 Clássicas & Tropicais", "preco_base": 30.00, "desc": "Banana nanica madura, pitada de canela em pó, leite condensado e rum."},
         {"id": 14, "nome": "Batida de Maracujá com Pimenta", "categoria": "🥥 Clássicas & Tropicais", "preco_base": 34.00, "desc": "Maracujá natural com um toque leve de pimenta dedo-de-moça."},
 
-        # 🍷 Vinhos & Especiais
         {"id": 15, "nome": "Batida de Vinho Tinto Suave", "categoria": "🍷 Vinhos & Especiais", "preco_base": 35.00, "desc": "Vinho Tinto Suave selecionado, Cachaça Artesanal e Leite Condensado."},
         {"id": 16, "nome": "Batida de Vinho com Morango", "categoria": "🍷 Vinhos & Especiais", "preco_base": 36.00, "desc": "Vinho tinto suave batido com morangos frescos e leite condensado."},
         {"id": 17, "nome": "Batida de Amarula Caseira", "categoria": "🍷 Vinhos & Especiais", "preco_base": 40.00, "desc": "Creme cremoso sabor marula, conhaque, leite condensado e toque de chocolate."},
@@ -171,10 +163,9 @@ if pagina == "🛒 Cardápio (Vitrine do Cliente)":
         {"id": 20, "nome": "Batida de Paçoca", "categoria": "🍷 Vinhos & Especiais", "preco_base": 34.00, "desc": "Paçoca de amendoim artesanal triturada, leite condensado e vodka."},
         {"id": 21, "nome": "Batida de Ovomaltine", "categoria": "🍷 Vinhos & Especiais", "preco_base": 36.00, "desc": "Crocante Ovomaltine misturado com creme de leite, leite condensado e vodka."},
 
-        # 🌶️ Exóticas, Potentes & Cítricas
         {"id": 22, "nome": "Batida de Gengibre com Mel", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 35.00, "desc": "Gengibre fresco ralado, limão tahiti, mel silvestre puro e Cachaça Envelhecida."},
         {"id": 23, "nome": "Batida de Catuaba com Açaí", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 34.00, "desc": "Açaí na polpa batido com Catuaba selvagem e leite condensado."},
-        {"id": 24, "nome": "Batida de Limão Siciliano com Capim-Santo", "categoria": "🌶️️ Exóticas & Potentes", "preco_base": 33.00, "desc": "Infusão aromática de capim-santo com limão siciliano e vodka."},
+        {"id": 24, "nome": "Batida de Limão Siciliano com Capim-Santo", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 33.00, "desc": "Infusão aromática de capim-santo com limão siciliano e vodka."},
         {"id": 25, "nome": "Batida de Kiwi com Hortelã", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 32.00, "desc": "Kiwi verde fresco, folhas de hortelã, vodka premium e xarope de açúcar."},
         {"id": 26, "nome": "Batida de Tangerina com Pimenta", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 33.00, "desc": "Suco natural de tangerina poncã com um toque exótico de pimenta rosa."},
         {"id": 27, "nome": "Batida de Café Expresso com Licor", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 36.00, "desc": "Café expresso forte, licor de cacau, leite condensado e vodka."},
@@ -197,7 +188,6 @@ if pagina == "🛒 Cardápio (Vitrine do Cliente)":
     st.markdown("---")
     st.markdown(f"### {cat_selecionada}")
 
-    # Exibição em grade de 2 colunas para ficar com cara de aplicativo profissional
     for i in range(0, len(itens_filtrados), 2):
         cols = st.columns(2)
         for j in range(2):
@@ -374,4 +364,8 @@ elif pagina == "📊 Painel de Pedidos (Admin)":
                     st.markdown(f"""
                         <div class="card-produto">
                             <h3>🛒 Pedido <span style="color: #00FF7F;">{p.get('pedido_id')}</span> - <b>{p.get('cliente')}</b></h3>
-                            <p style="m
+                            <p style="margin: 5px 0;">📅 <b>Data/Hora:</b> {p.get('data_hora')}</p>
+                            <p style="margin: 5px 0;">📱 <b>WhatsApp:</b> {p.get('whatsapp')}</p>
+                            <p style="margin: 5px 0;">🎂 <b>Data de Nascimento:</b> {p.get('nascimento', 'Não informada')}</p>
+                            <p style="margin: 5px 0;">💳 <b>Forma de Pagamento:</b> {p.get('pagamento')}</p>
+                            <p style="margin:
