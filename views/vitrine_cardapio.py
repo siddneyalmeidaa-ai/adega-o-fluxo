@@ -6,50 +6,164 @@ import datetime
 
 def render():
     st.title("🍸 QG das Batidas - Cardápio Oficial")
-    st.markdown("Escolha entre as nossas **30 batidas artesanais exclusivas** preparadas pelo Mestre Sidney e faça o seu pedido direto!")
+    st.markdown("Escolha entre as nossas **batidas artesanais exclusivas** preparadas pelo Mestre Sidney, selecione o tamanho da garrafa e faça o seu pedido!")
 
     # Inicializar o carrinho na sessão se não existir
     if "carrinho" not in st.session_state:
         st.session_state.carrinho = []
 
-    # Lista completa das 30 batidas organizadas por categoria
-    cardapio_30 = [
-        {"id": 1, "nome": "1. Batida de Coco Cremoso 1L", "categoria": "🥥 Clássicas & Frutas Tropicais", "preco": 45.00, "desc": "Suave, cremosa e marcante."},
-        {"id": 2, "nome": "2. Batida de Maracujá com Leite Condensado 1L", "categoria": "🥥 Clássicas & Frutas Tropicais", "preco": 48.00, "desc": "Equilíbrio perfeito entre o azedinho e o doce."},
-        {"id": 3, "nome": "3. Batida de Morango Silvestre 1L", "categoria": "🥥 Clássicas & Frutas Tropicais", "preco": 50.00, "desc": "Feita com frutas frescas selecionadas."},
-        {"id": 4, "nome": "4. Batida de Abacaxi com Hortelã 1L", "categoria": "🥥 Clássicas & Frutas Tropicais", "preco": 46.00, "desc": "Refrescante e revigorante."},
-        {"id": 5, "nome": "5. Batida de Manga com Maracujá 1L", "categoria": "🥥 Clássicas & Frutas Tropicais", "preco": 49.00, "desc": "Toque tropical irresistível."},
-        {"id": 6, "nome": "6. Batida de Limão Siciliano 1L", "categoria": "🥥 Clássicas & Frutas Tropicais", "preco": 47.00, "desc": "Citrico na medida certa."},
-        {"id": 7, "nome": "7. Batida de Goiaba Vermelha 1L", "categoria": "🥥 Clássicas & Frutas Tropicais", "preco": 45.00, "desc": "Sabor autêntico da fruta."},
-        {"id": 8, "nome": "8. Batida de Caju com Pitada de Sal 1L", "categoria": "🥥 Clássicas & Frutas Tropicais", "preco": 48.00, "desc": "O clássico reinventado."},
-        {"id": 9, "nome": "9. Batida de Vinho Tinto Suave 1L", "categoria": "🍷 Vinhos & Especiais de Inverno", "preco": 52.00, "desc": "Encorpada e aconchegante."},
-        {"id": 10, "nome": "10. Batida de Vinho com Canela e Cravo 1L", "categoria": "🍷 Vinhos & Especiais de Inverno", "preco": 55.00, "desc": "Aromatizada com especiarias finas."},
-        {"id": 23, "nome": "23. Batida de Gengibre com Limão e Mel 1L", "categoria": "🌶️ Exóticas & Potentes (Pimenta / Gengibre / Ervas)", "preco": 52.00, "desc": "Picante na medida certa."},
-        {"id": 24, "nome": "24. Batida de Pimenta Rosa com Abacaxi 1L", "categoria": "🌶️ Exóticas & Potentes (Pimenta / Gengibre / Ervas)", "preco": 54.00, "desc": "Sofisticação e ardência leve."},
-        {"id": 25, "nome": "25. Batida de Capim-Santo com Limão 1L", "categoria": "🌶️ Exóticas & Potentes (Pimenta / Gengibre / Ervas)", "preco": 48.00, "desc": "Herbal e extremamente refrescante."}
+    # Lista completa com ingredientes detalhados e preços base para 1L
+    cardapio_detalhado = [
+        {
+            "id": 1, 
+            "nome": "Batida de Coco Cremoso", 
+            "categoria": "🥥 Clássicas & Frutas Tropicais", 
+            "preco_1l": 45.00, 
+            "desc": "Suave, cremosa e marcante.",
+            "ingredientes": "Base de Cachaça Artesanal Premium, Leite de Coco Integral fresco, Leite Condensado encorpado, Coco Ralado em Flocos e um toque especial de Leite em Pó."
+        },
+        {
+            "id": 2, 
+            "nome": "Batida de Maracujá com Leite Condensado", 
+            "categoria": "🥥 Clássicas & Frutas Tropicais", 
+            "preco_1l": 48.00, 
+            "desc": "Equilíbrio perfeito entre o azedinho e o doce.",
+            "ingredientes": "Polpa de Maracujá in natura batida na hora, Cachaça Selecionada, Leite Condensado cremoso e gotas de limão para realçar o sabor cítrico."
+        },
+        {
+            "id": 3, 
+            "nome": "Batida de Morango Silvestre", 
+            "categoria": "🥥 Clássicas & Frutas Tropicais", 
+            "preco_1l": 50.00, 
+            "desc": "Feita com frutas frescas selecionadas.",
+            "ingredientes": "Morangos frescos selecionados, Cachaça Artesanal, Leite Condensado, xarope artesanal de frutas vermelhas e calda de morango artesanal."
+        },
+        {
+            "id": 4, 
+            "nome": "Batida de Abacaxi com Hortelã", 
+            "categoria": "🥥 Clássicas & Frutas Tropicais", 
+            "preco_1l": 46.00, 
+            "desc": "Refrescante e revigorante.",
+            "ingredientes": "Abacaxi péssimo e suculento, folhas frescas de hortelã orgânica, Cachaça Premium, açúcar refinado e gelo batido na proporção ideal."
+        },
+        {
+            "id": 5, 
+            "nome": "Batida de Manga com Maracujá", 
+            "categoria": "🥥 Clássicas & Frutas Tropicais", 
+            "preco_1l": 49.00, 
+            "desc": "Toque tropical irresistível.",
+            "ingredientes": "Manga Palmer madura e adocicada, polpa concentrada de maracujá, Cachaça Artesanal e Leite Condensado de primeira linha."
+        },
+        {
+            "id": 6, 
+            "nome": "Batida de Limão Siciliano", 
+            "categoria": "🥥 Clássicas & Frutas Tropicais", 
+            "preco_1l": 47.00, 
+            "desc": "Cítrico na medida certa com elegância.",
+            "ingredientes": "Sumo fresco de Limão Siciliano, raspas da casca para aroma, Cachaça Especial, Leite Condensado e toque de açúcar orgânico."
+        },
+        {
+            "id": 7, 
+            "nome": "Batida de Goiaba Vermelha", 
+            "categoria": "🥥 Clássicas & Frutas Tropicais", 
+            "preco_1l": 45.00, 
+            "desc": "Sabor autêntico e encorpado da fruta.",
+            "ingredientes": "Goiabada cascão artesanal derretida com frutas frescas, Cachaça Selecionada, creme de leite leve e um toque de baunilha."
+        },
+        {
+            "id": 8, 
+            "nome": "Batida de Caju com Pitada de Sal", 
+            "categoria": "🥥 Clássicas & Frutas Tropicais", 
+            "preco_1l": 48.00, 
+            "desc": "O clássico reinventado com personalidade.",
+            "ingredientes": "Caju fresco selecionado, Cachaça Branca artesanal, Leite Condensado e uma pitada milimétrica de sal marinho para realçar o dulçor."
+        },
+        {
+            "id": 9, 
+            "nome": "Batida de Vinho Tinto Suave", 
+            "categoria": "🍷 Vinhos & Especiais de Inverno", 
+            "preco_1l": 52.00, 
+            "desc": "Encorpada e aconchegante para qualquer hora.",
+            "ingredientes": "Vinho Tinto Suave de mesa selecionado, Cachaça Artesanal, Leite Condensado encorpado e toque de extrato de baunilha."
+        },
+        {
+            "id": 10, 
+            "nome": "Batida de Vinho com Canela e Cravo", 
+            "categoria": "🍷 Vinhos & Especiais de Inverno", 
+            "preco_1l": 55.00, 
+            "desc": "Aromatizada com especiarias finas.",
+            "ingredientes": "Vinho Tinto Especial, infusão de cravo-da-índia, canela em pau fresca, Leite Condensado e Cachaça Premium."
+        },
+        {
+            "id": 23, 
+            "nome": "Batida de Gengibre com Limão e Mel", 
+            "categoria": "🌶️ Exóticas & Potentes", 
+            "preco_1l": 52.00, 
+            "desc": "Picante na medida certa e revigorante.",
+            "ingredientes": "Gengibre fresco ralado na hora, sumo de limão tahiti, mel silvestre puro, Cachaça Envelhecida e toque de pimenta dedo-de-moça sem semente."
+        },
+        {
+            "id": 24, 
+            "nome": "Batida de Pimenta Rosa com Abacaxi", 
+            "categoria": "🌶️ Exóticas & Potentes", 
+            "preco_1l": 54.00, 
+            "desc": "Sofisticação e ardência leve e aromática.",
+            "ingredientes": "Abacaxi fresco, grãos selecionados de pimenta rosa, Cachaça Artesanal, Leite Condensado e xarope de gengibre."
+        },
+        {
+            "id": 25, 
+            "nome": "Batida de Capim-Santo com Limão", 
+            "categoria": "🌶️ Exóticas & Potentes", 
+            "preco_1l": 48.00, 
+            "desc": "Herbal, leve e extremamente refrescante.",
+            "ingredientes": "Infusão artesanal de folhas frescas de Capim-Santo (Erva-Cidreira), sumo de limão, Cachaça Premium e açúcar cristal orgânico."
+        }
     ]
 
     # Filtro por Categoria
-    categorias_disponiveis = ["⭐ Todas as 30 Batidas", "🥥 Clássicas & Frutas Tropicais", "🍷 Vinhos & Especiais de Inverno", "🌶️ Exóticas & Potentes (Pimenta / Gengibre / Ervas)"]
+    categorias_disponiveis = ["⭐ Todas as Batidas", "🥥 Clássicas & Frutas Tropicais", "🍷 Vinhos & Especiais de Inverno", "🌶️ Exóticas & Potentes"]
     categoria_selecionada = st.selectbox("Filtrar por Categoria:", categorias_disponiveis)
 
-    if categoria_selecionada == "⭐ Todas as 30 Batidas":
-        itens_filtrados = cardapio_30
+    if categoria_selecionada == "⭐ Todas as Batidas":
+        itens_filtrados = cardapio_detalhado
     else:
-        itens_filtrados = [item for item in cardapio_30 if item["categoria"] == categoria_selecionada]
+        itens_filtrados = [item for item in cardapio_detalhado if item["categoria"] == categoria_selecionada]
 
     st.markdown(f"**Exibindo {len(itens_filtrados)} item(ns)**")
     st.markdown("---")
 
     for item in itens_filtrados:
-        col1, col2 = st.columns([3, 1])
-        with col1:
-            st.markdown(f"### {item['nome']}")
-            st.markdown(f"💰 **R$ {item['preco']:.2f}** | *{item['desc']}*")
-        with col2:
+        st.markdown(f"### 🍸 {item['nome']}")
+        st.markdown(f"✨ *{item['desc']}*")
+        st.markdown(f"📝 **Ingredientes & Segredo do Mestre:** _{item['ingredientes']}_")
+        
+        # Seleção de Tamanho e Preço Proporcional
+        col_tam, col_preco, col_btn = st.columns([1.5, 1.2, 1.2])
+        
+        with col_tam:
+            tamanho = st.selectbox("Tamanho da Garrafa:", ["300ml", "500ml", "1 Litro"], key=f"tam_{item['id']}")
+        
+        # Calcular preço proporcional
+        if tamanho == "300ml":
+            preco_final = item['preco_1l'] * 0.38  # R$ proporcional ajustado com valor de garrafa menor
+        elif tamanho == "500ml":
+            preco_final = item['preco_1l'] * 0.60
+        else:
+            preco_final = item['preco_1l']
+            
+        with col_preco:
+            st.markdown(f"<br>💰 **R$ {preco_final:.2f}**", unsafe_allow_html=True)
+            
+        with col_btn:
+            st.markdown("<br>", unsafe_allow_html=True)
             if st.button("🛒 Adicionar", key=f"add_{item['id']}"):
-                st.session_state.carrinho.append(item)
+                item_carrinho = {
+                    "nome": f"{item['nome']} ({tamanho})",
+                    "preco": preco_final
+                }
+                st.session_state.carrinho.append(item_carrinho)
                 st.success("Adicionado!")
+                
         st.markdown("---")
 
     # --- CARRINHO E CHECKOUT ---
@@ -127,7 +241,6 @@ def render():
                 if not nome_cliente or not whatsapp or not rua or not numero:
                     st.error("Preencha Nome, WhatsApp, Rua e Número.")
                 else:
-                    # Gerar número de pedido único e data/hora atual
                     numero_pedido = f"QG-2026-{random.randint(1000, 9999)}"
                     data_hora_atual = datetime.datetime.now().strftime("%d/%m/%Y às %H:%M")
                     
@@ -146,7 +259,6 @@ def render():
                         "total": total_carrinho
                     }
                     
-                    # Salvar diretamente no arquivo JSON local sincronizado com o CRM
                     arquivo_pedidos = "pedidos_qg.json"
                     lista_pedidos = []
                     if os.path.exists(arquivo_pedidos):
@@ -161,16 +273,14 @@ def render():
                     with open(arquivo_pedidos, "w", encoding="utf-8") as f:
                         json.dump(lista_pedidos, f, ensure_ascii=False, indent=4)
 
-                    # Guardar na sessão e recarregar
                     st.session_state.ultimo_pedido = numero_pedido
                     st.session_state.carrinho = []
                     st.rerun()
 
-    # Tela de sucesso após finalizar
     if "ultimo_pedido" in st.session_state and st.session_state.ultimo_pedido:
-        st.success(f"🎉 Pedido **{st.session_state.ultimo_pedido}** finalizado com sucesso e registado com data e horário!")
+        st.success(f"🎉 Pedido **{st.session_state.ultimo_pedido}** finalizado com sucesso!")
         st.balloons()
         if st.button("🔄 Fazer Novo Pedido"):
             st.session_state.ultimo_pedido = None
             st.rerun()
-            
+    
