@@ -5,14 +5,33 @@ import random
 import datetime
 
 def render():
-    st.title("🍸 QG das Batidas - Cardápio Oficial")
-    st.markdown("Escolha entre as nossas **batidas artesanais exclusivas** preparadas pelo Mestre Sidney, selecione o tamanho da garrafa e faça o seu pedido!")
+    # Injetar CSS customizado para estilizar os cartões e deixar a interface com cara de app mobile
+    st.markdown("""
+        <style>
+        .card-produto {
+            background-color: #1e1e1e;
+            border: 1px solid #333333;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        .preco-destaque {
+            color: #00FF7F;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
+    st.title("🍸 QG das Batidas")
+    st.markdown("Selecione sua garrafa artesanal favorita, escolha o tamanho e faça o seu pedido rápido!")
 
     # Inicializar o carrinho na sessão se não existir
     if "carrinho" not in st.session_state:
         st.session_state.carrinho = []
 
-    # Lista completa com fotos ilustrativas, ingredientes detalhados e preços base para 1L
+    # Lista completa de produtos com fotos e preços base para 1L
     cardapio_detalhado = [
         {
             "id": 1, 
@@ -20,16 +39,16 @@ def render():
             "categoria": "🥥 Clássicas & Frutas Tropicais", 
             "preco_1l": 45.00, 
             "desc": "Suave, cremosa e marcante.",
-            "ingredientes": "Base de Cachaça Artesanal Premium, Leite de Coco Integral fresco, Leite Condensado encorpado, Coco Ralado em Flocos e um toque especial de Leite em Pó.",
+            "ingredientes": "Cachaça Artesanal, Leite de Coco Integral, Leite Condensado, Coco Ralado em Flocos e Leite em Pó.",
             "foto": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80"
         },
         {
             "id": 2, 
-            "nome": "Batida de Maracujá com Leite Condensado", 
+            "nome": "Batida de Maracujá", 
             "categoria": "🥥 Clássicas & Frutas Tropicais", 
             "preco_1l": 48.00, 
             "desc": "Equilíbrio perfeito entre o azedinho e o doce.",
-            "ingredientes": "Polpa de Maracujá in natura batida na hora, Cachaça Selecionada, Leite Condensado cremoso e gotas de limão para realçar o sabor cítrico.",
+            "ingredientes": "Polpa de Maracujá in natura, Cachaça Selecionada e Leite Condensado cremoso.",
             "foto": "https://images.unsplash.com/photo-1536935338788-846bb9981813?auto=format&fit=crop&w=600&q=80"
         },
         {
@@ -38,7 +57,7 @@ def render():
             "categoria": "🥥 Clássicas & Frutas Tropicais", 
             "preco_1l": 50.00, 
             "desc": "Feita com frutas frescas selecionadas.",
-            "ingredientes": "Morangos frescos selecionados, Cachaça Artesanal, Leite Condensado, xarope artesanal de frutas vermelhas e calda de morango artesanal.",
+            "ingredientes": "Morangos frescos, Cachaça Artesanal, Leite Condensado e calda artesanal.",
             "foto": "https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=600&q=80"
         },
         {
@@ -47,7 +66,7 @@ def render():
             "categoria": "🥥 Clássicas & Frutas Tropicais", 
             "preco_1l": 46.00, 
             "desc": "Refrescante e revigorante.",
-            "ingredientes": "Abacaxi péssimo e suculento, folhas frescas de hortelã orgânica, Cachaça Premium, açúcar refinado e gelo batido na proporção ideal.",
+            "ingredientes": "Abacaxi suculento, folhas de hortelã orgânica, Cachaça Premium e açúcar refinado.",
             "foto": "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=600&q=80"
         },
         {
@@ -56,7 +75,7 @@ def render():
             "categoria": "🥥 Clássicas & Frutas Tropicais", 
             "preco_1l": 49.00, 
             "desc": "Toque tropical irresistível.",
-            "ingredientes": "Manga Palmer madura e adocicada, polpa concentrada de maracujá, Cachaça Artesanal e Leite Condensado de primeira linha.",
+            "ingredientes": "Manga Palmer madura, polpa de maracujá e Cachaça Artesanal.",
             "foto": "https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=600&q=80"
         },
         {
@@ -65,7 +84,7 @@ def render():
             "categoria": "🥥 Clássicas & Frutas Tropicais", 
             "preco_1l": 47.00, 
             "desc": "Cítrico na medida certa com elegância.",
-            "ingredientes": "Sumo fresco de Limão Siciliano, raspas da casca para aroma, Cachaça Especial, Leite Condensado e toque de açúcar orgânico.",
+            "ingredientes": "Sumo de Limão Siciliano, raspas aromáticas, Cachaça Especial e Leite Condensado.",
             "foto": "https://images.unsplash.com/photo-1621263764928-df1444c5e859?auto=format&fit=crop&w=600&q=80"
         },
         {
@@ -74,7 +93,7 @@ def render():
             "categoria": "🥥 Clássicas & Frutas Tropicais", 
             "preco_1l": 45.00, 
             "desc": "Sabor autêntico e encorpado da fruta.",
-            "ingredientes": "Goiabada cascão artesanal derretida com frutas frescas, Cachaça Selecionada, creme de leite leve e um toque de baunilha.",
+            "ingredientes": "Goiabada cascão artesanal, Cachaça Selecionada e creme de leite leve.",
             "foto": "https://images.unsplash.com/photo-1575444758702-4a6b9222336e?auto=format&fit=crop&w=600&q=80"
         },
         {
@@ -83,34 +102,34 @@ def render():
             "categoria": "🥥 Clássicas & Frutas Tropicais", 
             "preco_1l": 48.00, 
             "desc": "O clássico reinventado com personalidade.",
-            "ingredientes": "Caju fresco selecionado, Cachaça Branca artesanal, Leite Condensado e uma pitada milimétrica de sal marinho para realçar o dulçor.",
+            "ingredientes": "Caju fresco, Cachaça Branca, Leite Condensado e pitada de sal marinho.",
             "foto": "https://images.unsplash.com/photo-1506806732259-39c2d0268443?auto=format&fit=crop&w=600&q=80"
         },
         {
             "id": 9, 
             "nome": "Batida de Vinho Tinto Suave", 
-            "categoria": "🍷 Vinhos & Especiais de Inverno", 
+            "categoria": "🍷 Vinhos & Especiais", 
             "preco_1l": 52.00, 
-            "desc": "Encorpada e aconchegante para qualquer hora.",
-            "ingredientes": "Vinho Tinto Suave de mesa selecionado, Cachaça Artesanal, Leite Condensado encorpado e toque de extrato de baunilha.",
+            "desc": "Encorpada e aconchegante.",
+            "ingredientes": "Vinho Tinto Suave selecionado, Cachaça Artesanal e Leite Condensado.",
             "foto": "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=600&q=80"
         },
         {
             "id": 10, 
             "nome": "Batida de Vinho com Canela e Cravo", 
-            "categoria": "🍷 Vinhos & Especiais de Inverno", 
+            "categoria": "🍷 Vinhos & Especiais", 
             "preco_1l": 55.00, 
             "desc": "Aromatizada com especiarias finas.",
-            "ingredientes": "Vinho Tinto Especial, infusão de cravo-da-índia, canela em pau fresca, Leite Condensado e Cachaça Premium.",
+            "ingredientes": "Vinho Tinto, infusão de cravo, canela em pau fresca e Cachaça Premium.",
             "foto": "https://images.unsplash.com/photo-1543747579-795b9c2c3ada?auto=format&fit=crop&w=600&q=80"
         },
         {
             "id": 23, 
-            "nome": "Batida de Gengibre com Limão e Mel", 
+            "nome": "Batida de Gengibre com Mel", 
             "categoria": "🌶️ Exóticas & Potentes", 
             "preco_1l": 52.00, 
             "desc": "Picante na medida certa e revigorante.",
-            "ingredientes": "Gengibre fresco ralado na hora, sumo de limão tahiti, mel silvestre puro, Cachaça Envelhecida e toque de pimenta dedo-de-moça sem semente.",
+            "ingredientes": "Gengibre fresco ralado, limão tahiti, mel silvestre puro e Cachaça Envelhecida.",
             "foto": "https://images.unsplash.com/photo-1582106245687-cbb46679fdbb?auto=format&fit=crop&w=600&q=80"
         },
         {
@@ -118,79 +137,64 @@ def render():
             "nome": "Batida de Pimenta Rosa com Abacaxi", 
             "categoria": "🌶️ Exóticas & Potentes", 
             "preco_1l": 54.00, 
-            "desc": "Sofisticação e ardência leve e aromática.",
-            "ingredientes": "Abacaxi fresco, grãos selecionados de pimenta rosa, Cachaça Artesanal, Leite Condensado e xarope de gengibre.",
+            "desc": "Sofisticação e ardência leve.",
+            "ingredientes": "Abacaxi fresco, grãos de pimenta rosa, Cachaça Artesanal e Leite Condensado.",
             "foto": "https://images.unsplash.com/photo-1563227812-0ea4c22e6cc8?auto=format&fit=crop&w=600&q=80"
-        },
-        {
-            "id": 25, 
-            "nome": "Batida de Capim-Santo com Limão", 
-            "categoria": "🌶️ Exóticas & Potentes", 
-            "preco_1l": 48.00, 
-            "desc": "Herbal, leve e extremamente refrescante.",
-            "ingredientes": "Infusão artesanal de folhas frescas de Capim-Santo (Erva-Cidreira), sumo de limão, Cachaça Premium e açúcar cristal orgânico.",
-            "foto": "https://images.unsplash.com/photo-1536935338788-846bb9981813?auto=format&fit=crop&w=600&q=80"
         }
     ]
 
-    # Filtro por Categoria
-    categorias_disponiveis = ["⭐ Todas as Batidas", "🥥 Clássicas & Frutas Tropicais", "🍷 Vinhos & Especiais de Inverno", "🌶️ Exóticas & Potentes"]
-    categoria_selecionada = st.selectbox("Filtrar por Categoria:", categorias_disponiveis)
+    # Filtro por Categoria em abas visuais ou selectbox limpo
+    cat_cols = st.selectbox("Filtrar Categoria:", ["⭐ Todas as Batidas", "🥥 Clássicas & Frutas Tropicais", "🍷 Vinhos & Especiais", "🌶️ Exóticas & Potentes"])
 
-    if categoria_selecionada == "⭐ Todas as Batidas":
+    if cat_cols == "⭐ Todas as Batidas":
         itens_filtrados = cardapio_detalhado
     else:
-        itens_filtrados = [item for item in cardapio_detalhado if item["categoria"] == categoria_selecionada]
+        itens_filtrados = [item for item in cardapio_detalhado if item["categoria"] == cat_cols]
 
-    st.markdown(f"**Exibindo {len(itens_filtrados)} item(ns)**")
     st.markdown("---")
 
+    # Exibição em grade otimizada para mobile
     for item in itens_filtrados:
-        col_img, col_txt = st.columns([1, 2.2])
-        
-        with col_img:
-            st.image(item['foto'], use_container_width=True)
-            
-        with col_txt:
+        with st.container():
             st.markdown(f"### 🍸 {item['nome']}")
-            st.markdown(f"✨ *{item['desc']}*")
-            st.markdown(f"📝 **Ingredientes:** _{item['ingredientes']}_")
             
-            # Seleção de Tamanho e Preço Proporcional
-            col_tam, col_preco, col_btn = st.columns([1.2, 1, 1])
+            c_foto, c_detalhes = st.columns([1.2, 2])
             
-            with col_tam:
-                tamanho = st.selectbox("Tamanho:", ["300ml", "500ml", "1 Litro"], key=f"tam_{item['id']}")
-            
-            # Calcular preço proporcional
-            if tamanho == "300ml":
-                preco_final = item['preco_1l'] * 0.38
-            elif tamanho == "500ml":
-                preco_final = item['preco_1l'] * 0.60
-            else:
-                preco_final = item['preco_1l']
+            with c_foto:
+                st.image(item['foto'], use_container_width=True)
                 
-            with col_preco:
-                st.markdown(f"<br>💰 **R$ {preco_final:.2f}**", unsafe_allow_html=True)
+            with c_detalhes:
+                st.markdown(f"*{item['desc']}*")
+                st.markdown(f"📝 **Ingredientes:** _{item['ingredientes']}_")
                 
-            with col_btn:
-                st.markdown("<br>", unsafe_allow_html=True)
-                if st.button("🛒 Adicionar", key=f"add_{item['id']}"):
+                # Seletor de Tamanho
+                tamanho = st.selectbox("Tamanho da Garrafa:", ["300ml", "500ml", "1 Litro"], key=f"tam_{item['id']}")
+                
+                # Cálculo de preço proporcional
+                if tamanho == "300ml":
+                    preco_final = item['preco_1l'] * 0.38
+                elif tamanho == "500ml":
+                    preco_final = item['preco_1l'] * 0.60
+                else:
+                    preco_final = item['preco_1l']
+                
+                st.markdown(f"💰 **R$ {preco_final:.2f}**")
+                
+                if st.button("🛒 Adicionar ao Carrinho", key=f"add_{item['id']}"):
                     item_carrinho = {
                         "nome": f"{item['nome']} ({tamanho})",
                         "preco": preco_final
                     }
                     st.session_state.carrinho.append(item_carrinho)
-                    st.success("Adicionado!")
-                    
-        st.markdown("---")
+                    st.success("Adicionado com sucesso! ✅")
 
-    # --- CARRINHO E CHECKOUT ---
-    st.sidebar.markdown("---")
+            st.markdown("---")
+
+    # --- CARRINHO E CHECKOUT NA SIDEBAR ---
     st.sidebar.markdown("### 🛍 Seu Carrinho")
     
     if len(st.session_state.carrinho) == 0:
-        st.sidebar.info("O carrinho está vazio.")
+        st.sidebar.info("O carrinho está vazio. Escolha suas batidas!")
     else:
         total_carrinho = 0
         for prod in st.session_state.carrinho:
@@ -204,7 +208,7 @@ def render():
             st.rerun()
 
         st.sidebar.markdown("---")
-        st.sidebar.markdown("### 📝 Cadastro & Endereço")
+        st.sidebar.markdown("### 📝 Dados de Entrega")
         
         if "cep_val" not in st.session_state:
             st.session_state.cep_val = ""
@@ -221,11 +225,9 @@ def render():
             data_nascimento = st.text_input("Data de Nascimento (DD/MM/AAAA):", placeholder="Ex: 12/10/1985")
             
             st.markdown("---")
-            st.markdown("📍 **Endereço de Entrega**")
-            
-            cep_input = st.text_input("CEP (Apenas números):", max_chars=8)
-            
-            buscar_cep_btn = st.form_submit_button("🔍 Preencher Endereço Automático")
+            st.markdown("📍 **Endereço**")
+            cep_input = st.text_input("CEP:", max_chars=8)
+            buscar_cep_btn = st.form_submit_button("🔍 Buscar CEP Automático")
             
             if buscar_cep_btn:
                 clean_cep = "".join(filter(str.isdigit, cep_input))
@@ -234,19 +236,14 @@ def render():
                     "06765000": {"rua": "Estrada Kizaemon Takeuti", "bairro": "Parque Pinheiros", "cidade": "Taboão da Serra"},
                     "06753000": {"rua": "Rodovia Régis Bittencourt", "bairro": "Centro", "cidade": "Taboão da Serra"}
                 }
-                
                 if clean_cep in base_ceps:
                     info = base_ceps[clean_cep]
-                    st.session_state.cep_val = clean_cep
                     st.session_state.rua_val = info["rua"]
                     st.session_state.bairro_val = info["bairro"]
                     st.session_state.cidade_val = info["cidade"]
-                    st.success("✅ Endereço preenchido!")
-                elif len(clean_cep) == 8:
-                    st.session_state.cep_val = clean_cep
-                    st.info("ℹ️ CEP válido.")
+                    st.success("✅ Endereço carregado!")
 
-            rua = st.text_input("Rua / Logradouro:", value=st.session_state.rua_val)
+            rua = st.text_input("Rua:", value=st.session_state.rua_val)
             numero = st.text_input("Número:")
             bairro = st.text_input("Bairro:", value=st.session_state.bairro_val)
             cidade = st.text_input("Cidade:", value=st.session_state.cidade_val)
@@ -263,8 +260,7 @@ def render():
                     numero_pedido = f"QG-2026-{random.randint(1000, 9999)}"
                     data_hora_atual = datetime.datetime.now().strftime("%d/%m/%Y às %H:%M")
                     
-                    cep_final = cep_input if cep_input else "Não informado"
-                    endereco_completo = f"{rua}, nº {numero} - {bairro}, {cidade} (CEP: {cep_final})"
+                    endereco_completo = f"{rua}, nº {numero} - {bairro}, {cidade}"
                     
                     novo_registro = {
                         "pedido_id": numero_pedido,
@@ -297,9 +293,9 @@ def render():
                     st.rerun()
 
     if "ultimo_pedido" in st.session_state and st.session_state.ultimo_pedido:
-        st.success(f"🎉 Pedido **{st.session_state.ultimo_pedido}** finalizado com sucesso!")
+        st.success(f"🎉 Pedido **{st.session_state.ultimo_pedido}** finalizado com sucesso e salvo com data e hora!")
         st.balloons()
         if st.button("🔄 Fazer Novo Pedido"):
             st.session_state.ultimo_pedido = None
             st.rerun()
-                    
+    
