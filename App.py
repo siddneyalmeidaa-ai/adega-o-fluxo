@@ -9,10 +9,10 @@ st.set_page_config(
     page_title="QG das Batidas",
     page_icon="🍸",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="collapsed"
 )
 
-# --- ESTILIZAÇÃO CSS AVANÇADA ---
+# --- ESTILIZAÇÃO CSS AVANÇADA & UI DE DELIVERY ---
 def adicionar_estilo_moderno():
     st.markdown("""
         <style>
@@ -28,29 +28,42 @@ def adicionar_estilo_moderno():
             height: 100vh;
             z-index: 0;
             pointer-events: none;
-            opacity: 0.15;
+            opacity: 0.12;
         }
         .main .block-container {
             position: relative;
             z-index: 1;
-            padding-top: 2rem;
+            padding-top: 1.5rem;
+            padding-bottom: 5rem;
+        }
+        .hero-banner {
+            background: linear-gradient(135deg, rgba(0, 255, 127, 0.15) 0%, rgba(255, 184, 0, 0.1) 100%);
+            border: 1px solid rgba(0, 255, 127, 0.3);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
         }
         .badge-loja {
-            background: rgba(0, 255, 127, 0.1);
+            background: rgba(0, 255, 127, 0.2);
             color: #00FF7F;
-            border: 1px solid rgba(0, 255, 127, 0.4);
+            border: 1px solid rgba(0, 255, 127, 0.5);
             border-radius: 30px;
-            padding: 6px 18px;
-            font-size: 0.85rem;
+            padding: 5px 15px;
+            font-size: 0.8rem;
             font-weight: 700;
             display: inline-block;
             letter-spacing: 0.5px;
+            margin-bottom: 10px;
         }
         .preco-destaque {
             color: #FFB800;
-            font-size: 1.4rem;
+            font-size: 1.25rem;
             font-weight: 850;
         }
+        #MainMenu {visibility: hidden;}
+        footer {visibility: hidden;}
         </style>
 
         <canvas id="matrix-canvas"></canvas>
@@ -102,61 +115,73 @@ def adicionar_estilo_moderno():
 
 adicionar_estilo_moderno()
 
-# --- MENU LATERAL ---
-st.sidebar.markdown("### 🍸 QG das Batidas")
-st.sidebar.markdown("Painel de Controle e Vendas")
+# --- INICIALIZAÇÃO DO CARRINHO E ESTADOS ---
+if "carrinho" not in st.session_state:
+    st.session_state.carrinho = []
+if "pagina_atual" not in st.session_state:
+    st.session_state.pagina_atual = "🛒 Cardápio"
 
-pagina = st.sidebar.radio(
-    "Navegação:",
-    ["🛒 Cardápio (Vitrine do Cliente)", "📊 Painel de Pedidos (Admin)"]
-)
+# --- BARRA DE NAVEGAÇÃO TOPO ---
+col_nav1, col_nav2, col_nav3 = st.columns([2, 2, 2])
+with col_nav1:
+    if st.button("🛒 Cardápio (Vitrine)", use_container_width=True):
+        st.session_state.pagina_atual = "🛒 Cardápio"
+        st.rerun()
+with col_nav2:
+    if st.button("🛍 Ver Carrinho & Checkout", use_container_width=True):
+        st.session_state.pagina_atual = "🛍 Carrinho"
+        st.rerun()
+with col_nav3:
+    if st.button("📊 Painel Admin", use_container_width=True):
+        st.session_state.pagina_atual = "📊 Admin"
+        st.rerun()
 
-st.sidebar.markdown("---")
+st.markdown("---")
+# --- BASE DE DADOS DOS PRODUTOS ---
+cardapio_detalhado = [
+    {"id": 1, "nome": "Batida Tropical de Morango", "categoria": "⭐ Especiais da Casa", "preco_base": 32.00, "desc": "Morangos frescos selecionados, xarope de açúcar, vodka premium e gelo triturado."},
+    {"id": 2, "nome": "Batida de Maracujá Clássica", "categoria": "⭐ Especiais da Casa", "preco_base": 32.00, "desc": "Polpa de maracujá azedo natural, leite condensado, cachaça branca e gelo."},
+    {"id": 3, "nome": "Batida de Ninho com Nutella", "categoria": "⭐ Especiais da Casa", "preco_base": 38.00, "desc": "Creme cremoso de Leite Ninho, toque generoso de Nutella original e vodka."},
+    {"id": 4, "nome": "Batida de Maracujá com Leite Condensado", "categoria": "⭐ Especiais da Casa", "preco_base": 32.00, "desc": "A clássica acidez do maracujá equilibrada com a doçura do leite condensado."},
+    {"id": 5, "nome": "Batida de Morango com Leite Condensado", "categoria": "⭐ Especiais da Casa", "preco_base": 32.00, "desc": "Morangos frescos batidos na hora com leite condensado e vodka."},
+    {"id": 6, "nome": "Batida de Abacaxi com Hortelã", "categoria": "⭐ Especiais da Casa", "preco_base": 32.00, "desc": "Abacaxi fresco, folhas de hortelã batidas, rum branco e gelo."},
+    {"id": 7, "nome": "Batida de Limão com Leite Condensado", "categoria": "⭐ Especiais da Casa", "preco_base": 30.00, "desc": "Limão tahiti fresco, leite condensado e cachaça artesanal."},
 
-# --- MÓDULO 1: VITRINE DO CLIENTE ---
-if pagina == "🛒 Cardápio (Vitrine do Cliente)":
-    st.markdown('<div style="text-align: center; margin-bottom: 10px;"><span class="badge-loja">🟢 LOJA ABERTA • DAS 14H ÀS 03H</span></div>', unsafe_allow_html=True)
-    st.markdown('<h1 style="text-align: center; color: #ffffff; font-weight: 900; font-size: 2.2rem; margin-bottom: 0px;">QG DAS <span style="color: #FFB800;">BATIDAS</span></h1>', unsafe_allow_html=True)
-    st.markdown('<p style="text-align: center; color: #888888; font-size: 0.95rem; margin-bottom: 25px;">As 30 melhores batidas artesanais da região direto na sua casa</p>', unsafe_allow_html=True)
+    {"id": 8, "nome": "Batida Cocadinha Tropical", "categoria": "🥥 Clássicas & Tropicais", "preco_base": 30.00, "desc": "Leite de coco concentrado, rum branco, leite condensado e coco ralado."},
+    {"id": 9, "nome": "Batida de Coco Cremoso", "categoria": "🥥 Clássicas & Tropicais", "preco_base": 30.00, "desc": "Cachaça Artesanal, Leite de Coco Integral, Leite Condensado e Coco Ralado."},
+    {"id": 10, "nome": "Batida de Manga com Maracujá", "categoria": "🥥 Clássicas & Tropicais", "preco_base": 32.00, "desc": "Polpa de manga doce combinada com o toque cítrico do maracujá."},
+    {"id": 11, "nome": "Batida de Melancia com Hortelã", "categoria": "🥥 Clássicas & Tropicais", "preco_base": 30.00, "desc": "Melancia suculenta batida com folhas frescas de hortelã e vodka."},
+    {"id": 12, "nome": "Batida de Frutas Vermelhas", "categoria": "🥥 Clássicas & Tropicais", "preco_base": 35.00, "desc": "Amora, framboesa e morango batidos com vodka e leite condensado."},
+    {"id": 13, "nome": "Batida de Banana com Canela", "categoria": "🥥 Clássicas & Tropicais", "preco_base": 30.00, "desc": "Banana nanica madura, pitada de canela em pó, leite condensado e rum."},
+    {"id": 14, "nome": "Batida de Maracujá com Pimenta", "categoria": "🥥 Clássicas & Tropicais", "preco_base": 34.00, "desc": "Maracujá natural com um toque leve de pimenta dedo-de-moça."},
 
-    if "carrinho" not in st.session_state:
-        st.session_state.carrinho = []
+    {"id": 15, "nome": "Batida de Vinho Tinto Suave", "categoria": "🍷 Vinhos & Especiais", "preco_base": 35.00, "desc": "Vinho Tinto Suave selecionado, Cachaça Artesanal e Leite Condensado."},
+    {"id": 16, "nome": "Batida de Vinho com Morango", "categoria": "🍷 Vinhos & Especiais", "preco_base": 36.00, "desc": "Vinho tinto suave batido com morangos frescos e leite condensado."},
+    {"id": 17, "nome": "Batida de Amarula Caseira", "categoria": "🍷 Vinhos & Especiais", "preco_base": 40.00, "desc": "Creme cremoso sabor marula, conhaque, leite condensado e toque de chocolate."},
+    {"id": 18, "nome": "Batida de Chocolate Cremoso", "categoria": "🍷 Vinhos & Especiais", "preco_base": 35.00, "desc": "Chocolate meio amargo derretido, leite condensado, vodka e creme de leite."},
+    {"id": 19, "nome": "Batida de Doce de Leite com Coco", "categoria": "🍷 Vinhos & Especiais", "preco_base": 36.00, "desc": "Doce de leite argentino puro batido com leite de coco e cachaça."},
+    {"id": 20, "nome": "Batida de Paçoca", "categoria": "🍷 Vinhos & Especiais", "preco_base": 34.00, "desc": "Paçoca de amendoim artesanal triturada, leite condensado e vodka."},
+    {"id": 21, "nome": "Batida de Ovomaltine", "categoria": "🍷 Vinhos & Especiais", "preco_base": 36.00, "desc": "Crocante Ovomaltine misturado com creme de leite, leite condensado e vodka."},
 
-    cardapio_detalhado = [
-        {"id": 1, "nome": "Batida Tropical de Morango", "categoria": "⭐ Especiais da Casa", "preco_base": 32.00, "desc": "Morangos frescos selecionados, xarope de açúcar, vodka premium e gelo triturado."},
-        {"id": 2, "nome": "Batida de Maracujá Clássica", "categoria": "⭐ Especiais da Casa", "preco_base": 32.00, "desc": "Polpa de maracujá azedo natural, leite condensado, cachaça branca e gelo."},
-        {"id": 3, "nome": "Batida de Ninho com Nutella", "categoria": "⭐ Especiais da Casa", "preco_base": 38.00, "desc": "Creme cremoso de Leite Ninho, toque generoso de Nutella original e vodka."},
-        {"id": 4, "nome": "Batida de Maracujá com Leite Condensado", "categoria": "⭐ Especiais da Casa", "preco_base": 32.00, "desc": "A clássica acidez do maracujá equilibrada com a doçura do leite condensado."},
-        {"id": 5, "nome": "Batida de Morango com Leite Condensado", "categoria": "⭐ Especiais da Casa", "preco_base": 32.00, "desc": "Morangos frescos batidos na hora com leite condensado e vodka."},
-        {"id": 6, "nome": "Batida de Abacaxi com Hortelã", "categoria": "⭐ Especiais da Casa", "preco_base": 32.00, "desc": "Abacaxi fresco, folhas de hortelã batidas, rum branco e gelo."},
-        {"id": 7, "nome": "Batida de Limão com Leite Condensado", "categoria": "⭐ Especiais da Casa", "preco_base": 30.00, "desc": "Limão tahiti fresco, leite condensado e cachaça artesanal."},
-
-        {"id": 8, "nome": "Batida Cocadinha Tropical", "categoria": "🥥 Clássicas & Tropicais", "preco_base": 30.00, "desc": "Leite de coco concentrado, rum branco, leite condensado e coco ralado."},
-        {"id": 9, "nome": "Batida de Coco Cremoso", "categoria": "🥥 Clássicas & Tropicais", "preco_base": 30.00, "desc": "Cachaça Artesanal, Leite de Coco Integral, Leite Condensado e Coco Ralado."},
-        {"id": 10, "nome": "Batida de Manga com Maracujá", "categoria": "🥥 Clássicas & Tropicais", "preco_base": 32.00, "desc": "Polpa de manga doce combinada com o toque cítrico do maracujá."},
-        {"id": 11, "nome": "Batida de Melancia com Hortelã", "categoria": "🥥 Clássicas & Tropicais", "preco_base": 30.00, "desc": "Melancia suculenta batida com folhas frescas de hortelã e vodka."},
-        {"id": 12, "nome": "Batida de Frutas Vermelhas", "categoria": "🥥 Clássicas & Tropicais", "preco_base": 35.00, "desc": "Amora, framboesa e morango batidos com vodka e leite condensado."},
-        {"id": 13, "nome": "Batida de Banana com Canela", "categoria": "🥥 Clássicas & Tropicais", "preco_base": 30.00, "desc": "Banana nanica madura, pitada de canela em pó, leite condensado e rum."},
-        {"id": 14, "nome": "Batida de Maracujá com Pimenta", "categoria": "🥥 Clássicas & Tropicais", "preco_base": 34.00, "desc": "Maracujá natural com um toque leve de pimenta dedo-de-moça."},
-
-        {"id": 15, "nome": "Batida de Vinho Tinto Suave", "categoria": "🍷 Vinhos & Especiais", "preco_base": 35.00, "desc": "Vinho Tinto Suave selecionado, Cachaça Artesanal e Leite Condensado."},
-        {"id": 16, "nome": "Batida de Vinho com Morango", "categoria": "🍷 Vinhos & Especiais", "preco_base": 36.00, "desc": "Vinho tinto suave batido com morangos frescos e leite condensado."},
-        {"id": 17, "nome": "Batida de Amarula Caseira", "categoria": "🍷 Vinhos & Especiais", "preco_base": 40.00, "desc": "Creme cremoso sabor marula, conhaque, leite condensado e toque de chocolate."},
-        {"id": 18, "nome": "Batida de Chocolate Cremoso", "categoria": "🍷 Vinhos & Especiais", "preco_base": 35.00, "desc": "Chocolate meio amargo derretido, leite condensado, vodka e creme de leite."},
-        {"id": 19, "nome": "Batida de Doce de Leite com Coco", "categoria": "🍷 Vinhos & Especiais", "preco_base": 36.00, "desc": "Doce de leite argentino puro batido com leite de coco e cachaça."},
-        {"id": 20, "nome": "Batida de Paçoca", "categoria": "🍷 Vinhos & Especiais", "preco_base": 34.00, "desc": "Paçoca de amendoim artesanal triturada, leite condensado e vodka."},
-        {"id": 21, "nome": "Batida de Ovomaltine", "categoria": "🍷 Vinhos & Especiais", "preco_base": 36.00, "desc": "Crocante Ovomaltine misturado com creme de leite, leite condensado e vodka."},
-
-        {"id": 22, "nome": "Batida de Gengibre com Mel", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 35.00, "desc": "Gengibre fresco ralado, limão tahiti, mel silvestre puro e Cachaça Envelhecida."},
-        {"id": 23, "nome": "Batida de Catuaba com Açaí", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 34.00, "desc": "Açaí na polpa batido com Catuaba selvagem e leite condensado."},
-        {"id": 24, "nome": "Batida de Limão Siciliano com Capim-Santo", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 33.00, "desc": "Infusão aromática de capim-santo com limão siciliano e vodka."},
-        {"id": 25, "nome": "Batida de Kiwi com Hortelã", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 32.00, "desc": "Kiwi verde fresco, folhas de hortelã, vodka premium e xarope de açúcar."},
-        {"id": 26, "nome": "Batida de Tangerina com Pimenta", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 33.00, "desc": "Suco natural de tangerina poncã com um toque exótico de pimenta rosa."},
-        {"id": 27, "nome": "Batida de Café Expresso com Licor", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 36.00, "desc": "Café expresso forte, licor de cacau, leite condensado e vodka."},
-        {"id": 28, "nome": "Batida de Acerola com Laranja", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 30.00, "desc": "Acerola rica em vitamina C combinada com suco de laranja natural e cachaça."},
-        {"id": 29, "nome": "Batida de Cajá Tropical", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 32.00, "desc": "Polpa selecionada de cajá com acidez marcante, leite condensado e rum."},
-        {"id": 30, "nome": "Batida Tropical de Pitaya", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 38.00, "desc": "Pitaya vermelha fresca batida com vodka premium, limão e xarope leve."}
-    ]
+    {"id": 22, "nome": "Batida de Gengibre com Mel", "categoria": "🌶 Exóticas & Potentes", "preco_base": 35.00, "desc": "Gengibre fresco ralado, limão tahiti, mel silvestre puro e Cachaça Envelhecida."},
+    {"id": 23, "nome": "Batida de Catuaba com Açaí", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 34.00, "desc": "Açaí na polpa batido com Catuaba selvagem e leite condensado."},
+    {"id": 24, "nome": "Batida de Limão Siciliano com Capim-Santo", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 33.00, "desc": "Infusão aromática de capim-santo com limão siciliano e vodka."},
+    {"id": 25, "nome": "Batida de Kiwi com Hortelã", "categoria": "🌶️️ Exóticas & Potentes", "preco_base": 32.00, "desc": "Kiwi verde fresco, folhas de hortelã, vodka premium e xarope de açúcar."},
+    {"id": 26, "nome": "Batida de Tangerina com Pimenta", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 33.00, "desc": "Suco natural de tangerina poncã com um toque exótico de pimenta rosa."},
+    {"id": 27, "nome": "Batida de Café Expresso com Licor", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 36.00, "desc": "Café expresso forte, licor de cacau, leite condensado e vodka."},
+    {"id": 28, "nome": "Batida de Acerola com Laranja", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 30.00, "desc": "Acerola rica em vitamina C combinada com suco de laranja natural e cachaça."},
+    {"id": 29, "nome": "Batida de Cajá Tropical", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 32.00, "desc": "Polpa selecionada de cajá com acidez marcante, leite condensado e rum."},
+    {"id": 30, "nome": "Batida Tropical de Pitaya", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 38.00, "desc": "Pitaya vermelha fresca batida com vodka premium, limão e xarope leve."}
+]
+# --- PÁGINA 1: VITRINE DO CLIENTE ---
+if st.session_state.pagina_atual == "🛒 Cardápio":
+    st.markdown("""
+        <div class="hero-banner">
+            <span class="badge-loja">🟢 LOJA ABERTA • DAS 14H ÀS 03H</span>
+            <h1 style="color: #ffffff; font-weight: 900; font-size: 2.2rem; margin: 5px 0;">QG DAS <span style="color: #FFB800;">BATIDAS</span></h1>
+            <p style="color: #bbbbbb; font-size: 0.95rem; margin: 0;">As melhores batidas artesanais da região entregues trincando na sua casa</p>
+        </div>
+    """, unsafe_allow_html=True)
 
     categorias_disponiveis = [
         "⭐ Especiais da Casa", 
@@ -165,69 +190,97 @@ if pagina == "🛒 Cardápio (Vitrine do Cliente)":
         "🌶️ Exóticas & Potentes"
     ]
     
-    cat_selecionada = st.selectbox("📂 Filtrar Categoria do Cardápio:", categorias_disponiveis)
+    cat_selecionada = st.radio(
+        "Filtre por Categoria:",
+        categorias_disponiveis,
+        horizontal=True,
+        label_visibility="collapsed"
+    )
+
+    st.markdown(f"### {cat_selecionada}")
 
     itens_filtrados = [item for item in cardapio_detalhado if item["categoria"] == cat_selecionada]
 
+    for i in range(0, len(itens_filtrados), 2):
+        cols = st.columns(2)
+        for j in range(2):
+            if i + j < len(itens_filtrados):
+                item = itens_filtrados[i + j]
+                with cols[j]:
+                    with st.container(border=True):
+                        st.markdown(f"#### {item['nome']}")
+                        st.markdown(f"<span style='color: #999999; font-size: 0.8rem; display: block; min-height: 40px;'>{item['desc']}</span>", unsafe_allow_html=True)
+                        
+                        tamanho = st.radio(
+                            "Tamanho:",
+                            ["300ml", "500ml", "1 Litro"],
+                            horizontal=True,
+                            key=f"tam_{item['id']}"
+                        )
+                        
+                        if tamanho == "300ml":
+                            preco_final = 12.00 if item['preco_base'] >= 32.00 else 11.00
+                        elif tamanho == "500ml":
+                            preco_final = 18.00 if item['preco_base'] >= 32.00 else 17.00
+                        else:
+                            preco_final = item['preco_base']
+                            
+                        col_p, col_b = st.columns([1, 1.2])
+                        with col_p:
+                            st.markdown(f"<div style='margin-top: 8px;'><span class='preco-destaque'>R$ {preco_final:.2f}</span></div>", unsafe_allow_html=True)
+                        with col_b:
+                            if st.button("🛒 Adicionar", key=f"add_{item['id']}", use_container_width=True):
+                                item_carrinho = {
+                                    "nome": f"{item['nome']} ({tamanho})",
+                                    "preco": preco_final
+                                }
+                                st.session_state.carrinho.append(item_carrinho)
+                                st.success("Adicionado!")
+
+    total_itens = len(st.session_state.carrinho)
+    valor_total_carrinho = sum(item['preco'] for item in st.session_state.carrinho)
+    
+    if total_itens > 0:
+        st.markdown("---")
+        st.markdown(f"""
+            <div style="background: rgba(0, 255, 127, 0.15); border: 1px solid #00FF7F; padding: 15px; border-radius: 12px; text-align: center; margin-top: 20px;">
+                <h3 style="color: #00FF7F; margin: 0 0 5px 0;">🛍 Seu Carrinho tem {total_itens} ite(ns) • R$ {valor_total_carrinho:.2f}</h3>
+            </div>
+        """, unsafe_allow_html=True)
+        if st.button("🚀 Ir para o Checkout / Finalizar Pedido", use_container_width=True):
+            st.session_state.pagina_atual = "🛍 Carrinho"
+            st.rerun()
+        # --- PÁGINA 2: CARRINHO E CHECKOUT ---
+elif st.session_state.pagina_atual == "🛍 Carrinho":
+    st.markdown("<h2>🛍 Seu Carrinho de Compras</h2>", unsafe_allow_html=True)
     st.markdown("---")
-    st.markdown(f"### {cat_selecionada}")
 
-    # Exibição em cards limpos e otimizados um abaixo do outro para celular
-    for item in itens_filtrados:
-        with st.container(border=True):
-            st.markdown(f"#### {item['nome']}")
-            st.markdown(f"<span style='color: #aaaaaa; font-size: 0.9rem;'>{item['desc']}</span>", unsafe_allow_html=True)
-            
-            st.markdown("<br>", unsafe_allow_html=True)
-            
-            # Layout em colunas para Tamanho, Preço e Botão na mesma linha visual
-            col_tam, col_preco, col_btn = st.columns([1.5, 1, 1.2])
-            
-            with col_tam:
-                tamanho = st.selectbox(
-                    "Tamanho:",
-                    ["300ml", "500ml", "1 Litro"],
-                    key=f"tam_{item['id']}",
-                    label_visibility="collapsed"
-                )
-            
-            if tamanho == "300ml":
-                preco_final = 12.00 if item['preco_base'] >= 32.00 else 11.00
-            elif tamanho == "500ml":
-                preco_final = 18.00 if item['preco_base'] >= 32.00 else 17.00
-            else:
-                preco_final = item['preco_base']
-                
-            with col_preco:
-                st.markdown(f"<div style='padding-top: 5px;'><span class='preco-destaque'>R$ {preco_final:.2f}</span></div>", unsafe_allow_html=True)
-                
-            with col_btn:
-                if st.button("🛒 Adicionar", key=f"add_{item['id']}", use_container_width=True):
-                    item_carrinho = {
-                        "nome": f"{item['nome']} ({tamanho})",
-                        "preco": preco_final
-                    }
-                    st.session_state.carrinho.append(item_carrinho)
-                    st.success("Adicionado!")
-
-    # Carrinho Lateral
-    st.sidebar.markdown("### 🛍 Seu Carrinho")
     if len(st.session_state.carrinho) == 0:
-        st.sidebar.info("O carrinho está vazio. Escolha suas batidas!")
+        st.info("Seu carrinho está vazio no momento. Volte ao cardápio e escolha suas batidas!")
+        if st.button("⬅️ Voltar ao Cardápio"):
+            st.session_state.pagina_atual = "🛒 Cardápio"
+            st.rerun()
     else:
         total_carrinho = 0
-        for prod in st.session_state.carrinho:
-            st.sidebar.markdown(f"- {prod['nome']} (R$ {prod['preco']:.2f})")
+        for idx, prod in enumerate(st.session_state.carrinho):
+            col_i1, col_i2 = st.columns([3, 1])
+            with col_i1:
+                st.markdown(f"• **{prod['nome']}** — R$ {prod['preco']:.2f}")
+            with col_i2:
+                if st.button("Remover", key=f"del_{idx}"):
+                    st.session_state.carrinho.pop(idx)
+                    st.rerun()
             total_carrinho += prod['preco']
         
-        st.sidebar.markdown(f"**Total a Pagar: R$ {total_carrinho:.2f}**")
+        st.markdown("---")
+        st.markdown(f"### **Total a Pagar: R$ {total_carrinho:.2f}**")
         
-        if st.sidebar.button("🗑 Limpar Carrinho"):
+        if st.button("🗑 Limpar Carrinho Inteiro"):
             st.session_state.carrinho = []
             st.rerun()
 
-        st.sidebar.markdown("---")
-        st.sidebar.markdown("### 📝 Dados de Entrega")
+        st.markdown("---")
+        st.markdown("### 📝 Dados de Entrega e Pagamento")
         
         if "rua_val" not in st.session_state:
             st.session_state.rua_val = ""
@@ -236,7 +289,7 @@ if pagina == "🛒 Cardápio (Vitrine do Cliente)":
         if "cidade_val" not in st.session_state:
             st.session_state.cidade_val = "Taboão da Serra"
 
-        with st.sidebar.form("form_checkout"):
+        with st.form("form_checkout_principal"):
             nome_cliente = st.text_input("Seu Nome Completo:")
             whatsapp = st.text_input("WhatsApp / Telefone:")
             data_nascimento = st.text_input("Data de Nascimento (DD/MM/AAAA):", placeholder="Ex: 12/10/1985")
@@ -258,7 +311,7 @@ if pagina == "🛒 Cardápio (Vitrine do Cliente)":
                     st.session_state.rua_val = info["rua"]
                     st.session_state.bairro_val = info["bairro"]
                     st.session_state.cidade_val = info["cidade"]
-                    st.success("✅ Endereço carregado!")
+                    st.success("✅ Endereço carregado com sucesso!")
 
             rua = st.text_input("Rua:", value=st.session_state.rua_val)
             numero = st.text_input("Número:")
@@ -268,11 +321,11 @@ if pagina == "🛒 Cardápio (Vitrine do Cliente)":
             st.markdown("---")
             pagamento = st.selectbox("Forma de Pagamento:", ["Pix", "Cartão de Crédito", "Cartão de Débito", "Dinheiro"])
             
-            enviar_pedido = st.form_submit_button("🚀 Finalizar Pedido")
+            enviar_pedido = st.form_submit_button("🚀 Confirmar e Enviar Pedido")
             
             if enviar_pedido:
                 if not nome_cliente or not whatsapp or not rua or not numero:
-                    st.error("Preencha Nome, WhatsApp, Rua e Número.")
+                    st.error("Preencha Nome, WhatsApp, Rua e Número para prosseguir.")
                 else:
                     numero_pedido = f"QG-2026-{random.randint(1000, 9999)}"
                     data_hora_atual = datetime.datetime.now().strftime("%d/%m/%Y às %H:%M")
@@ -306,19 +359,20 @@ if pagina == "🛒 Cardápio (Vitrine do Cliente)":
 
                     st.session_state.ultimo_pedido = numero_pedido
                     st.session_state.carrinho = []
-                    st.rerun()
+                    st.success(f"🎉 Pedido **{numero_pedido}** gerado com sucesso!")
+                    st.balloons()
 
     if "ultimo_pedido" in st.session_state and st.session_state.ultimo_pedido:
-        st.success(f"🎉 Pedido **{st.session_state.ultimo_pedido}** finalizado com sucesso!")
-        st.balloons()
+        st.markdown("---")
         if st.button("🔄 Fazer Novo Pedido"):
             st.session_state.ultimo_pedido = None
+            st.session_state.pagina_atual = "🛒 Cardápio"
             st.rerun()
 
-# --- MÓDULO 2: PAINEL ADMINISTRATIVO DE PEDIDOS ---
-elif pagina == "📊 Painel de Pedidos (Admin)":
-    st.markdown("<h2>📦 Acompanhamento de Pedidos em Tempo Real</h2>", unsafe_allow_html=True)
-    st.markdown("<p style='color: #888888;'>Gerencie os pedidos que chegam da vitrine do cardápio.</p>", unsafe_allow_html=True)
+# --- PÁGINA 3: PAINEL ADMINISTRATIVO ---
+elif st.session_state.pagina_atual == "📊 Admin":
+    st.markdown("<h2>📦 Painel de Pedidos em Tempo Real</h2>", unsafe_allow_html=True)
+    st.markdown("<p style='color: #888888;'>Acompanhe os pedidos que entram pelo cardápio.</p>", unsafe_allow_html=True)
     st.markdown("---")
 
     arquivo_pedidos = "pedidos_qg.json"
@@ -333,7 +387,7 @@ elif pagina == "📊 Painel de Pedidos (Admin)":
             pedidos = []
 
         if not pedidos:
-            st.info("A base de pedidos está vazia no momento.")
+            st.info("A base de pedidos está vazia.")
         else:
             st.markdown(f"**Total de Pedidos na Base: {len(pedidos)}**")
             st.markdown("---")
@@ -357,4 +411,4 @@ elif pagina == "📊 Painel de Pedidos (Admin)":
                     if whatsapp_limpo:
                         link_wpp = f"https://wa.me/55{whatsapp_limpo}?text=Olá%20{p.get('cliente')},%20recebemos%20seu%20pedido%20{p.get('pedido_id')}!"
                         st.markdown(f"💬 [Falar com o Cliente no WhatsApp]({link_wpp})")
-    
+        
