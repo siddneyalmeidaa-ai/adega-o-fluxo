@@ -10,6 +10,29 @@ def render():
     if "carrinho" not in st.session_state:
         st.session_state.carrinho = []
 
+    # Inicializar variáveis de estado para o endereço
+    if "rua_val" not in st.session_state:
+        st.session_state.rua_val = ""
+    if "bairro_val" not in st.session_state:
+        st.session_state.bairro_val = ""
+    if "cidade_val" not in st.session_state:
+        st.session_state.cidade_val = "Taboão da Serra"
+
+    # Função executada automaticamente quando o CEP muda
+    def buscar_cep_auto():
+        cep_atual = st.session_state.get("input_cep", "")
+        clean_cep = "".join(filter(str.isdigit, cep_atual))
+        if len(clean_cep) == 8:
+            try:
+                res = requests.get(f"https://viacep.com.br/ws/{clean_cep}/json/")
+                data_cep = res.json()
+                if "erro" not in data_cep:
+                    st.session_state.rua_val = data_cep.get("logradouro", "")
+                    st.session_state.bairro_val = data_cep.get("bairro", "")
+                    st.session_state.cidade_val = data_cep.get("localidade", "")
+            except:
+                pass
+
     # Lista completa das 30 batidas organizadas por categoria
     cardapio_30 = [
         {"id": 1, "nome": "1. Batida de Coco Cremoso 1L", "categoria": "🥥 Clássicas & Frutas Tropicais", "preco": 45.00, "desc": "Suave, cremosa e marcante."},
@@ -64,34 +87,21 @@ def render():
         
         st.sidebar.markdown(f"**Total a Pagar: R$ {total_carrinho:.2f}**")
         
-        if st.sidebar.button("🗑️️ Limpar Carrinho"):
+        if st.sidebar.button("🗑 Limpar Carrinho"):
             st.session_state.carrinho = []
             st.rerun()
 
         st.sidebar.markdown("---")
         st.sidebar.markdown("### 📝 Cadastro & Endereço")
         
-        # Variáveis de sessão para preenchimento
-        if "rua_val" not in st.session_state:
-            st.session_state.rua_val = ""
-        if "bairro_val" not in st.session_state:
-            st.session_state.bairro_val = ""
-        if "cidade_val" not in st.session_state:
-            st.session_state.cidade_val = "Taboão da Serra"
-
-        # Campo de CEP fora do form principal para consulta instantânea
-        cep = st.sidebar.text_input("CEP (Apenas números):", max_chars=8, key="input_cep")
-        
-        if len(cep) == 8:
-            try:
-                res = requests.get(f"https://viacep.com.br/ws/{cep}/json/")
-                data_cep = res.json()
-                if "erro" not in data_cep:
-                    st.session_state.rua_val = data_cep.get("logradouro", "")
-                    st.session_state.bairro_val = data_cep.get("bairro", "")
-                    st.session_state.cidade_val = data_cep.get("localidade", "")
-            except:
-                pass
+        # Campo de CEP com gatilho automático ao alterar
+        st.sidebar.text_input(
+            "CEP (Apenas números):", 
+            max_chars=8, 
+            key="input_cep", 
+            on_change=buscar_cep_auto,
+            help="Digite os 8 números e pressione Enter ou clique fora para puxar o endereço automaticamente."
+        )
 
         with st.sidebar.form("form_checkout"):
             nome_cliente = st.text_input("Seu Nome Completo:")
@@ -99,7 +109,7 @@ def render():
             data_nascimento = st.text_input("Data de Nascimento (DD/MM/AAAA):", placeholder="Ex: 12/10/1985")
             
             st.markdown("---")
-            st.markdown("📍 **Confirme os Dados de Endereço**")
+            st.markdown("📍 **Endereço de Entrega**")
             
             rua = st.text_input("Rua / Logradouro:", value=st.session_state.rua_val)
             numero = st.text_input("Número:")
@@ -115,7 +125,8 @@ def render():
                 if not nome_cliente or not whatsapp or not rua or not numero:
                     st.error("Preencha Nome, WhatsApp, Rua e Número.")
                 else:
-                    endereco_completo = f"{rua}, nº {numero} - {bairro}, {cidade} (CEP: {cep})"
+                    cep_digitado = st.session_state.get("input_cep", "")
+                    endereco_completo = f"{rua}, nº {numero} - {bairro}, {cidade} (CEP: {cep_digitado})"
                     
                     novo_registro = {
                         "cliente": nome_cliente,
@@ -131,4 +142,4 @@ def render():
                     st.success("🎉 Pedido registado com sucesso!")
                     st.balloons()
                     st.session_state.carrinho = []
-        
+                               
