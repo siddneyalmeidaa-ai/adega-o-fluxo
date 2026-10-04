@@ -1,5 +1,6 @@
 import streamlit as st
-import database as db
+import json
+import os
 import random
 
 def render():
@@ -140,18 +141,32 @@ def render():
                         "itens": st.session_state.carrinho,
                         "total": total_carrinho
                     }
-                    db.salvar_cliente(novo_registro)
                     
-                    # Guardar na sessão para exibir o sucesso na tela principal
+                    # Salvar diretamente no arquivo JSON local sincronizado com o CRM
+                    arquivo_pedidos = "pedidos_qg.json"
+                    lista_pedidos = []
+                    if os.path.exists(arquivo_pedidos):
+                        try:
+                            with open(arquivo_pedidos, "r", encoding="utf-8") as f:
+                                lista_pedidos = json.load(f)
+                        except:
+                            lista_pedidos = []
+                    
+                    lista_pedidos.append(novo_registro)
+                    
+                    with open(arquivo_pedidos, "w", encoding="utf-8") as f:
+                        json.dump(lista_pedidos, f, ensure_ascii=False, indent=4)
+
+                    # Guardar na sessão e recarregar
                     st.session_state.ultimo_pedido = numero_pedido
                     st.session_state.carrinho = []
                     st.rerun()
 
-    # Se houver pedido finalizado recém-criado, exibe tela de sucesso em destaque na página principal
+    # Tela de sucesso após finalizar
     if "ultimo_pedido" in st.session_state and st.session_state.ultimo_pedido:
         st.success(f"🎉 Pedido **{st.session_state.ultimo_pedido}** finalizado com sucesso e registado no painel!")
         st.balloons()
         if st.button("🔄 Fazer Novo Pedido"):
             st.session_state.ultimo_pedido = None
             st.rerun()
-    
+            
