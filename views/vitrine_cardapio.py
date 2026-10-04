@@ -5,190 +5,140 @@ import random
 import datetime
 
 def render():
-    # Injetar CSS customizado para estilizar os cartões e deixar a interface com cara de app mobile
+    # Injetar CSS customizado para estilizar os cartões escuros exatos da sua imagem de referência
     st.markdown("""
         <style>
-        .card-produto {
-            background-color: #1e1e1e;
-            border: 1px solid #333333;
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        .stApp {
+            background-color: #121212;
+            color: #ffffff;
         }
-        .preco-destaque {
+        .card-produto {
+            background-color: #1a1a1a;
+            border: 1px solid #333333;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+        .badge-loja {
+            background-color: rgba(0, 255, 127, 0.15);
             color: #00FF7F;
-            font-size: 1.2rem;
+            border: 1px solid #00FF7F;
+            border-radius: 20px;
+            padding: 6px 16px;
+            font-size: 0.9rem;
             font-weight: bold;
+            display: inline-block;
+            text-align: center;
+            margin-bottom: 10px;
         }
         </style>
     """, unsafe_allow_html=True)
 
-    st.title("🍸 QG das Batidas")
-    st.markdown("Selecione sua garrafa artesanal favorita, escolha o tamanho e faça o seu pedido rápido!")
+    # Topo igualzinho à sua referência
+    st.markdown('<div style="text-align: center;"><span class="badge-loja">🟢 LOJA ABERTA - DAS 14H ÀS 03H</span></div>', unsafe_allow_html=True)
+    st.markdown('<p style="text-align: center; color: #aaaaaa; font-size: 0.85rem; letter-spacing: 1px; margin-bottom: 0px;">ARTESANAIS & EXCLUSIVAS</p>', unsafe_allow_html=True)
+    st.markdown('<h1 style="text-align: center; color: #ffffff; font-weight: 800; margin-top: 0px;">QG DAS <span style="color: #FFB800;">BATIDAS</span></h1>', unsafe_allow_html=True)
+    st.markdown('<p style="text-align: center; color: #cccccc; margin-bottom: 25px;">As melhores batidas da região na sua casa</p>', unsafe_allow_html=True)
 
     # Inicializar o carrinho na sessão se não existir
     if "carrinho" not in st.session_state:
         st.session_state.carrinho = []
 
-    # Lista completa de produtos com fotos e preços base para 1L
+    # Lista completa de produtos com preços base proporcional para os tamanhos
     cardapio_detalhado = [
         {
             "id": 1, 
-            "nome": "Batida de Coco Cremoso", 
-            "categoria": "🥥 Clássicas & Frutas Tropicais", 
-            "preco_1l": 45.00, 
-            "desc": "Suave, cremosa e marcante.",
-            "ingredientes": "Cachaça Artesanal, Leite de Coco Integral, Leite Condensado, Coco Ralado em Flocos e Leite em Pó.",
-            "foto": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80"
+            "nome": "Batida Tropical de Morango", 
+            "categoria": "⭐ Batidas Especiais da Casa", 
+            "preco_base": 32.00, # Preço de referencia para 1L
+            "desc": "Morangos frescos selecionados, xarope de açúcar, vodka premium e gelo triturado."
         },
         {
             "id": 2, 
-            "nome": "Batida de Maracujá", 
-            "categoria": "🥥 Clássicas & Frutas Tropicais", 
-            "preco_1l": 48.00, 
-            "desc": "Equilíbrio perfeito entre o azedinho e o doce.",
-            "ingredientes": "Polpa de Maracujá in natura, Cachaça Selecionada e Leite Condensado cremoso.",
-            "foto": "https://images.unsplash.com/photo-1536935338788-846bb9981813?auto=format&fit=crop&w=600&q=80"
+            "nome": "Batida de Maracujá Clássica", 
+            "categoria": "⭐ Batidas Especiais da Casa", 
+            "preco_base": 32.00, 
+            "desc": "Polpa de maracujá azedo natural, leite condensado, cachaça branca e gelo."
         },
         {
             "id": 3, 
-            "nome": "Batida de Morango Silvestre", 
-            "categoria": "🥥 Clássicas & Frutas Tropicais", 
-            "preco_1l": 50.00, 
-            "desc": "Feita com frutas frescas selecionadas.",
-            "ingredientes": "Morangos frescos, Cachaça Artesanal, Leite Condensado e calda artesanal.",
-            "foto": "https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=600&q=80"
+            "nome": "Batida Cocadinha Tropical", 
+            "categoria": "🥥 Clássicas & Tropicais", 
+            "preco_base": 30.00, 
+            "desc": "Leite de coco concentrado, rum branco, leite condensado e coco ralado."
         },
         {
             "id": 4, 
-            "nome": "Batida de Abacaxi com Hortelã", 
-            "categoria": "🥥 Clássicas & Frutas Tropicais", 
-            "preco_1l": 46.00, 
-            "desc": "Refrescante e revigorante.",
-            "ingredientes": "Abacaxi suculento, folhas de hortelã orgânica, Cachaça Premium e açúcar refinado.",
-            "foto": "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=600&q=80"
+            "nome": "Batida de Coco Cremoso", 
+            "categoria": "🥥 Clássicas & Tropicais", 
+            "preco_base": 30.00, 
+            "desc": "Cachaça Artesanal, Leite de Coco Integral, Leite Condensado e Coco Ralado."
         },
         {
             "id": 5, 
-            "nome": "Batida de Manga com Maracujá", 
-            "categoria": "🥥 Clássicas & Frutas Tropicais", 
-            "preco_1l": 49.00, 
-            "desc": "Toque tropical irresistível.",
-            "ingredientes": "Manga Palmer madura, polpa de maracujá e Cachaça Artesanal.",
-            "foto": "https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=600&q=80"
+            "nome": "Batida de Vinho Tinto Suave", 
+            "categoria": "🍷 Vinhos & Especiais", 
+            "preco_base": 35.00, 
+            "desc": "Vinho Tinto Suave selecionado, Cachaça Artesanal e Leite Condensado."
         },
         {
             "id": 6, 
-            "nome": "Batida de Limão Siciliano", 
-            "categoria": "🥥 Clássicas & Frutas Tropicais", 
-            "preco_1l": 47.00, 
-            "desc": "Cítrico na medida certa com elegância.",
-            "ingredientes": "Sumo de Limão Siciliano, raspas aromáticas, Cachaça Especial e Leite Condensado.",
-            "foto": "https://images.unsplash.com/photo-1621263764928-df1444c5e859?auto=format&fit=crop&w=600&q=80"
-        },
-        {
-            "id": 7, 
-            "nome": "Batida de Goiaba Vermelha", 
-            "categoria": "🥥 Clássicas & Frutas Tropicais", 
-            "preco_1l": 45.00, 
-            "desc": "Sabor autêntico e encorpado da fruta.",
-            "ingredientes": "Goiabada cascão artesanal, Cachaça Selecionada e creme de leite leve.",
-            "foto": "https://images.unsplash.com/photo-1575444758702-4a6b9222336e?auto=format&fit=crop&w=600&q=80"
-        },
-        {
-            "id": 8, 
-            "nome": "Batida de Caju com Pitada de Sal", 
-            "categoria": "🥥 Clássicas & Frutas Tropicais", 
-            "preco_1l": 48.00, 
-            "desc": "O clássico reinventado com personalidade.",
-            "ingredientes": "Caju fresco, Cachaça Branca, Leite Condensado e pitada de sal marinho.",
-            "foto": "https://images.unsplash.com/photo-1506806732259-39c2d0268443?auto=format&fit=crop&w=600&q=80"
-        },
-        {
-            "id": 9, 
-            "nome": "Batida de Vinho Tinto Suave", 
-            "categoria": "🍷 Vinhos & Especiais", 
-            "preco_1l": 52.00, 
-            "desc": "Encorpada e aconchegante.",
-            "ingredientes": "Vinho Tinto Suave selecionado, Cachaça Artesanal e Leite Condensado.",
-            "foto": "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=600&q=80"
-        },
-        {
-            "id": 10, 
-            "nome": "Batida de Vinho com Canela e Cravo", 
-            "categoria": "🍷 Vinhos & Especiais", 
-            "preco_1l": 55.00, 
-            "desc": "Aromatizada com especiarias finas.",
-            "ingredientes": "Vinho Tinto, infusão de cravo, canela em pau fresca e Cachaça Premium.",
-            "foto": "https://images.unsplash.com/photo-1543747579-795b9c2c3ada?auto=format&fit=crop&w=600&q=80"
-        },
-        {
-            "id": 23, 
             "nome": "Batida de Gengibre com Mel", 
             "categoria": "🌶️ Exóticas & Potentes", 
-            "preco_1l": 52.00, 
-            "desc": "Picante na medida certa e revigorante.",
-            "ingredientes": "Gengibre fresco ralado, limão tahiti, mel silvestre puro e Cachaça Envelhecida.",
-            "foto": "https://images.unsplash.com/photo-1582106245687-cbb46679fdbb?auto=format&fit=crop&w=600&q=80"
-        },
-        {
-            "id": 24, 
-            "nome": "Batida de Pimenta Rosa com Abacaxi", 
-            "categoria": "🌶️ Exóticas & Potentes", 
-            "preco_1l": 54.00, 
-            "desc": "Sofisticação e ardência leve.",
-            "ingredientes": "Abacaxi fresco, grãos de pimenta rosa, Cachaça Artesanal e Leite Condensado.",
-            "foto": "https://images.unsplash.com/photo-1563227812-0ea4c22e6cc8?auto=format&fit=crop&w=600&q=80"
+            "preco_base": 35.00, 
+            "desc": "Gengibre fresco ralado, limão tahiti, mel silvestre puro e Cachaça Envelhecida."
         }
     ]
 
-    # Filtro por Categoria em abas visuais ou selectbox limpo
-    cat_cols = st.selectbox("Filtrar Categoria:", ["⭐ Todas as Batidas", "🥥 Clássicas & Frutas Tropicais", "🍷 Vinhos & Especiais", "🌶️ Exóticas & Potentes"])
+    # Menu de categorias em abas/filtros
+    categorias_disponiveis = ["⭐ Batidas Especiais da Casa", "🥥 Clássicas & Tropicais", "🍷 Vinhos & Especiais", "🌶️ Exóticas & Potentes"]
+    cat_selecionada = st.selectbox("Filtrar Categoria:", categorias_disponiveis)
 
-    if cat_cols == "⭐ Todas as Batidas":
-        itens_filtrados = cardapio_detalhado
-    else:
-        itens_filtrados = [item for item in cardapio_detalhado if item["categoria"] == cat_cols]
+    itens_filtrados = [item for item in cardapio_detalhado if item["categoria"] == cat_selecionada]
 
     st.markdown("---")
+    st.markdown(f"### {cat_selecionada}")
 
-    # Exibição em grade otimizada para mobile
+    # Exibição em formato de cards idêntico ao modelo da imagem
     for item in itens_filtrados:
         with st.container():
-            st.markdown(f"### 🍸 {item['nome']}")
+            st.markdown(f"""
+                <div class="card-produto">
+                    <h3 style="color: #ffffff; margin-bottom: 5px; font-size: 1.25rem;">{item['nome']}</h3>
+                    <p style="color: #aaaaaa; font-size: 0.9rem; margin-bottom: 15px;">{item['desc']}</p>
+                </div>
+            """, unsafe_allow_html=True)
             
-            c_foto, c_detalhes = st.columns([1.2, 2])
+            # Seletor de Tamanhos (Simulando os botões da imagem)
+            tamanho = st.radio(
+                f"Escolha o tamanho para {item['nome']}:",
+                ["300ml", "500ml", "1 Litro"],
+                horizontal=True,
+                key=f"tam_{item['id']}"
+            )
             
-            with c_foto:
-                st.image(item['foto'], use_container_width=True)
+            # Cálculo proporcional dos preços baseado no padrão da imagem (300ml=R$12, 500ml=R$18, 1L=R$32)
+            if tamanho == "300ml":
+                preco_final = 12.00 if item['preco_base'] == 32.00 else 11.00
+            elif tamanho == "500ml":
+                preco_final = 18.00 if item['preco_base'] == 32.00 else 17.00
+            else:
+                preco_final = item['preco_base']
                 
-            with c_detalhes:
-                st.markdown(f"*{item['desc']}*")
-                st.markdown(f"📝 **Ingredientes:** _{item['ingredientes']}_")
-                
-                # Seletor de Tamanho
-                tamanho = st.selectbox("Tamanho da Garrafa:", ["300ml", "500ml", "1 Litro"], key=f"tam_{item['id']}")
-                
-                # Cálculo de preço proporcional
-                if tamanho == "300ml":
-                    preco_final = item['preco_1l'] * 0.38
-                elif tamanho == "500ml":
-                    preco_final = item['preco_1l'] * 0.60
-                else:
-                    preco_final = item['preco_1l']
-                
-                st.markdown(f"💰 **R$ {preco_final:.2f}**")
-                
-                if st.button("🛒 Adicionar ao Carrinho", key=f"add_{item['id']}"):
+            c_preco, c_botao = st.columns([1.5, 1])
+            with c_preco:
+                st.markdown(f"<h3 style='color: #FFB800; margin-top: 10px;'>R$ {preco_final:.2f}</h3>", unsafe_allow_html=True)
+            with c_botao:
+                if st.button("+ ADICIONAR", key=f"add_{item['id']}", use_container_width=True):
                     item_carrinho = {
                         "nome": f"{item['nome']} ({tamanho})",
                         "preco": preco_final
                     }
                     st.session_state.carrinho.append(item_carrinho)
-                    st.success("Adicionado com sucesso! ✅")
-
-            st.markdown("---")
+                    st.success("Adicionado! ✅")
+            
+            st.markdown("<br>", unsafe_allow_html=True)
 
     # --- CARRINHO E CHECKOUT NA SIDEBAR ---
     st.sidebar.markdown("### 🛍 Seu Carrinho")
@@ -293,9 +243,9 @@ def render():
                     st.rerun()
 
     if "ultimo_pedido" in st.session_state and st.session_state.ultimo_pedido:
-        st.success(f"🎉 Pedido **{st.session_state.ultimo_pedido}** finalizado com sucesso e salvo com data e hora!")
+        st.success(f"🎉 Pedido **{st.session_state.ultimo_pedido}** finalizado com sucesso!")
         st.balloons()
         if st.button("🔄 Fazer Novo Pedido"):
             st.session_state.ultimo_pedido = None
             st.rerun()
-    
+                    
