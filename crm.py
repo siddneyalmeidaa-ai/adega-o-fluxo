@@ -4,7 +4,7 @@ import database as db
 def render():
     st.subheader("🚀 Central de CRM & Gestão de Pedidos")
     
-    # Abas internas do Centro de Comando para separar Campanhas e Pedidos Reais
+    # Abas internas do Centro de Comando
     aba_crm, aba_pedidos = st.tabs(["📢 Campanhas de WhatsApp", "📦 Pedidos Recebidos da Vitrine"])
 
     with aba_crm:
@@ -63,16 +63,34 @@ def render():
         st.markdown("### 📦 Acompanhamento de Pedidos em Tempo Real")
         st.markdown("Aqui aparecem automaticamente todos os pedidos finalizados pelos clientes na vitrine.")
 
-        dados = db.carregar_dados()
-        pedidos = []
+        # Detecção universal e segura de métodos de leitura do banco de dados
+        dados = None
+        for metodo in ["carregar_dados", "ler_dados", "carregar_banco", "obter_dados", "get_dados", "ler_banco"]:
+            if hasattr(db, metodo):
+                try:
+                    dados = getattr(db, metodo)()
+                    break
+                except:
+                    pass
         
+        if dados is None:
+            for attr in ["clientes", "pedidos", "db_data", "data"]:
+                if hasattr(db, attr):
+                    dados = getattr(db, attr)
+                    break
+
+        pedidos = []
         if isinstance(dados, dict):
-            if "clientes" in dados:
-                pedidos = dados["clientes"]
-            elif "pedidos" in dados:
-                pedidos = dados["pedidos"]
-            else:
-                pedidos = list(dados.values())
+            for chave in ["clientes", "pedidos", "data", "database", "historico"]:
+                if chave in dados and isinstance(dados[chave], list):
+                    pedidos = dados[chave]
+                    break
+            if not pedidos:
+                # Se não achou chave de lista, pega todos os valores que sejam listas ou dicts
+                for val in dados.values():
+                    if isinstance(val, list):
+                        pedidos = val
+                        break
         elif isinstance(dados, list):
             pedidos = dados
 
@@ -107,11 +125,10 @@ def render():
                         for item in itens:
                             st.markdown(f"- {item.get('nome', 'Item')} (R$ {item.get('preco', 0.0):.2f})")
 
-                        # Botão direto para abrir conversa no WhatsApp com o cliente
                         whatsapp_clean = "".join(filter(str.isdigit, str(whatsapp)))
                         if whatsapp_clean:
                             msg_w = f"Olá {cliente}! Aqui é do QG das Batidas. Recebemos o seu pedido no valor de R$ {total:.2f}. Estamos a preparar tudo com carinho!"
                             st.markdown(f"[💬 Falar com o Cliente no WhatsApp](https://wa.me/55{whatsapp_clean}?text={msg_w.replace(' ', '%20')})", unsafe_allow_html=True)
 
                         st.markdown("---")
-                            
+            
