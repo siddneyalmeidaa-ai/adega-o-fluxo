@@ -1,5 +1,6 @@
 import streamlit as st
 import database as db
+import requests
 
 def render():
     st.title("🍸 QG das Batidas - Cardápio Oficial")
@@ -69,30 +70,66 @@ def render():
         
         st.sidebar.markdown(f"**Total a Pagar: R$ {total_carrinho:.2f}**")
         
-        if st.sidebar.button("🗑️ Limpar Carrinho"):
+        if st.sidebar.button("🗑️️ Limpar Carrinho"):
             st.session_state.carrinho = []
             st.rerun()
 
         st.sidebar.markdown("---")
-        st.sidebar.markdown("### 📝 Dados de Entrega & Pagamento")
+        st.sidebar.markdown("### 📝 Cadastro & Endereço")
         
+        # Estados para armazenar dados do endereço via CEP
+        if "cep_input" not in st.session_state:
+            st.session_state.cep_input = ""
+        if "rua" not in st.session_state:
+            st.session_state.rua = ""
+        if "bairro" not in st.session_state:
+            st.session_state.bairro = ""
+        if "cidade" not in st.session_state:
+            st.session_state.cidade = "Taboão da Serra"
+
         with st.sidebar.form("form_checkout"):
             nome_cliente = st.text_input("Seu Nome Completo:")
             whatsapp = st.text_input("WhatsApp / Telefone:")
-            endereco = st.text_area("Endereço de Entrega (Taboão da Serra / Região):")
+            data_nascimento = st.date_input("Data de Nascimento:")
+            
+            st.markdown("---")
+            st.markdown("📍 **Endereço de Entrega**")
+            
+            cep = st.text_input("CEP (Apenas números):", max_chars=8)
+            
+            # Botão ou lógica para buscar CEP automático
+            if cep and len(cep) == 8:
+                try:
+                    response = requests.get(f"https://viacep.com.br/ws/{cep}/json/")
+                    data_cep = response.json()
+                    if "erro" not in data_cep:
+                        st.session_state.rua = data_cep.get("logradouro", "")
+                        st.session_state.bairro = data_cep.get("bairro", "")
+                        st.session_state.cidade = data_cep.get("localidade", "")
+                except:
+                    pass
+
+            rua = st.text_input("Rua / Logradouro:", value=st.session_state.rua)
+            numero = st.text_input("Número:")
+            bairro = st.text_input("Bairro:", value=st.session_state.bairro)
+            cidade = st.text_input("Cidade:", value=st.session_state.cidade)
+            
+            st.markdown("---")
             pagamento = st.selectbox("Forma de Pagamento:", ["Pix", "Cartão de Crédito", "Cartão de Débito", "Dinheiro"])
             
             enviar_pedido = st.form_submit_button("🚀 Finalizar Pedido")
             
             if enviar_pedido:
-                if not nome_cliente or not whatsapp or not endereco:
-                    st.error("Por favor, preencha todos os campos de cadastro e endereço.")
+                if not nome_cliente or not whatsapp or not rua or not numero:
+                    st.error("Por favor, preencha os campos obrigatórios (Nome, WhatsApp, Rua e Número).")
                 else:
-                    # Salvar cliente/pedido na base de dados JSON (database.py)
+                    endereco_completo = f"{rua}, nº {numero} - {bairro}, {cidade} (CEP: {cep})"
+                    
                     novo_registro = {
                         "cliente": nome_cliente,
                         "whatsapp": whatsapp,
-                        "endereco": endereco,
+                        "nascimento": str(data_nascimento),
+                        "endereco": endereco_completo,
                         "pagamento": pagamento,
                         "itens": st.session_state.carrinho,
                         "total": total_carrinho
@@ -104,4 +141,4 @@ def render():
                     
                     # Limpar carrinho após o pedido
                     st.session_state.carrinho = []
-        
+                    
