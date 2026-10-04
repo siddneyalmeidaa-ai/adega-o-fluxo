@@ -2,6 +2,7 @@ import streamlit as st
 import json
 import os
 import random
+import datetime
 
 def render():
     st.title("🍸 QG das Batidas - Cardápio Oficial")
@@ -126,13 +127,16 @@ def render():
                 if not nome_cliente or not whatsapp or not rua or not numero:
                     st.error("Preencha Nome, WhatsApp, Rua e Número.")
                 else:
-                    # Gerar número de pedido único
+                    # Gerar número de pedido único e data/hora atual
                     numero_pedido = f"QG-2026-{random.randint(1000, 9999)}"
+                    data_hora_atual = datetime.datetime.now().strftime("%d/%m/%Y às %H:%M")
+                    
                     cep_final = cep_input if cep_input else "Não informado"
                     endereco_completo = f"{rua}, nº {numero} - {bairro}, {cidade} (CEP: {cep_final})"
                     
                     novo_registro = {
                         "pedido_id": numero_pedido,
+                        "data_hora": data_hora_atual,
                         "cliente": nome_cliente,
                         "whatsapp": whatsapp,
                         "nascimento": data_nascimento,
@@ -164,7 +168,7 @@ def render():
 
     # Tela de sucesso após finalizar
     if "ultimo_pedido" in st.session_state and st.session_state.ultimo_pedido:
-        st.success(f"🎉 Pedido **{st.session_state.ultimo_pedido}** finalizado com sucesso e registado no painel!")
+        st.success(f"🎉 Pedido **{st.session_state.ultimo_pedido}** finalizado com sucesso e registado com data e horário!")
         st.balloons()
         if st.button("🔄 Fazer Novo Pedido"):
             st.session_state.ultimo_pedido = None
