@@ -122,21 +122,59 @@ if pagina == "🛒 Cardápio (Vitrine do Cliente)":
     st.markdown('<div style="text-align: center;"><span class="badge-loja">🟢 LOJA ABERTA - DAS 14H ÀS 03H</span></div>', unsafe_allow_html=True)
     st.markdown('<p style="text-align: center; color: #aaaaaa; font-size: 0.85rem; letter-spacing: 1px; margin-bottom: 0px;">ARTESANAIS & EXCLUSIVAS</p>', unsafe_allow_html=True)
     st.markdown('<h1 style="text-align: center; color: #ffffff; font-weight: 800; margin-top: 0px;">QG DAS <span style="color: #FFB800;">BATIDAS</span></h1>', unsafe_allow_html=True)
-    st.markdown('<p style="text-align: center; color: #cccccc; margin-bottom: 25px;">As melhores batidas da região na sua casa</p>', unsafe_allow_html=True)
+    st.markdown('<p style="text-align: center; color: #cccccc; margin-bottom: 25px;">As 30 melhores batidas da região na sua casa</p>', unsafe_allow_html=True)
 
     if "carrinho" not in st.session_state:
         st.session_state.carrinho = []
 
+    # Lista completa com as 30 Batidas Organizadas
     cardapio_detalhado = [
+        # ⭐ Batidas Especiais da Casa
         {"id": 1, "nome": "Batida Tropical de Morango", "categoria": "⭐ Batidas Especiais da Casa", "preco_base": 32.00, "desc": "Morangos frescos selecionados, xarope de açúcar, vodka premium e gelo triturado."},
         {"id": 2, "nome": "Batida de Maracujá Clássica", "categoria": "⭐ Batidas Especiais da Casa", "preco_base": 32.00, "desc": "Polpa de maracujá azedo natural, leite condensado, cachaça branca e gelo."},
-        {"id": 3, "nome": "Batida Cocadinha Tropical", "categoria": "🥥 Clássicas & Tropicais", "preco_base": 30.00, "desc": "Leite de coco concentrado, rum branco, leite condensado e coco ralado."},
-        {"id": 4, "nome": "Batida de Coco Cremoso", "categoria": "🥥 Clássicas & Tropicais", "preco_base": 30.00, "desc": "Cachaça Artesanal, Leite de Coco Integral, Leite Condensado e Coco Ralado."},
-        {"id": 5, "nome": "Batida de Vinho Tinto Suave", "categoria": "🍷 Vinhos & Especiais", "preco_base": 35.00, "desc": "Vinho Tinto Suave selecionado, Cachaça Artesanal e Leite Condensado."},
-        {"id": 6, "nome": "Batida de Gengibre com Mel", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 35.00, "desc": "Gengibre fresco ralado, limão tahiti, mel silvestre puro e Cachaça Envelhecida."}
+        {"id": 3, "nome": "Batida de Ninho com Nutella", "categoria": "⭐ Batidas Especiais da Casa", "preco_base": 38.00, "desc": "Creme cremoso de Leite Ninho, toque generoso de Nutella original e vodka."},
+        {"id": 4, "nome": "Batida de Maracujá com Leite Condensado", "categoria": "⭐ Batidas Especiais da Casa", "preco_base": 32.00, "desc": "A clássica acidez do maracujá equilibrada com a doçura do leite condensado."},
+        {"id": 5, "nome": "Batida de Morango com Leite Condensado", "categoria": "⭐ Batidas Especiais da Casa", "preco_base": 32.00, "desc": "Morangos frescos batidos na hora com leite condensado e vodka."},
+        {"id": 6, "nome": "Batida de Abacaxi com Hortelã", "categoria": "⭐ Batidas Especiais da Casa", "preco_base": 32.00, "desc": "Abacaxi fresco, folhas de hortelã batidas, rum branco e gelo."},
+        {"id": 7, "nome": "Batida de Limão com Leite Condensado", "categoria": "⭐ Batidas Especiais da Casa", "preco_base": 30.00, "desc": "Limão tahiti fresco, leite condensado e cachaça artesanal."},
+
+        # 🥥 Clássicas & Tropicais
+        {"id": 8, "nome": "Batida Cocadinha Tropical", "categoria": "🥥 Clássicas & Tropicais", "preco_base": 30.00, "desc": "Leite de coco concentrado, rum branco, leite condensado e coco ralado."},
+        {"id": 9, "nome": "Batida de Coco Cremoso", "categoria": "🥥 Clássicas & Tropicais", "preco_base": 30.00, "desc": "Cachaça Artesanal, Leite de Coco Integral, Leite Condensado e Coco Ralado."},
+        {"id": 10, "nome": "Batida de Manga com Maracujá", "categoria": "🥥 Clássicas & Tropicais", "preco_base": 32.00, "desc": "Polpa de manga doce combinada com o toque cítrico do maracujá."},
+        {"id": 11, "nome": "Batida de Melancia com Hortelã", "categoria": "🥥 Clássicas & Tropicais", "preco_base": 30.00, "desc": "Melancia suculenta batida com folhas frescas de hortelã e vodka."},
+        {"id": 12, "nome": "Batida de Frutas Vermelhas", "categoria": "🥥 Clássicas & Tropicais", "preco_base": 35.00, "desc": "Amora, framboesa e morango batidos com vodka e leite condensado."},
+        {"id": 13, "nome": "Batida de Banana com Canela", "categoria": "🥥 Clássicas & Tropicais", "preco_base": 30.00, "desc": "Banana nanica madura, pitada de canela em pó, leite condensado e rum."},
+        {"id": 14, "nome": "Batida de Maracujá com Pimenta", "categoria": "🥥 Clássicas & Tropicais", "preco_base": 34.00, "desc": "Maracujá natural com um toque leve de pimenta dedo-de-moça."},
+
+        # 🍷 Vinhos & Especiais
+        {"id": 15, "nome": "Batida de Vinho Tinto Suave", "categoria": "🍷 Vinhos & Especiais", "preco_base": 35.00, "desc": "Vinho Tinto Suave selecionado, Cachaça Artesanal e Leite Condensado."},
+        {"id": 16, "nome": "Batida de Vinho com Morango", "categoria": "🍷 Vinhos & Especiais", "preco_base": 36.00, "desc": "Vinho tinto suave batido com morangos frescos e leite condensado."},
+        {"id": 17, "nome": "Batida de Amarula Caseira", "categoria": "🍷 Vinhos & Especiais", "preco_base": 40.00, "desc": "Creme cremoso sabor marula, conhaque, leite condensado e toque de chocolate."},
+        {"id": 18, "nome": "Batida de Chocolate Cremoso", "categoria": "🍷 Vinhos & Especiais", "preco_base": 35.00, "desc": "Chocolate meio amargo derretido, leite condensado, vodka e creme de leite."},
+        {"id": 19, "nome": "Batida de Doce de Leixe com Coco", "categoria": "🍷 Vinhos & Especiais", "preco_base": 36.00, "desc": "Doce de leite argentino puro batido com leite de coco e cachaça."},
+        {"id": 20, "nome": "Batida de Paçoca", "categoria": "🍷 Vinhos & Especiais", "preco_base": 34.00, "desc": "Paçoca de amendoim artesanal triturada, leite condensado e vodka."},
+        {"id": 21, "nome": "Batida de Ovomaltine", "categoria": "🍷 Vinhos & Especiais", "preco_base": 36.00, "desc": "Crocante Ovomaltine misturado com creme de leite, leite condensado e vodka."},
+
+        # 🌶️ Exóticas, Potentes & Cítricas
+        {"id": 22, "nome": "Batida de Gengibre com Mel", "categoria": "🌶️ Exóticas, Potentes & Cítricas", "preco_base": 35.00, "desc": "Gengibre fresco ralado, limão tahiti, mel silvestre puro e Cachaça Envelhecida."},
+        {"id": 23, "nome": "Batida de Catuaba com Açaí", "categoria": "🌶️ Exóticas, Potentes & Cítricas", "preco_base": 34.00, "desc": "Açaí na polpa batido com Catuaba selvagem e leite condensado."},
+        {"id": 24, "nome": "Batida de Limão Siciliano com Capim-Santo", "categoria": "🌶️ Exóticas, Potentes & Cítricas", "preco_base": 33.00, "desc": "Infusão aromática de capim-santo com limão siciliano e vodka."},
+        {"id": 25, "nome": "Batida de Kiwi com Hortelã", "categoria": "🌶️ Exóticas, Potentes & Cítricas", "preco_base": 32.00, "desc": "Kiwi verde fresco, folhas de hortelã, vodka premium e xarope de açúcar."},
+        {"id": 26, "nome": "Batida de Tangerina com Pimenta", "categoria": "🌶️ Exóticas, Potentes & Cítricas", "preco_base": 33.00, "desc": "Suumo natural de tangerina poncã com um toque exótico de pimenta rosa."},
+        {"id": 27, "nome": "Batida de Café Expresso com Licor", "categoria": "🌶️ Exóticas, Potentes & Cítricas", "preco_base": 36.00, "desc": "Café expresso forte, licor de cacau, leite condensado e vodka."},
+        {"id": 28, "nome": "Batida de Acerola com Laranja", "categoria": "🌶️ Exóticas, Potentes & Cítricas", "preco_base": 30.00, "desc": "Acerola rica em vitamina C combinada com suco de laranja natural e cachaça."},
+        {"id": 29, "nome": "Batida de Cajá Tropical", "categoria": "🌶️ Exóticas, Potentes & Cítricas", "preco_base": 32.00, "desc": "Polpa selecionada de cajá com acidez marcante, leite condensado e rum."},
+        {"id": 30, "nome": "Batida Tropical de Pitaya", "categoria": "🌶️ Exóticas, Potentes & Cítricas", "preco_base": 38.00, "desc": "Pitaya vermelha fresca batida com vodka premium, limão e xarope leve."}
     ]
 
-    categorias_disponiveis = ["⭐ Batidas Especiais da Casa", "🥥 Clássicas & Tropicais", "🍷 Vinhos & Especiais", "🌶️ Exóticas & Potentes"]
+    categorias_disponiveis = [
+        "⭐ Batidas Especiais da Casa", 
+        "🥥 Clássicas & Tropicais", 
+        "🍷 Vinhos & Especiais", 
+        "🌶️ Exóticas, Potentes & Cítricas"
+    ]
+    
     cat_selecionada = st.selectbox("Filtrar Categoria:", categorias_disponiveis)
 
     itens_filtrados = [item for item in cardapio_detalhado if item["categoria"] == cat_selecionada]
@@ -161,9 +199,9 @@ if pagina == "🛒 Cardápio (Vitrine do Cliente)":
             )
             
             if tamanho == "300ml":
-                preco_final = 12.00 if item['preco_base'] == 32.00 else 11.00
+                preco_final = 12.00 if item['preco_base'] >= 32.00 else 11.00
             elif tamanho == "500ml":
-                preco_final = 18.00 if item['preco_base'] == 32.00 else 17.00
+                preco_final = 18.00 if item['preco_base'] >= 32.00 else 17.00
             else:
                 preco_final = item['preco_base']
                 
@@ -309,7 +347,6 @@ elif pagina == "📊 Painel de Pedidos (Admin)":
             st.markdown(f"**Total de Pedidos na Base: {len(pedidos)}**")
             st.markdown("---")
 
-            # Exibir pedidos do mais recente para o mais antigo
             for p in reversed(pedidos):
                 with st.container():
                     st.markdown(f"""
@@ -328,11 +365,4 @@ elif pagina == "📊 Painel de Pedidos (Admin)":
                     
                     for idx, item in enumerate(p.get('itens', []), 1):
                         st.markdown(f"- {idx}. {item['nome']} (R$ {item['preco']:.2f})")
-                    
-                    whatsapp_limpo = "".join(filter(str.isdigit, str(p.get('whatsapp', ''))))
-                    if whatsapp_limpo:
-                        link_wpp = f"https://wa.me/55{whatsapp_limpo}?text=Olá%20{p.get('cliente')},%20recebemos%20seu%20pedido%20{p.get('pedido_id')}!"
-                        st.markdown(f"💬 [Falar com o Cliente no WhatsApp]({link_wpp})", unsafe_allow_html=True)
-                    
-                    st.markdown("<br>", unsafe_allow_html=True)
-                                                                                        
+          
