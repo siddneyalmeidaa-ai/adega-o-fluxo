@@ -1,7 +1,6 @@
 import streamlit as st
 import json
 import os
-import database as db
 
 def render():
     st.subheader("🚀 Central de CRM & Gestão de Pedidos")
@@ -93,7 +92,7 @@ def render():
 
     with aba_pedidos:
         st.markdown("### 📦 Acompanhamento de Pedidos em Tempo Real")
-        st.markdown("Aqui aparecem automaticamente todos os pedidos finalizados pelos clientes na vitrine com nomes, telefones e datas de nascimento.")
+        st.markdown("Aqui aparecem automaticamente todos os pedidos finalizados pelos clientes na vitrine com data, horário, nomes, telefones e datas de nascimento.")
 
         if not pedidos:
             st.info("📭 Nenhum pedido registado até o momento. Faça um teste simulando um pedido na vitrine do cardápio!")
@@ -104,6 +103,7 @@ def render():
             for idx, pedido in enumerate(reversed(pedidos)):
                 if isinstance(pedido, dict):
                     num_ped = pedido.get("pedido_id", f"QG-#{len(pedidos) - idx}")
+                    data_hora_ped = pedido.get("data_hora", "Data não registrada")
                     cliente = pedido.get("cliente", "Cliente Anônimo")
                     whatsapp = pedido.get("whatsapp", "Não informado")
                     nascimento = pedido.get("nascimento", "Não informada")
@@ -113,11 +113,13 @@ def render():
                     itens = pedido.get("itens", [])
 
                     with st.container():
-                        st.markdown(f"### 🛒 Pedido `{num_ped}` - **{cliente}**[span_0](start_span)[span_0](end_span)")
+                        st.markdown(f"### 🛒 Pedido `{num_ped}` - {cliente}")
+                        st.markdown(f"🕒 **Data e Horário:** `{data_hora_ped}`")
+                        
                         c1, c2 = st.columns(2)
                         with c1:
-                            st.markdown(f"📱 **WhatsApp:** `{whatsapp}`[span_1](start_span)[span_1](end_span)")
-                            st.markdown(f"🎂 **Data de Nascimento:** `{nascimento}`[span_2](start_span)[span_2](end_span)")
+                            st.markdown(f"📱 **WhatsApp:** `{whatsapp}`")
+                            st.markdown(f"🎂 **Data de Nascimento:** `{nascimento}`")
                             st.markdown(f"💳 **Forma de Pagamento:** `{pagamento}`")
                         with c2:
                             st.markdown(f"📍 **Endereço:** {endereco}")
@@ -129,8 +131,8 @@ def render():
 
                         whatsapp_clean = "".join(filter(str.isdigit, str(whatsapp)))
                         if whatsapp_clean:
-                            msg_w = f"Olá {cliente}! Aqui é do QG das Batidas. Recebemos o seu pedido {num_ped} no valor de R$ {total:.2f}. Estamos a preparar tudo com carinho!"
+                            msg_w = f"Olá {cliente}! Aqui é do QG das Batidas. Recebemos o seu pedido {num_ped} no valor de R$ {total:.2f} às {data_hora_ped}. Estamos a preparar tudo com carinho!"
                             st.markdown(f"[💬 Falar com o Cliente no WhatsApp](https://wa.me/55{whatsapp_clean}?text={msg_w.replace(' ', '%20')})", unsafe_allow_html=True)
 
                         st.markdown("---")
-        
+            
