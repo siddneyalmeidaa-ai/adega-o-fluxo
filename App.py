@@ -12,7 +12,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# --- ESTILIZAÇÃO CSS AVANÇADA (MODO APP DELIVERY PREMIUM) ---
+# --- ESTILIZAÇÃO CSS AVANÇADA ---
 def adicionar_estilo_moderno():
     st.markdown("""
         <style>
@@ -35,19 +35,6 @@ def adicionar_estilo_moderno():
             z-index: 1;
             padding-top: 2rem;
         }
-        .card-produto {
-            background: linear-gradient(145deg, #161616, #111111);
-            border: 1px solid #262626;
-            border-radius: 18px;
-            padding: 18px;
-            margin-bottom: 15px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
-            transition: all 0.3s ease;
-        }
-        .card-produto:hover {
-            border-color: #00FF7F;
-            box-shadow: 0 8px 25px rgba(0, 255, 127, 0.15);
-        }
         .badge-loja {
             background: rgba(0, 255, 127, 0.1);
             color: #00FF7F;
@@ -63,9 +50,6 @@ def adicionar_estilo_moderno():
             color: #FFB800;
             font-size: 1.35rem;
             font-weight: 800;
-        }
-        h1, h2, h3 {
-            font-family: 'Inter', sans-serif;
         }
         </style>
 
@@ -194,20 +178,15 @@ if pagina == "🛒 Cardápio (Vitrine do Cliente)":
             if i + j < len(itens_filtrados):
                 item = itens_filtrados[i + j]
                 with cols[j]:
-                    with st.container():
-                        st.markdown(f"""
-                            <div class="card-produto">
-                                <h4 style="color: #ffffff; margin-bottom: 6px; font-size: 1.1rem; font-weight: 700;">{item['nome']}</h4>
-                                <p style="color: #999999; font-size: 0.82rem; margin-bottom: 12px; line-height: 1.4; min-height: 38px;">{item['desc']}</p>
-                            </div>
-                        """, unsafe_allow_html=True)
+                    with st.container(border=True):
+                        st.markdown(f"#### {item['nome']}")
+                        st.markdown(f"<span style='color: #999999; font-size: 0.85rem;'>{item['desc']}</span>", unsafe_allow_html=True)
                         
                         tamanho = st.radio(
-                            f"Tamanho ({item['nome']}):",
+                            "Tamanho:",
                             ["300ml", "500ml", "1 Litro"],
                             horizontal=True,
-                            key=f"tam_{item['id']}",
-                            label_visibility="collapsed"
+                            key=f"tam_{item['id']}"
                         )
                         
                         if tamanho == "300ml":
@@ -217,7 +196,7 @@ if pagina == "🛒 Cardápio (Vitrine do Cliente)":
                         else:
                             preco_final = item['preco_base']
                             
-                        col_p, col_b = st.columns([1.1, 1])
+                        col_p, col_b = st.columns([1, 1])
                         with col_p:
                             st.markdown(f"<span class='preco-destaque'>R$ {preco_final:.2f}</span>", unsafe_allow_html=True)
                         with col_b:
@@ -228,8 +207,6 @@ if pagina == "🛒 Cardápio (Vitrine do Cliente)":
                                 }
                                 st.session_state.carrinho.append(item_carrinho)
                                 st.success("Adicionado!")
-                        
-                        st.markdown("<br>", unsafe_allow_html=True)
 
     # Carrinho Lateral
     st.sidebar.markdown("### 🛍 Seu Carrinho")
@@ -360,12 +337,22 @@ elif pagina == "📊 Painel de Pedidos (Admin)":
             st.markdown("---")
 
             for p in reversed(pedidos):
-                with st.container():
-                    st.markdown(f"""
-                        <div class="card-produto">
-                            <h3>🛒 Pedido <span style="color: #00FF7F;">{p.get('pedido_id')}</span> - <b>{p.get('cliente')}</b></h3>
-                            <p style="margin: 5px 0;">📅 <b>Data/Hora:</b> {p.get('data_hora')}</p>
-                            <p style="margin: 5px 0;">📱 <b>WhatsApp:</b> {p.get('whatsapp')}</p>
-                            <p style="margin: 5px 0;">🎂 <b>Data de Nascimento:</b> {p.get('nascimento', 'Não informada')}</p>
-                            <p style="margin: 5px 0;">💳 <b>Forma de Pagamento:</b> {p.get('pagamento')}</p>
-                            <p style="margin:
+                with st.container(border=True):
+                    st.markdown(f"### 🛒 Pedido <span style='color: #00FF7F;'>{p.get('pedido_id')}</span> - **{p.get('cliente')}**", unsafe_allow_html=True)
+                    st.markdown(f"📅 **Data/Hora:** {p.get('data_hora')}")
+                    st.markdown(f"📱 **WhatsApp:** {p.get('whatsapp')}")
+                    st.markdown(f"🎂 **Data de Nascimento:** {p.get('nascimento', 'Não informada')}")
+                    st.markdown(f"💳 **Forma de Pagamento:** {p.get('pagamento')}")
+                    st.markdown(f"📍 **Endereço:** {p.get('endereco')}")
+                    st.markdown(f"💰 **Total: R$ {p.get('total', 0):.2f}**")
+                    st.markdown("---")
+                    st.markdown("**Itens do Pedido:**")
+                    
+                    for idx, item in enumerate(p.get('itens', []), 1):
+                        st.markdown(f"- {idx}. {item['nome']} (R$ {item['preco']:.2f})")
+                    
+                    whatsapp_limpo = "".join(filter(str.isdigit, str(p.get('whatsapp', ''))))
+                    if whatsapp_limpo:
+                        link_wpp = f"https://wa.me/55{whatsapp_limpo}?text=Olá%20{p.get('cliente')},%20recebemos%20seu%20pedido%20{p.get('pedido_id')}!"
+                        st.markdown(f"💬 [Falar com o Cliente no WhatsApp]({link_wpp})")
+    
