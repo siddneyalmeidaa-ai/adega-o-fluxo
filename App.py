@@ -48,8 +48,8 @@ def adicionar_estilo_moderno():
         }
         .preco-destaque {
             color: #FFB800;
-            font-size: 1.35rem;
-            font-weight: 800;
+            font-size: 1.4rem;
+            font-weight: 850;
         }
         </style>
 
@@ -172,41 +172,43 @@ if pagina == "🛒 Cardápio (Vitrine do Cliente)":
     st.markdown("---")
     st.markdown(f"### {cat_selecionada}")
 
-    for i in range(0, len(itens_filtrados), 2):
-        cols = st.columns(2)
-        for j in range(2):
-            if i + j < len(itens_filtrados):
-                item = itens_filtrados[i + j]
-                with cols[j]:
-                    with st.container(border=True):
-                        st.markdown(f"#### {item['nome']}")
-                        st.markdown(f"<span style='color: #999999; font-size: 0.85rem;'>{item['desc']}</span>", unsafe_allow_html=True)
-                        
-                        tamanho = st.radio(
-                            "Tamanho:",
-                            ["300ml", "500ml", "1 Litro"],
-                            horizontal=True,
-                            key=f"tam_{item['id']}"
-                        )
-                        
-                        if tamanho == "300ml":
-                            preco_final = 12.00 if item['preco_base'] >= 32.00 else 11.00
-                        elif tamanho == "500ml":
-                            preco_final = 18.00 if item['preco_base'] >= 32.00 else 17.00
-                        else:
-                            preco_final = item['preco_base']
-                            
-                        col_p, col_b = st.columns([1, 1])
-                        with col_p:
-                            st.markdown(f"<span class='preco-destaque'>R$ {preco_final:.2f}</span>", unsafe_allow_html=True)
-                        with col_b:
-                            if st.button("🛒 Adicionar", key=f"add_{item['id']}", use_container_width=True):
-                                item_carrinho = {
-                                    "nome": f"{item['nome']} ({tamanho})",
-                                    "preco": preco_final
-                                }
-                                st.session_state.carrinho.append(item_carrinho)
-                                st.success("Adicionado!")
+    # Exibição em cards limpos e otimizados um abaixo do outro para celular
+    for item in itens_filtrados:
+        with st.container(border=True):
+            st.markdown(f"#### {item['nome']}")
+            st.markdown(f"<span style='color: #aaaaaa; font-size: 0.9rem;'>{item['desc']}</span>", unsafe_allow_html=True)
+            
+            st.markdown("<br>", unsafe_allow_html=True)
+            
+            # Layout em colunas para Tamanho, Preço e Botão na mesma linha visual
+            col_tam, col_preco, col_btn = st.columns([1.5, 1, 1.2])
+            
+            with col_tam:
+                tamanho = st.selectbox(
+                    "Tamanho:",
+                    ["300ml", "500ml", "1 Litro"],
+                    key=f"tam_{item['id']}",
+                    label_visibility="collapsed"
+                )
+            
+            if tamanho == "300ml":
+                preco_final = 12.00 if item['preco_base'] >= 32.00 else 11.00
+            elif tamanho == "500ml":
+                preco_final = 18.00 if item['preco_base'] >= 32.00 else 17.00
+            else:
+                preco_final = item['preco_base']
+                
+            with col_preco:
+                st.markdown(f"<div style='padding-top: 5px;'><span class='preco-destaque'>R$ {preco_final:.2f}</span></div>", unsafe_allow_html=True)
+                
+            with col_btn:
+                if st.button("🛒 Adicionar", key=f"add_{item['id']}", use_container_width=True):
+                    item_carrinho = {
+                        "nome": f"{item['nome']} ({tamanho})",
+                        "preco": preco_final
+                    }
+                    st.session_state.carrinho.append(item_carrinho)
+                    st.success("Adicionado!")
 
     # Carrinho Lateral
     st.sidebar.markdown("### 🛍 Seu Carrinho")
