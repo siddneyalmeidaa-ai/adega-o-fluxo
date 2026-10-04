@@ -12,7 +12,6 @@ def render():
 
     # Lista completa das 30 batidas organizadas por categoria
     cardapio_30 = [
-        # Clássicas e Frutas Tropicais (1 a 8)
         {"id": 1, "nome": "1. Batida de Coco Cremoso 1L", "categoria": "🥥 Clássicas & Frutas Tropicais", "preco": 45.00, "desc": "Suave, cremosa e marcante."},
         {"id": 2, "nome": "2. Batida de Maracujá com Leite Condensado 1L", "categoria": "🥥 Clássicas & Frutas Tropicais", "preco": 48.00, "desc": "Equilíbrio perfeito entre o azedinho e o doce."},
         {"id": 3, "nome": "3. Batida de Morango Silvestre 1L", "categoria": "🥥 Clássicas & Frutas Tropicais", "preco": 50.00, "desc": "Feita com frutas frescas selecionadas."},
@@ -21,12 +20,8 @@ def render():
         {"id": 6, "nome": "6. Batida de Limão Siciliano 1L", "categoria": "🥥 Clássicas & Frutas Tropicais", "preco": 47.00, "desc": "Citrico na medida certa."},
         {"id": 7, "nome": "7. Batida de Goiaba Vermelha 1L", "categoria": "🥥 Clássicas & Frutas Tropicais", "preco": 45.00, "desc": "Sabor autêntico da fruta."},
         {"id": 8, "nome": "8. Batida de Caju com Pitada de Sal 1L", "categoria": "🥥 Clássicas & Frutas Tropicais", "preco": 48.00, "desc": "O clássico reinventado."},
-        
-        # Vinhos e Especiais de Inverno (9 a 15)
         {"id": 9, "nome": "9. Batida de Vinho Tinto Suave 1L", "categoria": "🍷 Vinhos & Especiais de Inverno", "preco": 52.00, "desc": "Encorpada e aconchegante."},
         {"id": 10, "nome": "10. Batida de Vinho com Canela e Cravo 1L", "categoria": "🍷 Vinhos & Especiais de Inverno", "preco": 55.00, "desc": "Aromatizada com especiarias finas."},
-        
-        # Exóticas & Potentes (23 a 25)
         {"id": 23, "nome": "23. Batida de Gengibre com Limão e Mel 1L", "categoria": "🌶️ Exóticas & Potentes (Pimenta / Gengibre / Ervas)", "preco": 52.00, "desc": "Picante na medida certa."},
         {"id": 24, "nome": "24. Batida de Pimenta Rosa com Abacaxi 1L", "categoria": "🌶️ Exóticas & Potentes (Pimenta / Gengibre / Ervas)", "preco": 54.00, "desc": "Sofisticação e ardência leve."},
         {"id": 25, "nome": "25. Batida de Capim-Santo com Limão 1L", "categoria": "🌶️ Exóticas & Potentes (Pimenta / Gengibre / Ervas)", "preco": 48.00, "desc": "Herbal e extremamente refrescante."}
@@ -44,7 +39,6 @@ def render():
     st.markdown(f"**Exibindo {len(itens_filtrados)} item(ns)**")
     st.markdown("---")
 
-    # Exibição dos Produtos com Botão de Adicionar ao Carrinho
     for item in itens_filtrados:
         col1, col2 = st.columns([3, 1])
         with col1:
@@ -53,66 +47,69 @@ def render():
         with col2:
             if st.button("🛒 Adicionar", key=f"add_{item['id']}"):
                 st.session_state.carrinho.append(item)
-                st.success(f"Adicionado!")
+                st.success("Adicionado!")
         st.markdown("---")
 
-    # --- ÁREA DO CARRINHO E CHECKOUT DE PEDIDO ---
+    # --- CARRINHO E CHECKOUT ---
     st.sidebar.markdown("---")
-    st.sidebar.markdown("### 🛍️ Seu Carrinho")
+    st.sidebar.markdown("### 🛍️️ Seu Carrinho")
     
     if len(st.session_state.carrinho) == 0:
         st.sidebar.info("O carrinho está vazio.")
     else:
         total_carrinho = 0
-        for idx, prod in enumerate(st.session_state.carrinho):
+        for prod in st.session_state.carrinho:
             st.sidebar.markdown(f"- {prod['nome']} (R$ {prod['preco']:.2f})")
             total_carrinho += prod['preco']
         
         st.sidebar.markdown(f"**Total a Pagar: R$ {total_carrinho:.2f}**")
         
-        if st.sidebar.button("🗑️️ Limpar Carrinho"):
+        if st.sidebar.button("🗑️ Limpar Carrinho"):
             st.session_state.carrinho = []
             st.rerun()
 
         st.sidebar.markdown("---")
         st.sidebar.markdown("### 📝 Cadastro & Endereço")
         
-        # Estados para armazenar dados do endereço via CEP
-        if "cep_input" not in st.session_state:
-            st.session_state.cep_input = ""
-        if "rua" not in st.session_state:
-            st.session_state.rua = ""
-        if "bairro" not in st.session_state:
-            st.session_state.bairro = ""
-        if "cidade" not in st.session_state:
-            st.session_state.cidade = "Taboão da Serra"
+        # Inicializar variáveis de estado para o endereço
+        if "rua_val" not in st.session_state:
+            st.session_state.rua_val = ""
+        if "bairro_val" not in st.session_state:
+            st.session_state.bairro_val = ""
+        if "cidade_val" not in st.session_state:
+            st.session_state.cidade_val = "Taboão da Serra"
 
         with st.sidebar.form("form_checkout"):
             nome_cliente = st.text_input("Seu Nome Completo:")
             whatsapp = st.text_input("WhatsApp / Telefone:")
-            data_nascimento = st.date_input("Data de Nascimento:")
+            data_nascimento = st.text_input("Data de Nascimento (DD/MM/AAAA):", placeholder="Ex: 12/10/1985")
             
             st.markdown("---")
             st.markdown("📍 **Endereço de Entrega**")
             
             cep = st.text_input("CEP (Apenas números):", max_chars=8)
             
-            # Botão ou lógica para buscar CEP automático
-            if cep and len(cep) == 8:
-                try:
-                    response = requests.get(f"https://viacep.com.br/ws/{cep}/json/")
-                    data_cep = response.json()
-                    if "erro" not in data_cep:
-                        st.session_state.rua = data_cep.get("logradouro", "")
-                        st.session_state.bairro = data_cep.get("bairro", "")
-                        st.session_state.cidade = data_cep.get("localidade", "")
-                except:
-                    pass
+            if st.form_submit_button("🔍 Buscar CEP"):
+                if len(cep) == 8:
+                    try:
+                        res = requests.get(f"https://viacep.com.br/ws/{cep}/json/")
+                        data_cep = res.json()
+                        if "erro" not in data_cep:
+                            st.session_state.rua_val = data_cep.get("logradouro", "")
+                            st.session_state.bairro_val = data_cep.get("bairro", "")
+                            st.session_state.cidade_val = data_cep.get("localidade", "")
+                            st.success("Endereço carregado com sucesso!")
+                        else:
+                            st.error("CEP não encontrado.")
+                    except:
+                        st.error("Erro ao consultar CEP.")
+                else:
+                    st.warning("Digite um CEP válido com 8 dígitos.")
 
-            rua = st.text_input("Rua / Logradouro:", value=st.session_state.rua)
+            rua = st.text_input("Rua / Logradouro:", value=st.session_state.rua_val)
             numero = st.text_input("Número:")
-            bairro = st.text_input("Bairro:", value=st.session_state.bairro)
-            cidade = st.text_input("Cidade:", value=st.session_state.cidade)
+            bairro = st.text_input("Bairro:", value=st.session_state.bairro_val)
+            cidade = st.text_input("Cidade:", value=st.session_state.cidade_val)
             
             st.markdown("---")
             pagamento = st.selectbox("Forma de Pagamento:", ["Pix", "Cartão de Crédito", "Cartão de Débito", "Dinheiro"])
@@ -121,14 +118,14 @@ def render():
             
             if enviar_pedido:
                 if not nome_cliente or not whatsapp or not rua or not numero:
-                    st.error("Por favor, preencha os campos obrigatórios (Nome, WhatsApp, Rua e Número).")
+                    st.error("Preencha Nome, WhatsApp, Rua e Número.")
                 else:
                     endereco_completo = f"{rua}, nº {numero} - {bairro}, {cidade} (CEP: {cep})"
                     
                     novo_registro = {
                         "cliente": nome_cliente,
                         "whatsapp": whatsapp,
-                        "nascimento": str(data_nascimento),
+                        "nascimento": data_nascimento,
                         "endereco": endereco_completo,
                         "pagamento": pagamento,
                         "itens": st.session_state.carrinho,
@@ -138,7 +135,5 @@ def render():
                     
                     st.success("🎉 Pedido registado com sucesso!")
                     st.balloons()
-                    
-                    # Limpar carrinho após o pedido
                     st.session_state.carrinho = []
                     
