@@ -1,8 +1,12 @@
 import streamlit as st
 from datetime import datetime
+import database as db
 
-# Importando os módulos estruturados na pasta views
-from views import vitrine_cardapio, produtos, caixa, crm, metricas
+# Importação segura dos módulos estruturados na pasta views
+try:
+    from views import vitrine_cardapio, produtos, caixa, crm, metricas
+except ImportError:
+    import vitrine_cardapio, produtos, caixa, crm, metricas
 
 # Configuração da Página
 st.set_page_config(
@@ -13,7 +17,7 @@ st.set_page_config(
 
 # Sidebar Informativa & Operacional
 st.sidebar.markdown(f"📅 **Data:** 04/10/2026")
-st.sidebar.markdown(f"🕒 **Hora:** 00:09 -03")
+st.sidebar.markdown(f"🕒 **Hora:** 00:21 -03")
 st.sidebar.markdown(f"📍 **Local:** Taboão da Serra, SP")
 st.sidebar.markdown("---")
 
@@ -27,7 +31,7 @@ menu_principal = st.sidebar.selectbox("Escolha a Tela:", [
 if menu_principal == "🏠 Vitrine & Cardápio (30 Batidas)":
     vitrine_cardapio.render()
 
-elif menu_principal == "⚙️️ Painel Administrativo / Centro de Comando":
+elif menu_principal == "⚙️ Painel Administrativo / Centro de Comando":
     st.sidebar.markdown("---")
     pin_input = st.sidebar.text_input("PIN de Acesso Restrito:", type="password", key="admin_pin")
     
