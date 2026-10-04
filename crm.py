@@ -1,4 +1,6 @@
 import streamlit as st
+import json
+import os
 import database as db
 
 def render():
@@ -63,36 +65,31 @@ def render():
         st.markdown("### 📦 Acompanhamento de Pedidos em Tempo Real")
         st.markdown("Aqui aparecem automaticamente todos os pedidos finalizados pelos clientes na vitrine.")
 
-        # Detecção universal e segura de métodos de leitura do banco de dados
-        dados = None
-        for metodo in ["carregar_dados", "ler_dados", "carregar_banco", "obter_dados", "get_dados", "ler_banco"]:
-            if hasattr(db, metodo):
-                try:
-                    dados = getattr(db, metodo)()
-                    break
-                except:
-                    pass
-        
-        if dados is None:
-            for attr in ["clientes", "pedidos", "db_data", "data"]:
-                if hasattr(db, attr):
-                    dados = getattr(db, attr)
-                    break
-
+        # Carregar pedidos do arquivo JSON local de backup ou do database
         pedidos = []
-        if isinstance(dados, dict):
-            for chave in ["clientes", "pedidos", "data", "database", "historico"]:
-                if chave in dados and isinstance(dados[chave], list):
-                    pedidos = dados[chave]
+        arquivo_pedidos = "pedidos_qg.json"
+        
+        if os.path.exists(arquivo_pedidos):
+            try:
+                with open(arquivo_pedidos, "r", encoding="utf-8") as f:
+                    pedidos = json.load(f)
+            except:
+                pedidos = []
+
+        # Tenta também ler do database oficial se houver dados lá
+        try:
+            for metodo in ["carregar_dados", "ler_dados", "carregar_banco", "obter_dados", "get_dados"]:
+                if hasattr(db, metodo):
+                    res = getattr(db, metodo)()
+                    if isinstance(res, list) and res:
+                        pedidos = res
+                    elif isinstance(res, dict):
+                        for chave in ["clientes", "pedidos", "data"]:
+                            if chave in res and isinstance(res[chave], list):
+                                pedidos = res[chave]
                     break
-            if not pedidos:
-                # Se não achou chave de lista, pega todos os valores que sejam listas ou dicts
-                for val in dados.values():
-                    if isinstance(val, list):
-                        pedidos = val
-                        break
-        elif isinstance(dados, list):
-            pedidos = dados
+        except:
+            pass
 
         if not pedidos:
             st.info("📭 Nenhum pedido registado até o momento. Faça um teste simulando um pedido na vitrine do cardápio!")
@@ -102,6 +99,7 @@ def render():
 
             for idx, pedido in enumerate(reversed(pedidos)):
                 if isinstance(pedido, dict):
+                    num_ped = pedido.get("pedido_id", f"QG-#{len(pedidos) - idx}")
                     cliente = pedido.get("cliente", "Cliente Anônimo")
                     whatsapp = pedido.get("whatsapp", "Não informado")
                     nascimento = pedido.get("nascimento", "Não informada")
@@ -111,7 +109,7 @@ def render():
                     itens = pedido.get("itens", [])
 
                     with st.container():
-                        st.markdown(f"### 🛒 Pedido #{len(pedidos) - idx} - **{cliente}**")
+                        st.markdown(f"### 🛒 Pedido `{num_ped}` - **{cliente}**")
                         c1, c2 = st.columns(2)
                         with c1:
                             st.markdown(f"📱 **WhatsApp:** `{whatsapp}`")
@@ -127,8 +125,8 @@ def render():
 
                         whatsapp_clean = "".join(filter(str.isdigit, str(whatsapp)))
                         if whatsapp_clean:
-                            msg_w = f"Olá {cliente}! Aqui é do QG das Batidas. Recebemos o seu pedido no valor de R$ {total:.2f}. Estamos a preparar tudo com carinho!"
+                            msg_w = f"Olá {cliente}! Aqui é do QG das Batidas. Recebemos o seu pedido {num_ped} no valor de R$ {total:.2f}. Estamos a preparar tudo com carinho!"
                             st.markdown(f"[💬 Falar com o Cliente no WhatsApp](https://wa.me/55{whatsapp_clean}?text={msg_w.replace(' ', '%20')})", unsafe_allow_html=True)
 
                         st.markdown("---")
-            
+        
