@@ -11,8 +11,8 @@ st.set_page_config(
 )
 
 # Carimbo de data e hora no sidebar
-st.sidebar.markdown(f"📅 **Data:** 03/10/2026")
-st.sidebar.markdown(f"🕒 **Hora:** 23:45 -03")
+st.sidebar.markdown(f"📅 **Data:** 04/10/2026")
+st.sidebar.markdown(f"🕒 **Hora:** 01:00 -03")
 st.sidebar.markdown(f"📍 **Local:** Taboão da Serra, SP")
 st.sidebar.markdown("---")
 
@@ -50,4 +50,4 @@ elif menu_principal == "⚙️ Painel Administrativo / Centro de Comando":
         crm.render()
     with tab_metricas:
         metricas.render()
-      
+    
