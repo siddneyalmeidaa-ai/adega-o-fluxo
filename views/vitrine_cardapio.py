@@ -52,7 +52,7 @@ def render():
 
     # --- CARRINHO E CHECKOUT ---
     st.sidebar.markdown("---")
-    st.sidebar.markdown("### 🛍️️ Seu Carrinho")
+    st.sidebar.markdown("### 🛍 Seu Carrinho")
     
     if len(st.session_state.carrinho) == 0:
         st.sidebar.info("O carrinho está vazio.")
@@ -64,14 +64,14 @@ def render():
         
         st.sidebar.markdown(f"**Total a Pagar: R$ {total_carrinho:.2f}**")
         
-        if st.sidebar.button("🗑️ Limpar Carrinho"):
+        if st.sidebar.button("🗑️️ Limpar Carrinho"):
             st.session_state.carrinho = []
             st.rerun()
 
         st.sidebar.markdown("---")
         st.sidebar.markdown("### 📝 Cadastro & Endereço")
         
-        # Inicializar variáveis de estado para o endereço
+        # Variáveis de sessão para preenchimento
         if "rua_val" not in st.session_state:
             st.session_state.rua_val = ""
         if "bairro_val" not in st.session_state:
@@ -79,33 +79,28 @@ def render():
         if "cidade_val" not in st.session_state:
             st.session_state.cidade_val = "Taboão da Serra"
 
+        # Campo de CEP fora do form principal para consulta instantânea
+        cep = st.sidebar.text_input("CEP (Apenas números):", max_chars=8, key="input_cep")
+        
+        if len(cep) == 8:
+            try:
+                res = requests.get(f"https://viacep.com.br/ws/{cep}/json/")
+                data_cep = res.json()
+                if "erro" not in data_cep:
+                    st.session_state.rua_val = data_cep.get("logradouro", "")
+                    st.session_state.bairro_val = data_cep.get("bairro", "")
+                    st.session_state.cidade_val = data_cep.get("localidade", "")
+            except:
+                pass
+
         with st.sidebar.form("form_checkout"):
             nome_cliente = st.text_input("Seu Nome Completo:")
             whatsapp = st.text_input("WhatsApp / Telefone:")
             data_nascimento = st.text_input("Data de Nascimento (DD/MM/AAAA):", placeholder="Ex: 12/10/1985")
             
             st.markdown("---")
-            st.markdown("📍 **Endereço de Entrega**")
+            st.markdown("📍 **Confirme os Dados de Endereço**")
             
-            cep = st.text_input("CEP (Apenas números):", max_chars=8)
-            
-            if st.form_submit_button("🔍 Buscar CEP"):
-                if len(cep) == 8:
-                    try:
-                        res = requests.get(f"https://viacep.com.br/ws/{cep}/json/")
-                        data_cep = res.json()
-                        if "erro" not in data_cep:
-                            st.session_state.rua_val = data_cep.get("logradouro", "")
-                            st.session_state.bairro_val = data_cep.get("bairro", "")
-                            st.session_state.cidade_val = data_cep.get("localidade", "")
-                            st.success("Endereço carregado com sucesso!")
-                        else:
-                            st.error("CEP não encontrado.")
-                    except:
-                        st.error("Erro ao consultar CEP.")
-                else:
-                    st.warning("Digite um CEP válido com 8 dígitos.")
-
             rua = st.text_input("Rua / Logradouro:", value=st.session_state.rua_val)
             numero = st.text_input("Número:")
             bairro = st.text_input("Bairro:", value=st.session_state.bairro_val)
@@ -136,4 +131,4 @@ def render():
                     st.success("🎉 Pedido registado com sucesso!")
                     st.balloons()
                     st.session_state.carrinho = []
-                    
+        
