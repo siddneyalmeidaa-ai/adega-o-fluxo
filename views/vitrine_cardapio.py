@@ -1,5 +1,6 @@
 import streamlit as st
 import database as db
+import random
 
 def render():
     st.title("🍸 QG das Batidas - Cardápio Oficial")
@@ -70,7 +71,6 @@ def render():
         st.sidebar.markdown("---")
         st.sidebar.markdown("### 📝 Cadastro & Endereço")
         
-        # Gestão de estados para os campos de endereço
         if "cep_val" not in st.session_state:
             st.session_state.cep_val = ""
         if "rua_val" not in st.session_state:
@@ -94,7 +94,6 @@ def render():
             
             if buscar_cep_btn:
                 clean_cep = "".join(filter(str.isdigit, cep_input))
-                # Base interna inteligente para garantir agilidade e zero falhas de rede
                 base_ceps = {
                     "06783100": {"rua": "Rua André da Silva Pina", "bairro": "Jardim Record", "cidade": "Taboão da Serra"},
                     "06765000": {"rua": "Estrada Kizaemon Takeuti", "bairro": "Parque Pinheiros", "cidade": "Taboão da Serra"},
@@ -107,12 +106,10 @@ def render():
                     st.session_state.rua_val = info["rua"]
                     st.session_state.bairro_val = info["bairro"]
                     st.session_state.cidade_val = info["cidade"]
-                    st.success("✅ Endereço preenchido com sucesso!")
+                    st.success("✅ Endereço preenchido!")
                 elif len(clean_cep) == 8:
                     st.session_state.cep_val = clean_cep
-                    st.info("ℹ️ CEP válido. Pode preencher a rua e o bairro abaixo se desejar.")
-                else:
-                    st.warning("⚠️️ Digite um CEP válido com 8 dígitos.")
+                    st.info("ℹ️ CEP válido.")
 
             rua = st.text_input("Rua / Logradouro:", value=st.session_state.rua_val)
             numero = st.text_input("Número:")
@@ -128,10 +125,13 @@ def render():
                 if not nome_cliente or not whatsapp or not rua or not numero:
                     st.error("Preencha Nome, WhatsApp, Rua e Número.")
                 else:
+                    # Gerar número de pedido único
+                    numero_pedido = f"QG-2026-{random.randint(1000, 9999)}"
                     cep_final = cep_input if cep_input else "Não informado"
                     endereco_completo = f"{rua}, nº {numero} - {bairro}, {cidade} (CEP: {cep_final})"
                     
                     novo_registro = {
+                        "pedido_id": numero_pedido,
                         "cliente": nome_cliente,
                         "whatsapp": whatsapp,
                         "nascimento": data_nascimento,
@@ -142,7 +142,16 @@ def render():
                     }
                     db.salvar_cliente(novo_registro)
                     
-                    st.success("🎉 Pedido registado com sucesso e enviado para o painel!")
-                    st.balloons()
+                    # Guardar na sessão para exibir o sucesso na tela principal
+                    st.session_state.ultimo_pedido = numero_pedido
                     st.session_state.carrinho = []
+                    st.rerun()
+
+    # Se houver pedido finalizado recém-criado, exibe tela de sucesso em destaque na página principal
+    if "ultimo_pedido" in st.session_state and st.session_state.ultimo_pedido:
+        st.success(f"🎉 Pedido **{st.session_state.ultimo_pedido}** finalizado com sucesso e registado no painel!")
+        st.balloons()
+        if st.button("🔄 Fazer Novo Pedido"):
+            st.session_state.ultimo_pedido = None
+            st.rerun()
     
