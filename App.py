@@ -59,7 +59,7 @@ def adicionar_estilo_moderno():
         }
         .preco-destaque {
             color: #FFB800;
-            font-size: 1.25rem;
+            font-size: 1.35rem;
             font-weight: 850;
         }
         #MainMenu {visibility: hidden;}
@@ -121,6 +121,8 @@ if "pagina_atual" not in st.session_state:
     st.session_state.pagina_atual = "🛒 Cardápio"
 if "ultimo_pedido" not in st.session_state:
     st.session_state.ultimo_pedido = None
+if "categoria_ativa" not in st.session_state:
+    st.session_state.categoria_ativa = "⭐ Especiais da Casa"
 
 # --- BARRA DE NAVEGAÇÃO TOPO ---
 col_nav1, col_nav2, col_nav3 = st.columns([2, 2, 2])
@@ -165,10 +167,10 @@ cardapio_detalhado = [
     {"id": 20, "nome": "Batida de Paçoca", "categoria": "🍷 Vinhos & Especiais", "preco_base": 34.00, "desc": "Paçoca de amendoim artesanal triturada, leite condensado e vodka."},
     {"id": 21, "nome": "Batida de Ovomaltine", "categoria": "🍷 Vinhos & Especiais", "preco_base": 36.00, "desc": "Crocante Ovomaltine misturado com creme de leite, leite condensado e vodka."},
 
-    {"id": 22, "nome": "Batida de Gengibre com Mel", "categoria": "🌶 Exóticas & Potentes", "preco_base": 35.00, "desc": "Gengibre fresco ralado, limão tahiti, mel silvestre puro e Cachaça Envelhecida."},
+    {"id": 22, "nome": "Batida de Gengibre com Mel", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 35.00, "desc": "Gengibre fresco ralado, limão tahiti, mel silvestre puro e Cachaça Envelhecida."},
     {"id": 23, "nome": "Batida de Catuaba com Açaí", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 34.00, "desc": "Açaí na polpa batido com Catuaba selvagem e leite condensado."},
     {"id": 24, "nome": "Batida de Limão Siciliano com Capim-Santo", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 33.00, "desc": "Infusão aromática de capim-santo com limão siciliano e vodka."},
-    {"id": 25, "nome": "Batida de Kiwi com Hortelã", "categoria": "🌶 Exóticas & Potentes", "preco_base": 32.00, "desc": "Kiwi verde fresco, folhas de hortelã, vodka premium e xarope de açúcar."},
+    {"id": 25, "nome": "Batida de Kiwi com Hortelã", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 32.00, "desc": "Kiwi verde fresco, folhas de hortelã, vodka premium e xarope de açúcar."},
     {"id": 26, "nome": "Batida de Tangerina com Pimenta", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 33.00, "desc": "Suco natural de tangerina poncã com um toque exótico de pimenta rosa."},
     {"id": 27, "nome": "Batida de Café Expresso com Licor", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 36.00, "desc": "Café expresso forte, licor de cacau, leite condensado e vodka."},
     {"id": 28, "nome": "Batida de Acerola com Laranja", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 30.00, "desc": "Acerola rica em vitamina C combinada com suco de laranja natural e cachaça."},
@@ -185,44 +187,45 @@ if st.session_state.pagina_atual == "🛒 Cardápio":
         </div>
     """, unsafe_allow_html=True)
 
-    categorias_disponiveis = [
-        "⭐ Especiais da Casa", 
-        "🥥 Clássicas & Tropicais", 
-        "🍷 Vinhos & Especiais", 
-        "🌶️ Exóticas & Potentes"
-    ]
-    
-    cat_selecionada = st.radio("Filtre por Categoria:", categorias_disponiveis, horizontal=True, label_visibility="collapsed")
-    st.markdown(f"### {cat_selecionada}")
+    # --- SELETOR DE CATEGORIAS EM GRADE (ESTILO DA REFERÊNCIA) ---
+    col_c1, col_c2 = st.columns(2)
+    with col_c1:
+        if st.button("⭐ Especiais da Casa", use_container_width=True):
+            st.session_state.categoria_ativa = "⭐ Especiais da Casa"
+        if st.button("🍷 Vinhos & Especiais", use_container_width=True):
+            st.session_state.categoria_ativa = "🍷 Vinhos & Especiais"
+    with col_c2:
+        if st.button("🥥 Clássicas & Tropicais", use_container_width=True):
+            st.session_state.categoria_ativa = "🥥 Clássicas & Tropicais"
+        if st.button("🌶️ Exóticas & Potentes", use_container_width=True):
+            st.session_state.categoria_ativa = "🌶️ Exóticas & Potentes"
 
-    itens_filtrados = [item for item in cardapio_detalhado if item["categoria"] == cat_selecionada]
+    st.markdown("---")
+    st.markdown(f"## {st.session_state.categoria_ativa}")
 
-    for i in range(0, len(itens_filtrados), 2):
-        cols = st.columns(2)
-        for j in range(2):
-            if i + j < len(itens_filtrados):
-                item = itens_filtrados[i + j]
-                with cols[j]:
-                    with st.container(border=True):
-                        st.markdown(f"#### {item['nome']}")
-                        st.markdown(f"<span style='color: #999999; font-size: 0.8rem; display: block; min-height: 40px;'>{item['desc']}</span>", unsafe_allow_html=True)
-                        
-                        tamanho = st.radio("Tamanho:", ["300ml", "500ml", "1 Litro"], horizontal=True, key=f"tam_{item['id']}")
-                        
-                        if tamanho == "300ml":
-                            preco_final = 12.00 if item['preco_base'] >= 32.00 else 11.00
-                        elif tamanho == "500ml":
-                            preco_final = 18.00 if item['preco_base'] >= 32.00 else 17.00
-                        else:
-                            preco_final = item['preco_base']
-                            
-                        col_p, col_b = st.columns([1, 1.2])
-                        with col_p:
-                            st.markdown(f"<div style='margin-top: 8px;'><span class='preco-destaque'>R$ {preco_final:.2f}</span></div>", unsafe_allow_html=True)
-                        with col_b:
-                            if st.button("🛒 Adicionar", key=f"add_{item['id']}", use_container_width=True):
-                                st.session_state.carrinho.append({"nome": f"{item['nome']} ({tamanho})", "preco": preco_final})
-                                st.success("Adicionado!")
+    itens_filtrados = [item for item in cardapio_detalhado if item["categoria"] == st.session_state.categoria_ativa]
+
+    # --- LISTAGEM EM COLUNA ÚNICA (EXATO COMO NA FOTO) ---
+    for item in itens_filtrados:
+        with st.container(border=True):
+            st.markdown(f"### {item['nome']}")
+            st.markdown(f"<span style='color: #aaaaaa; font-size: 0.9rem; display: block; margin-bottom: 12px;'>{item['desc']}</span>", unsafe_allow_html=True)
+            
+            st.markdown("**Tamanho:**")
+            tamanho = st.radio("Tamanho:", ["300ml", "500ml", "1 Litro"], horizontal=True, key=f"tam_{item['id']}", label_visibility="collapsed")
+            
+            if tamanho == "300ml":
+                preco_final = 12.00 if item['preco_base'] >= 32.00 else 11.00
+            elif tamanho == "500ml":
+                preco_final = 18.00 if item['preco_base'] >= 32.00 else 17.00
+            else:
+                preco_final = item['preco_base']
+                
+            st.markdown(f"<div style='margin: 12px 0;'><span class='preco-destaque'>R$ {preco_final:.2f}</span></div>", unsafe_allow_html=True)
+            
+            if st.button("🛒 Adicionar", key=f"add_{item['id']}", use_container_width=True):
+                st.session_state.carrinho.append({"nome": f"{item['nome']} ({tamanho})", "preco": preco_final})
+                st.success("Adicionado ao carrinho com sucesso!")
 
     total_itens = len(st.session_state.carrinho)
     valor_total_carrinho = sum(item['preco'] for item in st.session_state.carrinho)
@@ -366,7 +369,7 @@ elif st.session_state.pagina_atual == "🛍 Carrinho":
             st.session_state.ultimo_pedido = None
             st.session_state.pagina_atual = "🛒 Cardápio"
             st.rerun()
-elif st.session_state.pagina_atual == "📊 Admin":
+            elif st.session_state.pagina_atual == "📊 Admin":
     st.markdown("<h2>📊 Painel Administrativo — QG das Batidas</h2>", unsafe_allow_html=True)
     st.markdown("---")
     
