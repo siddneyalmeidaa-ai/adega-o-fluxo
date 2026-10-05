@@ -114,6 +114,7 @@ def adicionar_estilo_moderno():
     """, unsafe_allow_html=True)
 
 adicionar_estilo_moderno()
+
 # --- INICIALIZAÇÃO DE ESTADOS ---
 if "carrinho" not in st.session_state:
     st.session_state.carrinho = []
@@ -140,7 +141,6 @@ with col_nav3:
         st.rerun()
 
 st.markdown("---")
-
 # --- BASE DE DADOS DO CARDÁPIO ---
 cardapio_detalhado = [
     {"id": 1, "nome": "Batida Tropical de Morango", "categoria": "⭐ Especiais da Casa", "preco_base": 32.00, "desc": "Morangos frescos selecionados, xarope de açúcar, vodka premium e gelo triturado."},
@@ -187,7 +187,7 @@ if st.session_state.pagina_atual == "🛒 Cardápio":
         </div>
     """, unsafe_allow_html=True)
 
-    # --- SELETOR DE CATEGORIAS EM GRADE (ESTILO DA REFERÊNCIA) ---
+    # --- SELETOR DE CATEGORIAS EM GRADE ---
     col_c1, col_c2 = st.columns(2)
     with col_c1:
         if st.button("⭐ Especiais da Casa", use_container_width=True):
@@ -197,7 +197,7 @@ if st.session_state.pagina_atual == "🛒 Cardápio":
     with col_c2:
         if st.button("🥥 Clássicas & Tropicais", use_container_width=True):
             st.session_state.categoria_ativa = "🥥 Clássicas & Tropicais"
-        if st.button("🌶️ Exóticas & Potentes", use_container_width=True):
+        if st.button("🌶 Exóticas & Potentes", use_container_width=True):
             st.session_state.categoria_ativa = "🌶️ Exóticas & Potentes"
 
     st.markdown("---")
@@ -205,7 +205,7 @@ if st.session_state.pagina_atual == "🛒 Cardápio":
 
     itens_filtrados = [item for item in cardapio_detalhado if item["categoria"] == st.session_state.categoria_ativa]
 
-    # --- LISTAGEM EM COLUNA ÚNICA (EXATO COMO NA FOTO) ---
+    # --- LISTAGEM EM COLUNA ÚNICA ---
     for item in itens_filtrados:
         with st.container(border=True):
             st.markdown(f"### {item['nome']}")
@@ -240,8 +240,7 @@ if st.session_state.pagina_atual == "🛒 Cardápio":
         if st.button("🚀 Ir para o Checkout / Finalizar Pedido", use_container_width=True):
             st.session_state.pagina_atual = "🛍 Carrinho"
             st.rerun()
-
-elif st.session_state.pagina_atual == "🛍 Carrinho":
+        elif st.session_state.pagina_atual == "🛍 Carrinho":
     st.markdown("<h2>🛍 Seu Carrinho de Compras</h2>", unsafe_allow_html=True)
     st.markdown("---")
 
@@ -369,7 +368,8 @@ elif st.session_state.pagina_atual == "🛍 Carrinho":
             st.session_state.ultimo_pedido = None
             st.session_state.pagina_atual = "🛒 Cardápio"
             st.rerun()
-            elif st.session_state.pagina_atual == "📊 Admin":
+
+elif st.session_state.pagina_atual == "📊 Admin":
     st.markdown("<h2>📊 Painel Administrativo — QG das Batidas</h2>", unsafe_allow_html=True)
     st.markdown("---")
     
@@ -398,4 +398,4 @@ elif st.session_state.pagina_atual == "🛍 Carrinho":
                     st.markdown("**Itens do Pedido:**")
                     for item_p in p['itens']:
                         st.markdown(f"- {item_p['nome']} (R$ {item_p['preco']:.2f})")
-                        
+    
