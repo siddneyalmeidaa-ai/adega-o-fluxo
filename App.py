@@ -4,7 +4,6 @@ import os
 import random
 import datetime
 
-# Configuração da página principal
 st.set_page_config(
     page_title="QG das Batidas",
     page_icon="🍸",
@@ -12,7 +11,6 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# --- ESTILIZAÇÃO CSS AVANÇADA & UI DE DELIVERY ---
 def adicionar_estilo_moderno():
     st.markdown("""
         <style>
@@ -57,9 +55,18 @@ def adicionar_estilo_moderno():
             letter-spacing: 0.5px;
             margin-bottom: 10px;
         }
+        /* LETRA MELHORADA E AMPLIADA PARA O DETALHAMENTO DA BATIDA */
+        .detalhe-batida {
+            color: #e0e0e0 !important;
+            font-size: 1.1rem !important;
+            line-height: 1.5 !important;
+            font-weight: 400 !important;
+            display: block;
+            margin-bottom: 14px;
+        }
         .preco-destaque {
             color: #FFB800;
-            font-size: 1.35rem;
+            font-size: 1.45rem;
             font-weight: 850;
         }
         #MainMenu {visibility: hidden;}
@@ -115,7 +122,6 @@ def adicionar_estilo_moderno():
 
 adicionar_estilo_moderno()
 
-# --- INICIALIZAÇÃO DE ESTADOS ---
 if "carrinho" not in st.session_state:
     st.session_state.carrinho = []
 if "pagina_atual" not in st.session_state:
@@ -124,9 +130,7 @@ if "ultimo_pedido" not in st.session_state:
     st.session_state.ultimo_pedido = None
 if "categoria_ativa" not in st.session_state:
     st.session_state.categoria_ativa = "⭐ Especiais da Casa"
-
-# --- BARRA DE NAVEGAÇÃO TOPO ---
-col_nav1, col_nav2, col_nav3 = st.columns([2, 2, 2])
+    col_nav1, col_nav2, col_nav3 = st.columns([2, 2, 2])
 with col_nav1:
     if st.button("🛒 Cardápio (Vitrine)", use_container_width=True):
         st.session_state.pagina_atual = "🛒 Cardápio"
@@ -141,7 +145,7 @@ with col_nav3:
         st.rerun()
 
 st.markdown("---")
-# --- BASE DE DADOS DO CARDÁPIO ---
+
 cardapio_detalhado = [
     {"id": 1, "nome": "Batida Tropical de Morango", "categoria": "⭐ Especiais da Casa", "preco_base": 32.00, "desc": "Morangos frescos selecionados, xarope de açúcar, vodka premium e gelo triturado."},
     {"id": 2, "nome": "Batida de Maracujá Clássica", "categoria": "⭐ Especiais da Casa", "preco_base": 32.00, "desc": "Polpa de maracujá azedo natural, leite condensado, cachaça branca e gelo."},
@@ -177,7 +181,7 @@ cardapio_detalhado = [
     {"id": 29, "nome": "Batida de Cajá Tropical", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 32.00, "desc": "Polpa selecionada de cajá com acidez marcante, leite condensado e rum."},
     {"id": 30, "nome": "Batida Tropical de Pitaya", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 38.00, "desc": "Pitaya vermelha fresca batida com vodka premium, limão e xarope leve."}
 ]
-# --- ROTEAMENTO DE PÁGINAS ---
+
 if st.session_state.pagina_atual == "🛒 Cardápio":
     st.markdown("""
         <div class="hero-banner">
@@ -187,7 +191,6 @@ if st.session_state.pagina_atual == "🛒 Cardápio":
         </div>
     """, unsafe_allow_html=True)
 
-    # --- SELETOR DE CATEGORIAS EM GRADE ---
     col_c1, col_c2 = st.columns(2)
     with col_c1:
         if st.button("⭐ Especiais da Casa", use_container_width=True):
@@ -205,11 +208,11 @@ if st.session_state.pagina_atual == "🛒 Cardápio":
 
     itens_filtrados = [item for item in cardapio_detalhado if item["categoria"] == st.session_state.categoria_ativa]
 
-    # --- LISTAGEM EM COLUNA ÚNICA ---
     for item in itens_filtrados:
         with st.container(border=True):
             st.markdown(f"### {item['nome']}")
-            st.markdown(f"<span style='color: #aaaaaa; font-size: 0.9rem; display: block; margin-bottom: 12px;'>{item['desc']}</span>", unsafe_allow_html=True)
+            # APLICAÇÃO DA CLASSE DE TEXTO AMPLIADO E NÍTIDO
+            st.markdown(f"<span class='detalhe-batida'>{item['desc']}</span>", unsafe_allow_html=True)
             
             st.markdown("**Tamanho:**")
             tamanho = st.radio("Tamanho:", ["300ml", "500ml", "1 Litro"], horizontal=True, key=f"tam_{item['id']}", label_visibility="collapsed")
@@ -240,7 +243,7 @@ if st.session_state.pagina_atual == "🛒 Cardápio":
         if st.button("🚀 Ir para o Checkout / Finalizar Pedido", use_container_width=True):
             st.session_state.pagina_atual = "🛍 Carrinho"
             st.rerun()
-        elif st.session_state.pagina_atual == "🛍 Carrinho":
+elif st.session_state.pagina_atual == "🛍 Carrinho":
     st.markdown("<h2>🛍 Seu Carrinho de Compras</h2>", unsafe_allow_html=True)
     st.markdown("---")
 
@@ -368,8 +371,7 @@ if st.session_state.pagina_atual == "🛒 Cardápio":
             st.session_state.ultimo_pedido = None
             st.session_state.pagina_atual = "🛒 Cardápio"
             st.rerun()
-
-elif st.session_state.pagina_atual == "📊 Admin":
+                    elif st.session_state.pagina_atual == "📊 Admin":
     st.markdown("<h2>📊 Painel Administrativo — QG das Batidas</h2>", unsafe_allow_html=True)
     st.markdown("---")
     
@@ -398,4 +400,3 @@ elif st.session_state.pagina_atual == "📊 Admin":
                     st.markdown("**Itens do Pedido:**")
                     for item_p in p['itens']:
                         st.markdown(f"- {item_p['nome']} (R$ {item_p['preco']:.2f})")
-    
