@@ -181,7 +181,6 @@ cardapio_detalhado = [
     {"id": 29, "nome": "Batida de Cajá Tropical", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 32.00, "desc": "Polpa selecionada de cajá com acidez marcante, leite condensado e rum."},
     {"id": 30, "nome": "Batida Tropical de Pitaya", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 38.00, "desc": "Pitaya vermelha fresca batida com vodka premium, limão e xarope leve."}
 ]
-
 if st.session_state.pagina_atual == "🛒 Cardápio":
     st.markdown("""
         <div class="hero-banner">
@@ -368,4 +367,37 @@ elif st.session_state.pagina_atual == "🛍 Carrinho":
     if st.session_state.get("ultimo_pedido"):
         st.markdown("---")
         if st.button("🔄 Fazer Novo Pedido"):
-            st.session_state
+            st.session_state.ultimo_pedido = None
+            st.session_state.pagina_atual = "🛒 Cardápio"
+            st.rerun()
+
+elif st.session_state.pagina_atual == "📊 Admin":
+    st.markdown("<h2>📊 Painel Administrativo — QG das Batidas</h2>", unsafe_allow_html=True)
+    st.markdown("---")
+    
+    arquivo_pedidos = "pedidos_qg.json"
+    if not os.path.exists(arquivo_pedidos):
+        st.info("Nenhum pedido registrado no sistema até o momento.")
+    else:
+        try:
+            with open(arquivo_pedidos, "r", encoding="utf-8") as f:
+                lista_pedidos = json.load(f)
+        except:
+            lista_pedidos = []
+            
+        if not lista_pedidos:
+            st.info("A base de pedidos está vazia.")
+        else:
+            st.markdown(f"### Total de Pedidos Registrados: **{len(lista_pedidos)}**")
+            
+            for p in reversed(lista_pedidos):
+                with st.expander(f"Pedido #{p['pedido_id']} - {p['cliente']} ({p['data_hora']}) — R$ {p['total']:.2f}"):
+                    st.markdown(f"**WhatsApp:** {p['whatsapp']}")
+                    st.markdown(f"**Nascimento:** {p['nascimento']}")
+                    st.markdown(f"**Endereço:** {p['endereco']}")
+                    st.markdown(f"**Pagamento:** {p['pagamento']}")
+                    st.markdown(f"**Status Atual:** `{p['status']}`")
+                    st.markdown("**Itens do Pedido:**")
+                    for item_p in p['itens']:
+                        st.markdown(f"- {item_p['nome']} (R$ {item_p['preco']:.2f})")
+            
