@@ -55,7 +55,6 @@ def adicionar_estilo_moderno():
             letter-spacing: 0.5px;
             margin-bottom: 10px;
         }
-        /* LETRA MELHORADA E AMPLIADA PARA O DETALHAMENTO DA BATIDA */
         .detalhe-batida {
             color: #e0e0e0 !important;
             font-size: 1.1rem !important;
@@ -121,7 +120,6 @@ def adicionar_estilo_moderno():
     """, unsafe_allow_html=True)
 
 adicionar_estilo_moderno()
-
 if "carrinho" not in st.session_state:
     st.session_state.carrinho = []
 if "pagina_atual" not in st.session_state:
@@ -130,7 +128,8 @@ if "ultimo_pedido" not in st.session_state:
     st.session_state.ultimo_pedido = None
 if "categoria_ativa" not in st.session_state:
     st.session_state.categoria_ativa = "⭐ Especiais da Casa"
-    col_nav1, col_nav2, col_nav3 = st.columns([2, 2, 2])
+
+col_nav1, col_nav2, col_nav3 = st.columns([2, 2, 2])
 with col_nav1:
     if st.button("🛒 Cardápio (Vitrine)", use_container_width=True):
         st.session_state.pagina_atual = "🛒 Cardápio"
@@ -172,16 +171,15 @@ cardapio_detalhado = [
     {"id": 21, "nome": "Batida de Ovomaltine", "categoria": "🍷 Vinhos & Especiais", "preco_base": 36.00, "desc": "Crocante Ovomaltine misturado com creme de leite, leite condensado e vodka."},
 
     {"id": 22, "nome": "Batida de Gengibre com Mel", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 35.00, "desc": "Gengibre fresco ralado, limão tahiti, mel silvestre puro e Cachaça Envelhecida."},
-    {"id": 23, "nome": "Batida de Catuaba com Açaí", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 34.00, "desc": "Açaí na polpa batido com Catuaba selvagem e leite condensado."},
+    {"id": 23, "nome": "Batida de Catuaba com Açaí", "categoria": "🌶️️ Exóticas & Potentes", "preco_base": 34.00, "desc": "Açaí na polpa batido com Catuaba selvagem e leite condensado."},
     {"id": 24, "nome": "Batida de Limão Siciliano com Capim-Santo", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 33.00, "desc": "Infusão aromática de capim-santo com limão siciliano e vodka."},
     {"id": 25, "nome": "Batida de Kiwi com Hortelã", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 32.00, "desc": "Kiwi verde fresco, folhas de hortelã, vodka premium e xarope de açúcar."},
     {"id": 26, "nome": "Batida de Tangerina com Pimenta", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 33.00, "desc": "Suco natural de tangerina poncã com um toque exótico de pimenta rosa."},
     {"id": 27, "nome": "Batida de Café Expresso com Licor", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 36.00, "desc": "Café expresso forte, licor de cacau, leite condensado e vodka."},
-    {"id": 28, "nome": "Batida de Acerola com Laranja", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 30.00, "desc": "Acerola rica em vitamina C combinada com suco de laranja natural e cachaça."},
+    {"id": 28, "nome": "Batida de Acerola com Laranja", "categoria": "🌶️️ Exóticas & Potentes", "preco_base": 30.00, "desc": "Acerola rica em vitamina C combinada com suco de laranja natural e cachaça."},
     {"id": 29, "nome": "Batida de Cajá Tropical", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 32.00, "desc": "Polpa selecionada de cajá com acidez marcante, leite condensado e rum."},
     {"id": 30, "nome": "Batida Tropical de Pitaya", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 38.00, "desc": "Pitaya vermelha fresca batida com vodka premium, limão e xarope leve."}
 ]
-
 if st.session_state.pagina_atual == "🛒 Cardápio":
     st.markdown("""
         <div class="hero-banner">
@@ -201,7 +199,7 @@ if st.session_state.pagina_atual == "🛒 Cardápio":
         if st.button("🥥 Clássicas & Tropicais", use_container_width=True):
             st.session_state.categoria_ativa = "🥥 Clássicas & Tropicais"
         if st.button("🌶 Exóticas & Potentes", use_container_width=True):
-            st.session_state.categoria_ativa = "🌶️ Exóticas & Potentes"
+            st.session_state.categoria_ativa = "🌶️️ Exóticas & Potentes"
 
     st.markdown("---")
     st.markdown(f"## {st.session_state.categoria_ativa}")
@@ -211,7 +209,6 @@ if st.session_state.pagina_atual == "🛒 Cardápio":
     for item in itens_filtrados:
         with st.container(border=True):
             st.markdown(f"### {item['nome']}")
-            # APLICAÇÃO DA CLASSE DE TEXTO AMPLIADO E NÍTIDO
             st.markdown(f"<span class='detalhe-batida'>{item['desc']}</span>", unsafe_allow_html=True)
             
             st.markdown("**Tamanho:**")
@@ -243,7 +240,7 @@ if st.session_state.pagina_atual == "🛒 Cardápio":
         if st.button("🚀 Ir para o Checkout / Finalizar Pedido", use_container_width=True):
             st.session_state.pagina_atual = "🛍 Carrinho"
             st.rerun()
-elif st.session_state.pagina_atual == "🛍 Carrinho":
+            elif st.session_state.pagina_atual == "🛍 Carrinho":
     st.markdown("<h2>🛍 Seu Carrinho de Compras</h2>", unsafe_allow_html=True)
     st.markdown("---")
 
@@ -371,7 +368,8 @@ elif st.session_state.pagina_atual == "🛍 Carrinho":
             st.session_state.ultimo_pedido = None
             st.session_state.pagina_atual = "🛒 Cardápio"
             st.rerun()
-                    elif st.session_state.pagina_atual == "📊 Admin":
+
+elif st.session_state.pagina_atual == "📊 Admin":
     st.markdown("<h2>📊 Painel Administrativo — QG das Batidas</h2>", unsafe_allow_html=True)
     st.markdown("---")
     
@@ -400,3 +398,4 @@ elif st.session_state.pagina_atual == "🛍 Carrinho":
                     st.markdown("**Itens do Pedido:**")
                     for item_p in p['itens']:
                         st.markdown(f"- {item_p['nome']} (R$ {item_p['preco']:.2f})")
+        
