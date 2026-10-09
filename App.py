@@ -12,7 +12,6 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# --- CONFIGURAÇÃO DO BANCO DE DADOS SQLITE ---
 def init_db():
     conn = sqlite3.connect("qg_batidas.db")
     cursor = conn.cursor()
@@ -25,8 +24,7 @@ def init_db():
             descricao TEXT,
             status TEXT DEFAULT 'Disponível'
         )
-    """)
-    cursor.execute("""
+    """)    cursor.execute("""
         CREATE TABLE IF NOT EXISTS pedidos (
             pedido_id TEXT PRIMARY KEY,
             timestamp TEXT,
@@ -61,9 +59,7 @@ def init_db():
     conn.commit()
     conn.close()
 
-init_db()
-
-def adicionar_estilo_moderno():
+init_db()def adicionar_estilo_moderno():
     st.markdown("""
         <style>
         .stApp {
@@ -171,9 +167,7 @@ def adicionar_estilo_moderno():
         </script>
     """, unsafe_allow_html=True)
 
-adicionar_estilo_moderno()
-
-if "carrinho" not in st.session_state:
+adicionar_estilo_moderno()if "carrinho" not in st.session_state:
     st.session_state.carrinho = []
 if "pagina_atual" not in st.session_state:
     st.session_state.pagina_atual = "🛒 Cardápio"
@@ -196,9 +190,7 @@ with col_nav3:
         st.session_state.pagina_atual = "📊 Admin"
         st.rerun()
 
-st.markdown("---")
-
-cardapio_detalhado = [
+st.markdown("---")cardapio_detalhado = [
     {"id": 1, "nome": "Batida Tropical de Morango", "categoria": "⭐ Especiais da Casa", "preco_base": 32.00, "desc": "Morangos frescos selecionados, xarope de açúcar, vodka premium e gelo triturado."},
     {"id": 2, "nome": "Batida de Maracujá Clássica", "categoria": "⭐ Especiais da Casa", "preco_base": 32.00, "desc": "Polpa de maracujá azedo natural, leite condensado, cachaça branca e gelo."},
     {"id": 3, "nome": "Batida de Ninho com Nutella", "categoria": "⭐ Especiais da Casa", "preco_base": 38.00, "desc": "Creme cremoso de Leite Ninho, toque generoso de Nutella original e vodka."},
@@ -214,8 +206,7 @@ cardapio_detalhado = [
     {"id": 12, "nome": "Batida de Frutas Vermelhas", "categoria": "🥥 Clássicas & Tropicais", "preco_base": 35.00, "desc": "Amora, framboesa e morango batidos com vodka e leite condensado."},
     {"id": 13, "nome": "Batida de Banana com Canela", "categoria": "🥥 Clássicas & Tropicais", "preco_base": 30.00, "desc": "Banana nanica madura, pitada de canela em pó, leite condensado e rum."},
     {"id": 14, "nome": "Batida de Maracujá com Pimenta", "categoria": "🥥 Clássicas & Tropicais", "preco_base": 34.00, "desc": "Maracujá natural com um toque leve de pimenta dedo-de-moça."},
-
-    {"id": 15, "nome": "Batida de Vinho Tinto Suave", "categoria": "🍷 Vinhos & Especiais", "preco_base": 35.00, "desc": "Vinho Tinto Suave selecionado, Cachaça Artesanal e Leite Condensado."},
+        {"id": 15, "nome": "Batida de Vinho Tinto Suave", "categoria": "🍷 Vinhos & Especiais", "preco_base": 35.00, "desc": "Vinho Tinto Suave selecionado, Cachaça Artesanal e Leite Condensado."},
     {"id": 16, "nome": "Batida de Vinho com Morango", "categoria": "🍷 Vinhos & Especiais", "preco_base": 36.00, "desc": "Vinho tinto suave batido com morangos frescos e leite condensado."},
     {"id": 17, "nome": "Batida de Amarula Caseira", "categoria": "🍷 Vinhos & Especiais", "preco_base": 40.00, "desc": "Creme cremoso sabor marula, conhaque, leite condensado e toque de chocolate."},
     {"id": 18, "nome": "Batida de Chocolate Cremoso", "categoria": "🍷 Vinhos & Especiais", "preco_base": 35.00, "desc": "Chocolate meio amargo derretido, leite condensado, vodka e creme de leite."},
@@ -232,9 +223,7 @@ cardapio_detalhado = [
     {"id": 28, "nome": "Batida de Acerola com Laranja", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 30.00, "desc": "Acerola rica em vitamina C combinada com suco de laranja natural e cachaça."},
     {"id": 29, "nome": "Batida de Cajá Tropical", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 32.00, "desc": "Polpa selecionada de cajá com acidez marcante, leite condensado e rum."},
     {"id": 30, "nome": "Batida Tropical de Pitaya", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 38.00, "desc": "Pitaya vermelha fresca batida com vodka premium, limão e xarope leve."}
-]
-
-if st.session_state.pagina_atual == "🛒 Cardápio":
+]if st.session_state.pagina_atual == "🛒 Cardápio":
     st.markdown("""
         <div class="hero-banner">
             <span class="badge-loja">🟢 LOJA ABERTA • DAS 14H ÀS 03H</span>
@@ -293,9 +282,7 @@ if st.session_state.pagina_atual == "🛒 Cardápio":
         """, unsafe_allow_html=True)
         if st.button("🚀 Ir para o Checkout / Finalizar Pedido", use_container_width=True):
             st.session_state.pagina_atual = "🛍 Carrinho"
-            st.rerun()
-
-elif st.session_state.pagina_atual == "🛍 Carrinho":
+            st.rerun()elif st.session_state.pagina_atual == "🛍 Carrinho":
     st.markdown("<h2>🛍 Seu Carrinho de Compras</h2>", unsafe_allow_html=True)
     st.markdown("---")
 
@@ -384,45 +371,38 @@ elif st.session_state.pagina_atual == "🛍 Carrinho":
                     data_hora_atual = datetime.datetime.now().strftime("%d/%m/%Y às %H:%M")
                     endereco_completo = f"{rua}, nº {numero} - {bairro}, {cidade}"
                     
-                    # Gravação no Banco de Dados SQLite
                     conn = sqlite3.connect("qg_batidas.db")
                     cursor = conn.cursor()
                     cursor.execute("""
                         INSERT INTO pedidos (pedido_id, timestamp, data_hora, cliente, whatsapp, nascimento, endereco, pagamento, status, total)
-     cursor.execute("""
-        INSERT INTO pedidos (pedido_id, timestamp, data_hora, cliente, whatsapp, nascimento, endereco, pagamento, status, total)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    """, (numero_pedido, timestamp_criacao, data_hora_atual, nome_cliente, whatsapp, data_nascimento, endereco_completo, pagamento, "Recebido", total_carrinho))
-    
-    # Registra entrada no caixa automaticamente
-    cursor.execute("""
-        INSERT INTO caixa (data_hora, tipo, descricao, valor)
-        VALUES (?, ?, ?, ?)
-    """, (data_hora_atual, "Entrada", f"Venda Pedido {numero_pedido} - {nome_cliente}", total_carrinho))
-    
-    # Atualiza CRM
-    cursor.execute("SELECT id, compras_totais FROM crm_clientes WHERE whatsapp = ?", (whatsapp,))
-    cli_existente = cursor.fetchone()
-    if cli_existente:
-        cursor.execute("UPDATE crm_clientes SET compras_totais = compras_totais + 1 WHERE whatsapp = ?", (whatsapp,))
-    else:
-        cursor.execute("INSERT INTO crm_clientes (nome, whatsapp, preferencia, compras_totais) VALUES (?, ?, ?, ?)", (nome_cliente, whatsapp, "Geral", 1))
-    
-    conn.commit()
-    conn.close()
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    """, (numero_pedido, timestamp_criacao, data_hora_atual, nome_cliente, whatsapp, data_nascimento, endereco_completo, pagamento, "Recebido", total_carrinho))
+                    
+                    cursor.execute("""
+                        INSERT INTO caixa (data_hora, tipo, descricao, valor)
+                        VALUES (?, ?, ?, ?)
+                    """, (data_hora_atual, "Entrada", f"Venda Pedido {numero_pedido} - {nome_cliente}", total_carrinho))
+                    
+                    cursor.execute("SELECT id, compras_totais FROM crm_clientes WHERE whatsapp = ?", (whatsapp,))
+                    cli_existente = cursor.fetchone()
+                    if cli_existente:
+                        cursor.execute("UPDATE crm_clientes SET compras_totais = compras_totais + 1 WHERE whatsapp = ?", (whatsapp,))
+                    else:
+                        cursor.execute("INSERT INTO crm_clientes (nome, whatsapp, preferencia, compras_totais) VALUES (?, ?, ?, ?)", (nome_cliente, whatsapp, "Geral", 1))
+                    
+                    conn.commit()
+                    conn.close()
 
-    st.session_state.ultimo_pedido = numero_pedido
-    st.session_state.carrinho = []
-    st.success(f"🎉 Pedido gerado com sucesso! ID de Rastreio: {numero_pedido}")
-    st.balloons()
+                    st.session_state.ultimo_pedido = numero_pedido
+                    st.session_state.carrinho = []
+                    st.success(f"🎉 Pedido gerado com sucesso! ID de Rastreio: {numero_pedido}")
+                    st.balloons()
 
-if st.session_state.get("ultimo_pedido"):
-    st.markdown("---")
-    if st.button("🔄 Fazer Novo Pedido"):
-        st.session_state.pagina_atual = "🛒 Cardápio"
-        st.rerun()
-
-elif st.session_state.pagina_atual == "📊 Admin":
+    if st.session_state.get("ultimo_pedido"):
+        st.markdown("---")
+        if st.button("🔄 Fazer Novo Pedido"):
+            st.session_state.pagina_atual = "🛒 Cardápio"
+            st.rerun()elif st.session_state.pagina_atual == "📊 Admin":
     st.markdown("<h2>📊 Painel Administrativo do QG</h2>", unsafe_allow_html=True)
     st.markdown("---")
     
@@ -467,19 +447,16 @@ elif st.session_state.pagina_atual == "📊 Admin":
             valor_sangria = st.number_input("Valor (R$):", min_value=0.0, step=10.0)
             btn_salvar_sangria = st.form_submit_button("🚨 Registar Sangria")
             
-            if btn_sal
-                    if btn_salvar_sangria:
-                    if desc_sangria and valor_sangria > 0:
-                        data_hora_atual = datetime.datetime.now().strftime("%d/%m/%Y às %H:%M")
-                        cursor.execute("INSERT INTO caixa (data_hora, tipo, descricao, valor) VALUES (?, ?, ?, ?)", (data_hora_atual, "Saída / Sangria", desc_sangria, valor_sangria))
-                        conn.commit()
-                        st.success("Sangria registada com sucesso!")
-                        st.rerun()
-                    else:
-                        st.error("Preencha a descrição e um valor válido.")
-        conn.close()
-        
-    with tab_adm3:
+            if btn_salvar_sangria:
+                if desc_sangria and valor_sangria > 0:
+                    data_hora_atual = datetime.datetime.now().strftime("%d/%m/%Y às %H:%M")
+                    cursor.execute("INSERT INTO caixa (data_hora, tipo, descricao, valor) VALUES (?, ?, ?, ?)", (data_hora_atual, "Saída / Sangria", desc_sangria, valor_sangria))
+                    conn.commit()
+                    st.success("Sangria registada com sucesso!")
+                    st.rerun()
+                else:
+                    st.error("Preencha a descrição e um valor válido.")
+        conn.close()    with tab_adm3:
         st.markdown("### 👥 Relacionamento com Clientes (CRM)")
         conn = sqlite3.connect("qg_batidas.db")
         cursor = conn.cursor()
@@ -514,4 +491,12 @@ elif st.session_state.pagina_atual == "📊 Admin":
             
         st.text_area("Sugestão de Copy Pronta para Copiar:", value=texto_copy, height=100)
         st.success("Copie o texto acima e cole direto nas suas transmissões do WhatsApp ou Status!")
-        
+
+
+                
+
+
+    
+
+
+    
