@@ -12,6 +12,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
+# --- CONFIGURAÇÃO DO BANCO DE DADOS SQLITE ---
 def init_db():
     conn = sqlite3.connect("qg_batidas.db")
     cursor = conn.cursor()
@@ -24,7 +25,8 @@ def init_db():
             descricao TEXT,
             status TEXT DEFAULT 'Disponível'
         )
-    """)    cursor.execute("""
+    """)
+    cursor.execute("""
         CREATE TABLE IF NOT EXISTS pedidos (
             pedido_id TEXT PRIMARY KEY,
             timestamp TEXT,
@@ -59,7 +61,9 @@ def init_db():
     conn.commit()
     conn.close()
 
-init_db()def adicionar_estilo_moderno():
+init_db()
+
+def adicionar_estilo_moderno():
     st.markdown("""
         <style>
         .stApp {
@@ -103,7 +107,7 @@ init_db()def adicionar_estilo_moderno():
             letter-spacing: 0.5px;
             margin-bottom: 10px;
         }
-        .detalhe-batida {
+                .detalhe-batida {
             color: #e0e0e0 !important;
             font-size: 1.1rem !important;
             line-height: 1.5 !important;
@@ -167,7 +171,9 @@ init_db()def adicionar_estilo_moderno():
         </script>
     """, unsafe_allow_html=True)
 
-adicionar_estilo_moderno()if "carrinho" not in st.session_state:
+adicionar_estilo_moderno()
+
+if "carrinho" not in st.session_state:
     st.session_state.carrinho = []
 if "pagina_atual" not in st.session_state:
     st.session_state.pagina_atual = "🛒 Cardápio"
@@ -190,7 +196,8 @@ with col_nav3:
         st.session_state.pagina_atual = "📊 Admin"
         st.rerun()
 
-st.markdown("---")cardapio_detalhado = [
+st.markdown("---")
+        cardapio_detalhado = [
     {"id": 1, "nome": "Batida Tropical de Morango", "categoria": "⭐ Especiais da Casa", "preco_base": 32.00, "desc": "Morangos frescos selecionados, xarope de açúcar, vodka premium e gelo triturado."},
     {"id": 2, "nome": "Batida de Maracujá Clássica", "categoria": "⭐ Especiais da Casa", "preco_base": 32.00, "desc": "Polpa de maracujá azedo natural, leite condensado, cachaça branca e gelo."},
     {"id": 3, "nome": "Batida de Ninho com Nutella", "categoria": "⭐ Especiais da Casa", "preco_base": 38.00, "desc": "Creme cremoso de Leite Ninho, toque generoso de Nutella original e vodka."},
@@ -206,7 +213,8 @@ st.markdown("---")cardapio_detalhado = [
     {"id": 12, "nome": "Batida de Frutas Vermelhas", "categoria": "🥥 Clássicas & Tropicais", "preco_base": 35.00, "desc": "Amora, framboesa e morango batidos com vodka e leite condensado."},
     {"id": 13, "nome": "Batida de Banana com Canela", "categoria": "🥥 Clássicas & Tropicais", "preco_base": 30.00, "desc": "Banana nanica madura, pitada de canela em pó, leite condensado e rum."},
     {"id": 14, "nome": "Batida de Maracujá com Pimenta", "categoria": "🥥 Clássicas & Tropicais", "preco_base": 34.00, "desc": "Maracujá natural com um toque leve de pimenta dedo-de-moça."},
-        {"id": 15, "nome": "Batida de Vinho Tinto Suave", "categoria": "🍷 Vinhos & Especiais", "preco_base": 35.00, "desc": "Vinho Tinto Suave selecionado, Cachaça Artesanal e Leite Condensado."},
+
+    {"id": 15, "nome": "Batida de Vinho Tinto Suave", "categoria": "🍷 Vinhos & Especiais", "preco_base": 35.00, "desc": "Vinho Tinto Suave selecionado, Cachaça Artesanal e Leite Condensado."},
     {"id": 16, "nome": "Batida de Vinho com Morango", "categoria": "🍷 Vinhos & Especiais", "preco_base": 36.00, "desc": "Vinho tinto suave batido com morangos frescos e leite condensado."},
     {"id": 17, "nome": "Batida de Amarula Caseira", "categoria": "🍷 Vinhos & Especiais", "preco_base": 40.00, "desc": "Creme cremoso sabor marula, conhaque, leite condensado e toque de chocolate."},
     {"id": 18, "nome": "Batida de Chocolate Cremoso", "categoria": "🍷 Vinhos & Especiais", "preco_base": 35.00, "desc": "Chocolate meio amargo derretido, leite condensado, vodka e creme de leite."},
@@ -223,7 +231,8 @@ st.markdown("---")cardapio_detalhado = [
     {"id": 28, "nome": "Batida de Acerola com Laranja", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 30.00, "desc": "Acerola rica em vitamina C combinada com suco de laranja natural e cachaça."},
     {"id": 29, "nome": "Batida de Cajá Tropical", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 32.00, "desc": "Polpa selecionada de cajá com acidez marcante, leite condensado e rum."},
     {"id": 30, "nome": "Batida Tropical de Pitaya", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 38.00, "desc": "Pitaya vermelha fresca batida com vodka premium, limão e xarope leve."}
-]if st.session_state.pagina_atual == "🛒 Cardápio":
+]
+if st.session_state.pagina_atual == "🛒 Cardápio":
     st.markdown("""
         <div class="hero-banner">
             <span class="badge-loja">🟢 LOJA ABERTA • DAS 14H ÀS 03H</span>
@@ -282,7 +291,9 @@ st.markdown("---")cardapio_detalhado = [
         """, unsafe_allow_html=True)
         if st.button("🚀 Ir para o Checkout / Finalizar Pedido", use_container_width=True):
             st.session_state.pagina_atual = "🛍 Carrinho"
-            st.rerun()elif st.session_state.pagina_atual == "🛍 Carrinho":
+            st.rerun()
+
+elif st.session_state.pagina_atual == "🛍 Carrinho":
     st.markdown("<h2>🛍 Seu Carrinho de Compras</h2>", unsafe_allow_html=True)
     st.markdown("---")
 
@@ -361,8 +372,7 @@ st.markdown("---")cardapio_detalhado = [
             pagamento = st.selectbox("Forma de Pagamento:", ["Pix", "Cartão de Crédito", "Cartão de Débito", "Dinheiro"])
             
             enviar_pedido = st.form_submit_button("🚀 Confirmar e Enviar Pedido")
-            
-            if enviar_pedido:
+                            if enviar_pedido:
                 if not nome_cliente or not whatsapp or not rua or not numero:
                     st.error("Preencha Nome, WhatsApp, Rua e Número para prosseguir.")
                 else:
@@ -402,7 +412,9 @@ st.markdown("---")cardapio_detalhado = [
         st.markdown("---")
         if st.button("🔄 Fazer Novo Pedido"):
             st.session_state.pagina_atual = "🛒 Cardápio"
-            st.rerun()elif st.session_state.pagina_atual == "📊 Admin":
+            st.rerun()
+
+elif st.session_state.pagina_atual == "📊 Admin":
     st.markdown("<h2>📊 Painel Administrativo do QG</h2>", unsafe_allow_html=True)
     st.markdown("---")
     
@@ -456,7 +468,9 @@ st.markdown("---")cardapio_detalhado = [
                     st.rerun()
                 else:
                     st.error("Preencha a descrição e um valor válido.")
-        conn.close()    with tab_adm3:
+        conn.close()
+        
+    with tab_adm3:
         st.markdown("### 👥 Relacionamento com Clientes (CRM)")
         conn = sqlite3.connect("qg_batidas.db")
         cursor = conn.cursor()
@@ -491,12 +505,4 @@ st.markdown("---")cardapio_detalhado = [
             
         st.text_area("Sugestão de Copy Pronta para Copiar:", value=texto_copy, height=100)
         st.success("Copie o texto acima e cole direto nas suas transmissões do WhatsApp ou Status!")
-
-
-                
-
-
-    
-
-
     
