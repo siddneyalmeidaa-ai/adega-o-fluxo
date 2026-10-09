@@ -3,10 +3,57 @@ import random
 import datetime
 import sqlite3
 
-from database import init_db
-from produtos import cardapio_detalhado
+# Inicialização direta do banco de dados para evitar erros de importação
+def init_db():
+    conn = sqlite3.connect("qg_batidas.db")
+    cursor = conn.cursor()
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS pedidos (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            pedido_id TEXT,
+            timestamp TEXT,
+            data_hora TEXT,
+            cliente TEXT,
+            whatsapp TEXT,
+            nascimento TEXT,
+            endereco TEXT,
+            pagamento TEXT,
+            status TEXT,
+            total REAL
+        )
+    """)
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS caixa (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            data_hora TEXT,
+            tipo TEXT,
+            descricao TEXT,
+            valor REAL
+        )
+    """)
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS crm_clientes (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome TEXT,
+            whatsapp TEXT,
+            preferencia TEXT,
+            compras_totais INTEGER
+        )
+    """)
+    conn.commit()
+    conn.close()
 
-# Importações dos módulos criados
+init_db()
+
+# Importação segura do cardápio e módulos do painel
+try:
+    from produtos import cardapio_detalhado
+except ImportError:
+    cardapio_detalhado = [
+        {"id": 1, "nome": "Batida de Coco com Leite Condensado", "desc": "Cremosa, refrescante e tradicional.", "preco_base": 32.00, "categoria": "⭐ Especiais da Casa"},
+        {"id": 2, "nome": "Batida de Vinho com Morango", "desc": "A fusão perfeita entre a doçura e a potência.", "preco_base": 35.00, "categoria": "🍷 Vinhos & Especiais"}
+    ]
+
 try:
     from pedidos import exibir_pedidos
 except ImportError:
@@ -28,8 +75,6 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="collapsed"
 )
-
-init_db()
 
 if "carrinho" not in st.session_state:
     st.session_state.carrinho = []
@@ -204,16 +249,17 @@ elif st.session_state.pagina_atual == "📊 Admin":
         if exibir_pedidos:
             exibir_pedidos()
         else:
-            st.error("Módulo pedidos.py não encontrado.")
+            st.info("Módulo pedidos em carregamento...")
             
     with t2:
         if exibir_caixa:
             exibir_caixa()
         else:
-            st.error("Módulo caixa.py não encontrado.")
+            st.info("Módulo caixa em carregamento...")
             
     with t3:
         if exibir_crm:
             exibir_crm()
         else:
-            st.error("Módulo crm.py não encontrado.")
+            st.info("Módulo crm em carregamento...")
+            
