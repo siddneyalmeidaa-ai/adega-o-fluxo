@@ -3,6 +3,7 @@ import json
 import os
 import random
 import datetime
+import sqlite3
 
 st.set_page_config(
     page_title="QG das Batidas",
@@ -10,6 +11,57 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="collapsed"
 )
+
+# --- CONFIGURAÇÃO DO BANCO DE DADOS SQLITE ---
+def init_db():
+    conn = sqlite3.connect("qg_batidas.db")
+    cursor = conn.cursor()
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS produtos (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome TEXT,
+            categoria TEXT,
+            preco_base REAL,
+            descricao TEXT,
+            status TEXT DEFAULT 'Disponível'
+        )
+    """)
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS pedidos (
+            pedido_id TEXT PRIMARY KEY,
+            timestamp TEXT,
+            data_hora TEXT,
+            cliente TEXT,
+            whatsapp TEXT,
+            nascimento TEXT,
+            endereco TEXT,
+            pagamento TEXT,
+            status TEXT,
+            total REAL
+        )
+    """)
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS caixa (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            data_hora TEXT,
+            tipo TEXT,
+            descricao TEXT,
+            valor REAL
+        )
+    """)
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS crm_clientes (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome TEXT,
+            whatsapp TEXT,
+            preferencia TEXT,
+            compras_totais INTEGER DEFAULT 0
+        )
+    """)
+    conn.commit()
+    conn.close()
+
+init_db()
 
 def adicionar_estilo_moderno():
     st.markdown("""
@@ -181,6 +233,7 @@ cardapio_detalhado = [
     {"id": 29, "nome": "Batida de Cajá Tropical", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 32.00, "desc": "Polpa selecionada de cajá com acidez marcante, leite condensado e rum."},
     {"id": 30, "nome": "Batida Tropical de Pitaya", "categoria": "🌶️ Exóticas & Potentes", "preco_base": 38.00, "desc": "Pitaya vermelha fresca batida com vodka premium, limão e xarope leve."}
 ]
+
 if st.session_state.pagina_atual == "🛒 Cardápio":
     st.markdown("""
         <div class="hero-banner">
@@ -190,7 +243,7 @@ if st.session_state.pagina_atual == "🛒 Cardápio":
         </div>
     """, unsafe_allow_html=True)
 
-    col_c1, col_c2 = st.columns(2)
+    col_c1, col_c2 = st.columns([2, 2])
     with col_c1:
         if st.button("⭐ Especiais da Casa", use_container_width=True):
             st.session_state.categoria_ativa = "⭐ Especiais da Casa"
@@ -331,73 +384,134 @@ elif st.session_state.pagina_atual == "🛍 Carrinho":
                     data_hora_atual = datetime.datetime.now().strftime("%d/%m/%Y às %H:%M")
                     endereco_completo = f"{rua}, nº {numero} - {bairro}, {cidade}"
                     
-                    novo_registro = {
-                        "pedido_id": numero_pedido,
-                        "timestamp": timestamp_criacao,
-                        "data_hora": data_hora_atual,
-                        "cliente": nome_cliente,
-                        "whatsapp": whatsapp,
-                        "nascimento": data_nascimento,
-                        "endereco": endereco_completo,
-                        "pagamento": pagamento,
-                        "status": "Recebido",
-                        "itens": st.session_state.carrinho,
-                        "total": total_carrinho
-                    }
-                    
-                    arquivo_pedidos = "pedidos_qg.json"
-                    lista_pedidos = []
-                    if os.path.exists(arquivo_pedidos):
-                        try:
-                            with open(arquivo_pedidos, "r", encoding="utf-8") as f:
-                                lista_pedidos = json.load(f)
-                        except:
-                            lista_pedidos = []
-                    
-                    lista_pedidos.append(novo_registro)
-                    
-                    with open(arquivo_pedidos, "w", encoding="utf-8") as f:
-                        json.dump(lista_pedidos, f, ensure_ascii=False, indent=4)
+                    # Gravação no Banco de Dados SQLite
+                    conn = sqlite3.connect("qg_batidas.db")
+                    cursor = conn.cursor()
+                    cursor.execute("""
+                        INSERT INTO pedidos (pedido_id, timestamp, data_hora, cliente, whatsapp, nascimento, endereco, pagamento, status, total)
+     cursor.execute("""
+        INSERT INTO pedidos (pedido_id, timestamp, data_hora, cliente, whatsapp, nascimento, endereco, pagamento, status, total)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, (numero_pedido, timestamp_criacao, data_hora_atual, nome_cliente, whatsapp, data_nascimento, endereco_completo, pagamento, "Recebido", total_carrinho))
+    
+    # Registra entrada no caixa automaticamente
+    cursor.execute("""
+        INSERT INTO caixa (data_hora, tipo, descricao, valor)
+        VALUES (?, ?, ?, ?)
+    """, (data_hora_atual, "Entrada", f"Venda Pedido {numero_pedido} - {nome_cliente}", total_carrinho))
+    
+    # Atualiza CRM
+    cursor.execute("SELECT id, compras_totais FROM crm_clientes WHERE whatsapp = ?", (whatsapp,))
+    cli_existente = cursor.fetchone()
+    if cli_existente:
+        cursor.execute("UPDATE crm_clientes SET compras_totais = compras_totais + 1 WHERE whatsapp = ?", (whatsapp,))
+    else:
+        cursor.execute("INSERT INTO crm_clientes (nome, whatsapp, preferencia, compras_totais) VALUES (?, ?, ?, ?)", (nome_cliente, whatsapp, "Geral", 1))
+    
+    conn.commit()
+    conn.close()
 
-                    st.session_state.ultimo_pedido = numero_pedido
-                    st.session_state.carrinho = []
-                    st.success(f"🎉 Pedido gerado com sucesso! ID de Rastreio: {numero_pedido}")
-                    st.balloons()
+    st.session_state.ultimo_pedido = numero_pedido
+    st.session_state.carrinho = []
+    st.success(f"🎉 Pedido gerado com sucesso! ID de Rastreio: {numero_pedido}")
+    st.balloons()
 
-    if st.session_state.get("ultimo_pedido"):
-        st.markdown("---")
-        if st.button("🔄 Fazer Novo Pedido"):
-            st.session_state.ultimo_pedido = None
-            st.session_state.pagina_atual = "🛒 Cardápio"
-            st.rerun()
+if st.session_state.get("ultimo_pedido"):
+    st.markdown("---")
+    if st.button("🔄 Fazer Novo Pedido"):
+        st.session_state.pagina_atual = "🛒 Cardápio"
+        st.rerun()
 
 elif st.session_state.pagina_atual == "📊 Admin":
-    st.markdown("<h2>📊 Painel Administrativo — QG das Batidas</h2>", unsafe_allow_html=True)
+    st.markdown("<h2>📊 Painel Administrativo do QG</h2>", unsafe_allow_html=True)
     st.markdown("---")
     
-    arquivo_pedidos = "pedidos_qg.json"
-    if not os.path.exists(arquivo_pedidos):
-        st.info("Nenhum pedido registrado no sistema até o momento.")
-    else:
-        try:
-            with open(arquivo_pedidos, "r", encoding="utf-8") as f:
-                lista_pedidos = json.load(f)
-        except:
-            lista_pedidos = []
-            
-        if not lista_pedidos:
-            st.info("A base de pedidos está vazia.")
+    tab_adm1, tab_adm2, tab_adm3, tab_adm4 = st.tabs(["📦 Gestão de Pedidos", "💰 Caixa & Sangrias", "👥 CRM & Clientes", "🚀 Marketing & Ações"])
+    
+    with tab_adm1:
+        st.markdown("### Pedidos Registrados no Banco de Dados")
+        conn = sqlite3.connect("qg_batidas.db")
+        cursor = conn.cursor()
+        cursor.execute("SELECT pedido_id, data_hora, cliente, whatsapp, pagamento, status, total FROM pedidos ORDER BY timestamp DESC")
+        todos_pedidos = cursor.fetchall()
+        conn.close()
+        
+        if not todos_pedidos:
+            st.info("Nenhum pedido registado até o momento.")
         else:
-            st.markdown(f"### Total de Pedidos Registrados: **{len(lista_pedidos)}**")
+            for p in todos_pedidos:
+                with st.container(border=True):
+                    st.markdown(f"**ID:** `{p[0]}` | **Data:** {p[1]} | **Status:** `{p[5]}`")
+                    st.markdown(f"**Cliente:** {p[2]} ({p[3]}) | **Pagamento:** {p[4]} | **Total:** R$ {p[6]:.2f}")
+    
+    with tab_adm2:
+        st.markdown("### 💰 Controle de Caixa e Sangrias")
+        conn = sqlite3.connect("qg_batidas.db")
+        cursor = conn.cursor()
+        cursor.execute("SELECT data_hora, tipo, descricao, valor FROM caixa ORDER BY id DESC")
+        lancamentos = cursor.fetchall()
+        
+        total_entradas = sum(l[3] for l in lancamentos if l[1] == "Entrada")
+        total_saidas = sum(l[3] for l in lancamentos if l[1] == "Saída / Sangria")
+        saldo_liquido = total_entradas - total_saidas
+        
+        col_m1, col_m2, col_m3 = st.columns(3)
+        col_m1.metric("Entradas Totais", f"R$ {total_entradas:.2f}")
+        col_m2.metric("Saídas / Sangrias", f"R$ {total_saidas:.2f}")
+        col_m3.metric("Saldo Líquido", f"R$ {saldo_liquido:.2f}")
+        
+        st.markdown("---")
+        st.markdown("#### Registar Nova Sangria / Retirada")
+        with st.form("form_sangria"):
+            desc_sangria = st.text_input("Motivo da Sangria (ex: Pagamento de Insumos / Gelo):")
+            valor_sangria = st.number_input("Valor (R$):", min_value=0.0, step=10.0)
+            btn_salvar_sangria = st.form_submit_button("🚨 Registar Sangria")
             
-            for p in reversed(lista_pedidos):
-                with st.expander(f"Pedido #{p['pedido_id']} - {p['cliente']} ({p['data_hora']}) — R$ {p['total']:.2f}"):
-                    st.markdown(f"**WhatsApp:** {p['whatsapp']}")
-                    st.markdown(f"**Nascimento:** {p['nascimento']}")
-                    st.markdown(f"**Endereço:** {p['endereco']}")
-                    st.markdown(f"**Pagamento:** {p['pagamento']}")
-                    st.markdown(f"**Status Atual:** `{p['status']}`")
-                    st.markdown("**Itens do Pedido:**")
-                    for item_p in p['itens']:
-                        st.markdown(f"- {item_p['nome']} (R$ {item_p['preco']:.2f})")
+            if btn_sal
+                    if btn_salvar_sangria:
+                    if desc_sangria and valor_sangria > 0:
+                        data_hora_atual = datetime.datetime.now().strftime("%d/%m/%Y às %H:%M")
+                        cursor.execute("INSERT INTO caixa (data_hora, tipo, descricao, valor) VALUES (?, ?, ?, ?)", (data_hora_atual, "Saída / Sangria", desc_sangria, valor_sangria))
+                        conn.commit()
+                        st.success("Sangria registada com sucesso!")
+                        st.rerun()
+                    else:
+                        st.error("Preencha a descrição e um valor válido.")
+        conn.close()
+        
+    with tab_adm3:
+        st.markdown("### 👥 Relacionamento com Clientes (CRM)")
+        conn = sqlite3.connect("qg_batidas.db")
+        cursor = conn.cursor()
+        cursor.execute("SELECT nome, whatsapp, preferencia, compras_totais FROM crm_clientes")
+        clientes = cursor.fetchall()
+        conn.close()
+        
+        if not clientes:
+            st.info("Nenhum cliente registado no CRM ainda.")
+        else:
+            for c in clientes:
+                with st.container(border=True):
+                    st.markdown(f"**Cliente:** {c[0]} | **WhatsApp:** {c[1]}")
+                    st.markdown(f"**Preferência:** {c[2]} | **Total de Compras:** {c[3]} pedido(s)")
+                    
+    with tab_adm4:
+        st.markdown("### 🚀 Central de Marketing & Ações")
+        st.markdown("Gere copys rápidas e links de atendimento para impulsionar suas vendas no WhatsApp:")
+        
+        campanha_tipo = st.selectbox("Escolha a Ação de Marketing:", [
+            "Happy Hour do QG (Desconto em 300ml)", 
+            "Fim de Semana com Batida Dobrada", 
+            "Recuperação de Cliente Sumido"
+        ])
+        
+        if campanha_tipo == "Happy Hour do QG (Desconto em 300ml)":
+            texto_copy = "🔥 Fala, mestre! Passando para avisar que o Happy Hour do QG das Batidas tá ativado! Garanta sua batida de 300ml trincando por apenas R$ 11,00 hoje. Clica aqui e pede a sua!"
+        elif campanha_tipo == "Fim de Semana com Batida Dobrada":
+            texto_copy = "🍸 Fim de semana chegou e o QG preparou lotes frescos das nossas batidas artesanais! Peça sua garrafa de 1L e garanta a resenha com os melhores sabores da região."
+        else:
+            texto_copy = "👋 E aí, sumido! Sentiu falta das nossas batidas? Hoje temos lote especial saindo do forno. Vem conferir o cardápio atualizado!"
             
+        st.text_area("Sugestão de Copy Pronta para Copiar:", value=texto_copy, height=100)
+        st.success("Copie o texto acima e cole direto nas suas transmissões do WhatsApp ou Status!")
+        
